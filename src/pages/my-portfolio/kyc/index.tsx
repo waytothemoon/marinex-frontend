@@ -26,7 +26,7 @@ const KYC = () => {
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
-        const res = await axios.get(`/kyc/websdk`);
+        const res = await axios.get(`/api/v1/kyc/websdk`);
         if (res.status === 200) {
           // console.log(res.data.token);
           setAccessToken(res.data.token);
