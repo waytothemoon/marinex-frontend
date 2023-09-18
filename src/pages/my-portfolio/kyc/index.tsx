@@ -24,18 +24,13 @@ const KYC = () => {
   const applicantEmail = '';
   const applicantPhone = '';
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        const res = await axios.get(`/api/v1/kyc/websdk`);
-        if (res.status === 200) {
-          // console.log(res.data.token);
-          setAccessToken(res.data.token);
-        }
-      } catch (error) {
-        console.log(error);
+    fetch('/api/kyc/websdk').then(async (res) => {
+      if (res.status === 200) {
+        const { token } = await res.json();
+        console.log(token);
+        setAccessToken(token);
       }
-    };
-    fetchAccessToken();
+    });
   }, [router]);
 
   return (
