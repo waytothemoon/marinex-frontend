@@ -2,7 +2,6 @@ import { useState, ReactElement, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import SumsubWebSdk from '@sumsub/websdk-react';
 
-import axios from 'utils/axios';
 import Image from 'next/image';
 // material-ui
 import { Grid, Stack, Typography } from '@mui/material';
