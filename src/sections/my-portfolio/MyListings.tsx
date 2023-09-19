@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 // next
 import NextLink from 'next/link';
+import Image from 'next/image';
 
 // material-ui
 import {
@@ -147,7 +148,7 @@ export default function MyListings() {
                         )} */}
                       {column.id === 'projectName' && (
                         <Stack direction="row" spacing={1} alignItems="center">
-                          <img
+                          <Image
                             src={`${process.env.SHIPFINEX_BACKEND_URL}${row.project.projectImage}`}
                             alt="ship"
                             width={40}

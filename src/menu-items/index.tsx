@@ -14,7 +14,7 @@ import Reward from './icons/Reward';
 import Transaction from './icons/Transaction';
 import Wallet from './icons/Wallet';
 
-import { DashboardOutlined, TeamOutlined, SettingOutlined, FileProtectOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { DashboardOutlined, TeamOutlined, FileProtectOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 
 // ==============================|| MENU ITEMS - COMPONENTS ||============================== //
 
@@ -164,12 +164,12 @@ const menuItems: NavItemType[] = [
     roles: [UserRole.ADMIN]
   },
   {
-    id: 'milestones',
+    id: 'rewards',
     icon: Reward,
-    search: 'milestones',
-    title: <FormattedMessage id="milestones" />,
+    search: 'rewards',
+    title: <FormattedMessage id="rewards" />,
     type: 'item',
-    url: '/admin/milestones',
+    url: '/admin/rewards',
     roles: [UserRole.ADMIN]
   },
   {
@@ -180,25 +180,25 @@ const menuItems: NavItemType[] = [
     type: 'item',
     url: '/admin/help',
     roles: [UserRole.ADMIN]
-  },
-  {
-    id: 'referral',
-    icon: DashboardOutlined,
-    search: 'referral',
-    title: <FormattedMessage id="referral" />,
-    type: 'item',
-    url: '/admin/referral',
-    roles: [UserRole.ADMIN]
-  },
-  {
-    id: 'settings',
-    icon: SettingOutlined,
-    search: 'settings',
-    title: <FormattedMessage id="settings" />,
-    type: 'item',
-    url: '/admin/settings',
-    roles: [UserRole.ADMIN]
   }
+  // {
+  //   id: 'referral',
+  //   icon: DashboardOutlined,
+  //   search: 'referral',
+  //   title: <FormattedMessage id="referral" />,
+  //   type: 'item',
+  //   url: '/admin/referral',
+  //   roles: [UserRole.ADMIN]
+  // },
+  // {
+  //   id: 'settings',
+  //   icon: SettingOutlined,
+  //   search: 'settings',
+  //   title: <FormattedMessage id="settings" />,
+  //   type: 'item',
+  //   url: '/admin/settings',
+  //   roles: [UserRole.ADMIN]
+  // }
 ];
 
 export default menuItems;

@@ -23,6 +23,7 @@ import { styled } from '@mui/material/styles';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 // third-party
 import { useFormik } from 'formik';
@@ -216,7 +217,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
                   </Stack>
                   <BootstrapDialog onClose={handleReviewClose} aria-labelledby="project-image-review" open={reviewOpen}>
                     <DialogContent dividers sx={{ p: 3 }}>
-                      <img src={reviewImage} width={400} alt="Review Image" />
+                      <Image src={reviewImage} width={400} alt="Review Image" height={400} />
                     </DialogContent>
                     <DialogActions>
                       <Button variant="outlined" onClick={handleReviewClose}>

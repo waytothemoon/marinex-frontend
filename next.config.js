@@ -23,6 +23,10 @@ module.exports = withTM({
       {
         protocol: 'https',
         hostname: '**'
+      },
+      {
+        protocol: 'http',
+        hostname: '**'
       }
     ]
   },

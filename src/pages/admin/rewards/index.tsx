@@ -14,7 +14,7 @@ const Milestones = () => {
 
   return (
     <Page title="Milestones">
-      <h1>Milestones</h1>
+      <h1>Rewards</h1>
     </Page>
   );
 };

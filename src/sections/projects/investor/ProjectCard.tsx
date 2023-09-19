@@ -1,5 +1,6 @@
 // next
 import NextLink from 'next/link';
+import Image from 'next/image';
 
 // material-ui
 import { Box, Button, Card, CardContent, Link, Stack, Typography } from '@mui/material';
@@ -11,7 +12,13 @@ const ProjectCard = ({ project: { _doc: project } }: { project: any }) => {
     <Card style={{ position: 'relative' }}>
       <CardContent>
         <Box borderRadius={3} overflow="hidden" height="160px" mb={2}>
-          <img src="https://images.pexels.com/photos/813011/pexels-photo-813011.jpeg" alt="Ship" width="100%" height="160" />
+          <Image
+            src="https://images.pexels.com/photos/813011/pexels-photo-813011.jpeg"
+            alt="Ship"
+            width={0}
+            height="160"
+            style={{ width: '100%' }}
+          />
         </Box>
         <Typography variant="h4" fontWeight={800} mb={2}>
           {project.projectName}

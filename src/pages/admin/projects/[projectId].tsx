@@ -98,6 +98,7 @@ const ProjectDetail = () => {
                       estimatedEarning={projectDetail.estimatedEarning}
                       matPrice={1}
                       valuation={tokenization.assetValue}
+                      projectImage={shipDetail.projectImage}
                     />
                   </Grid>
                   <Grid item xs={6} md={12}>

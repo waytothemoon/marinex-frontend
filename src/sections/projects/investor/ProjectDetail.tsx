@@ -1,7 +1,10 @@
 import { EyeOutlined } from '@ant-design/icons';
-import { Box, Button, CircularProgress, Grid, InputAdornment, MenuItem, Select, Slider, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, InputAdornment, Slider, Stack, TextField, Typography, Link } from '@mui/material';
+import * as antColors from '@ant-design/colors';
 import { useCurrentBalance } from 'hooks/useCurrentBalance';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+
 import { enqueueSnackbar } from 'notistack';
 import { ChangeEvent, useEffect, useState } from 'react';
 
@@ -10,6 +13,17 @@ function PropertyBox({ label, value }: { label: string; value: string | number }
     <Stack direction="row" justifyContent="space-between" px={1} py={1} bgcolor={'GrayText'} borderRadius={2}>
       <Typography color={'text.secondary'}>{label}</Typography>
       <Typography>{value}</Typography>
+    </Stack>
+  );
+}
+
+function PropertyDocument({ label, value }: { label: string; value: string | number }) {
+  return (
+    <Stack direction="row" justifyContent="space-between" px={1} py={1} bgcolor={'GrayText'} borderRadius={2}>
+      <Typography color={'text.secondary'}>{label}</Typography>
+      <Link href={`${process.env.SHIPFINEX_BACKEND_URL}${value}`} target="_blank">
+        <EyeOutlined style={{ color: antColors.blue[4] }} aria-label="Review" title="Review" />
+      </Link>
     </Stack>
   );
 }
@@ -76,11 +90,28 @@ export default function ProjectDetail() {
         <Grid item xs={12} sm={6} md={8}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={5}>
-              <img src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`} alt="ship" width="100%" />
+              <Image
+                src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
+                alt="ship"
+                width="100"
+                style={{ width: '100%' }}
+                height={300}
+              />
+              <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
+                <Stack direction="row" justifyContent="space-between" py={1.5}>
+                  <Typography>Documents</Typography>
+                </Stack>
+                <PropertyDocument label="Technical Report" value={project.documents.technicalReport} />
+                <PropertyDocument label="Financial Report" value={project.documents.financialReport} />
+                <PropertyDocument label="Commercial Report" value={project.documents.commercialReport} />
+                <PropertyDocument label="Risk" value={project.documents.risk} />
+                <PropertyDocument label="Community" value={project.documents.community} />
+                <PropertyDocument label="Vessel Certificate" value={project.documents.vesselCertificate} />
+              </Stack>
             </Grid>
             <Grid item xs={12} md={7}>
               <Stack spacing={2}>
-                <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={1}>
+                <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
                   <Stack direction="row" justifyContent="space-between" py={1.5}>
                     <Typography>Token name</Typography>
                     <Typography fontWeight="bold" fontSize="larger">
@@ -91,7 +122,7 @@ export default function ProjectDetail() {
                   <PropertyBox label="Offering size" value={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage} />
                   <PropertyBox label="Minimum investment" value={`$ ${project.tokenization.minimumInvestment}`} />
                 </Stack>
-                <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={1}>
+                <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
                   <Stack direction="row" justifyContent="space-between" py={1.5}>
                     <Typography>Valuation</Typography>
                     <Typography fontWeight="bold" fontSize="larger">
@@ -104,15 +135,6 @@ export default function ProjectDetail() {
                   <PropertyBox label="Owner" value={project.projectOwner.firstName} />
                   <PropertyBox label="Flag" value={project.flag} />
                   <PropertyBox label="Year of built" value={new Date(project.builtYear).getFullYear()} />
-                  <Stack direction="row" spacing={2} pt={2}>
-                    <Select fullWidth>
-                      <MenuItem value="Technical Reports" />
-                    </Select>
-                    <Button variant="contained" fullWidth>
-                      <EyeOutlined style={{ marginRight: '8px' }} />
-                      View reports
-                    </Button>
-                  </Stack>
                 </Stack>
               </Stack>
             </Grid>

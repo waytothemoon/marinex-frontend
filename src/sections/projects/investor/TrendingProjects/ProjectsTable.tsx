@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 // next
 import NextLink from 'next/link';
+import Image from 'next/image';
 
 // material-ui
 import {
@@ -110,7 +111,7 @@ export default function ProjectsTable() {
                         {column.id === 'estimatedEarning' && `${value} %`}
                         {column.id === 'projectName' && (
                           <Stack direction="row" spacing={1} alignItems="center">
-                            <img
+                            <Image
                               src={`${process.env.SHIPFINEX_BACKEND_URL}${row._doc.projectImage}`}
                               alt="ship"
                               width={32}
@@ -126,7 +127,7 @@ export default function ProjectsTable() {
                         {column.id === 'action' && (
                           <NextLink href={`/projects/${row._doc._id}`} passHref legacyBehavior>
                             <Link>
-                              <Button variant="contained">Buy now</Button>
+                              <Button variant="contained">Detail</Button>
                             </Link>
                           </NextLink>
                         )}

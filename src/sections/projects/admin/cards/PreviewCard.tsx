@@ -17,7 +17,7 @@ const PreviewCard = (props: Props) => {
       <CardMedia
         component="img"
         height="150"
-        image="https://images.pexels.com/photos/813011/pexels-photo-813011.jpeg"
+        image={`${process.env.SHIPFINEX_BACKEND_URL}${props.projectImage}`}
         alt="green iguana"
         title="Ship Rozer"
       />
