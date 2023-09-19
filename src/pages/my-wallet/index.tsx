@@ -29,11 +29,11 @@ const MyWallet = () => {
     <Page title="My Wallet">
       {session?.token.role === UserRole.INVESTOR && (
         <Stack spacing={3}>
-          <Grid container justifyContent="stretch" alignItems="stretch" spacing={2}>
-            <Grid item xs={6}>
+          <Grid container justifyContent="stretch" alignItems="stretch">
+            <Grid item xs={12} sm={6} px={1} py={1}>
               <InvestorBalanceCard />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6} px={1} py={1}>
               <InvestorTransferCard walletAddress={session.token.walletAddress} />
             </Grid>
           </Grid>
@@ -52,10 +52,10 @@ const MyWallet = () => {
         <Stack spacing={3}>
           <Box>
             <Grid container justifyContent="stretch" spacing={3}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6} lg={4} xl={4}>
                 <ProjectOwnerBalanceCard />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6} lg={4} xl={4}>
                 <ProjectOwnerProjectBalanceCard />
               </Grid>
             </Grid>

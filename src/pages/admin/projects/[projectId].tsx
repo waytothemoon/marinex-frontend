@@ -1,7 +1,7 @@
 import { ReactElement, SyntheticEvent, useEffect, useState } from 'react';
 
 // material-ui
-import { Tabs, Tab, Typography, Divider, Grid, CircularProgress } from '@mui/material';
+import { Tabs, Tab, Typography, Divider, Grid, CircularProgress, Stack } from '@mui/material';
 
 // project import
 import Layout from 'layout';
@@ -69,7 +69,11 @@ const ProjectDetail = () => {
 
   return (
     <Page title="ProjectDetail">
-      {isLoading && <CircularProgress color="primary" />}
+      {isLoading && (
+        <Stack alignItems="center">
+          <CircularProgress color="primary" />
+        </Stack>
+      )}
       {!isLoading && !error && (
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>

@@ -1,21 +1,16 @@
 import { useState, ReactElement, useEffect, useRef, ChangeEvent } from 'react';
 
-// next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-
 // material-ui
 import {
   Box,
-  IconButton,
+  Button,
   InputAdornment,
-  Link,
   MenuItem,
   Pagination,
+  Paper,
   Select,
   SelectChangeEvent,
   Stack,
-  Switch,
   Table,
   TableBody,
   TableCell,
@@ -23,10 +18,10 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
-  CircularProgress
+  Typography
 } from '@mui/material';
-import { EyeOutlined, InboxOutlined, SearchOutlined } from '@ant-design/icons';
+
+import { InboxOutlined, SearchOutlined } from '@ant-design/icons';
 
 // project import
 import Layout from 'layout';
@@ -46,57 +41,26 @@ interface ColumnProps {
 }
 
 const columns: ColumnProps[] = [
-  { id: 'id', label: 'S.No.', minWidth: 5, align: 'left' },
-  { id: 'firstName', label: 'First Name', minWidth: 8, align: 'center' },
-  { id: 'middlename', label: 'Middle Name', minWidth: 8, align: 'center' },
-  { id: 'lastName', label: 'Last Name', minWidth: 8, align: 'center' },
-  { id: 'email', label: 'Email', minWidth: 15, align: 'center' },
-  { id: 'phoneNumber', label: 'Phone', minWidth: 13, align: 'center' },
-  { id: 'referralCode', label: 'Referral Code', minWidth: 8, align: 'center' },
-  {
-    id: 'createdAt',
-    label: 'Created at',
-    minWidth: 10,
-    align: 'center',
-    format: (date) => new Date(date).toDateString()
-  },
-  { id: 'status', label: 'Status', minWidth: 9, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 12, align: 'left' }
+  { id: 'step', label: 'Step', minWidth: 25, align: 'left' },
+  { id: 'earn', label: 'Earn', minWidth: 25, align: 'left' },
+  { id: 'status', label: 'Status', minWidth: 25, align: 'left' },
+  { id: 'action', label: 'Action', minWidth: 25, align: 'left' }
 ];
 
-// ==============================|| INVESTORS ||============================== //
+const rows: any[] = [];
 
-const Investors = () => {
+// ==============================|| TestingMilestones ||============================== //
+
+const TestingMilestones = () => {
   const headRowRef = useRef<HTMLDivElement>(null);
   const [filter, setFilter] = useState<number>(3);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [rows, setRows] = useState<any[]>([]);
   const { currentPage, jump } = usePagination(100, 25);
   const [search, setSearch] = useState<string>();
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const router = useRouter();
 
   useEffect(() => {
-    const fetchInvestors = () => {
-      setLoading(true);
-      fetch(`/api/user/investor?page=${currentPage}`)
-        .then(async (res) => {
-          if (res.status === 200) {
-            const { total: totalRows, data: _rows } = await res.json();
-            if (totalRows) {
-              setRows(_rows);
-              setTotalRows(totalRows);
-            }
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
-    };
-    fetchInvestors();
-  }, [currentPage, router]);
+    setTotalRows(100);
+  }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
     setFilter(Number(event.target.value));
@@ -107,7 +71,7 @@ const Investors = () => {
   };
 
   return (
-    <Page title="Investors">
+    <Page title="Pagination Table">
       <Stack mb={2} direction="row" spacing={2}>
         <TextField
           value={search}
@@ -117,12 +81,15 @@ const Investors = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <SearchOutlined style={{ color: '#83F1AA' }} />
+                <SearchOutlined />
               </InputAdornment>
-            )
+            ),
+            style: {
+              backgroundColor: 'white'
+            }
           }}
         />
-        <Box>
+        <Box bgcolor="white">
           <Select
             style={{ minWidth: 180 }}
             value={filter.toString()}
@@ -137,7 +104,7 @@ const Investors = () => {
           </Select>
         </Box>
       </Stack>
-      <Box mt={4}>
+      <Paper>
         {/* table */}
         <TableContainer ref={headRowRef}>
           <Table stickyHeader aria-label="sticky table">
@@ -164,27 +131,21 @@ const Investors = () => {
                     const value = row[column.id];
                     return (
                       <TableCell key={`investors-table-row-${_index}-cell-${column.id}`} align={column.align}>
-                        {column.id === 'id' && Number(_index + (currentPage - 1) * 25 + 1)}
-                        {column.id === 'email' && <Link href={`mailto:${value}`}>{value}</Link>}
+                        {column.id === 'step' && <Typography fontWeight="bold">{value}</Typography>}
                         {column.id === 'status' && (
-                          <Typography variant="body1" color="blue" textAlign="center">
-                            <Switch checked={value} color="success" />
+                          <Typography variant="body1" color={value ? 'green' : 'black'}>
+                            {value ? 'Completed' : 'Pending'}
                           </Typography>
                         )}
-                        {column.id === 'action' && (
-                          <NextLink href={`/admin/investors/${row._id}`} passHref legacyBehavior>
-                            <Link>
-                              <IconButton size="medium">
-                                <EyeOutlined style={{ color: 'white' }} />
-                              </IconButton>
-                            </Link>
-                          </NextLink>
-                        )}
-                        {column.id !== 'id' &&
-                          column.id !== 'email' &&
-                          column.id !== 'status' &&
-                          column.id !== 'action' &&
-                          (column.format ? column.format(value) : value)}
+                        {column.id === 'action' &&
+                          (value ? (
+                            <Button variant="contained" color="primary">
+                              Start
+                            </Button>
+                          ) : (
+                            ''
+                          ))}
+                        {column.id === 'earn' && (column.format ? column.format(value) : value)}
                       </TableCell>
                     );
                   })}
@@ -194,12 +155,7 @@ const Investors = () => {
           </Table>
         </TableContainer>
         {/* table pagination */}
-        {isLoading && (
-          <Stack alignItems="center">
-            <CircularProgress color="primary" />
-          </Stack>
-        )}
-        {!isLoading && rows.length === 0 ? (
+        {rows.length === 0 ? (
           <Stack alignItems="center">
             <Stack spacing={1} my={3} style={{ opacity: 0.6 }}>
               <InboxOutlined color="textSecondary" style={{ fontSize: '300%', color: 'gray', fontWeight: 300 }} />
@@ -220,13 +176,13 @@ const Investors = () => {
             />
           </Stack>
         )}
-      </Box>
+      </Paper>
     </Page>
   );
 };
 
-Investors.getLayout = function getLayout(page: ReactElement) {
+TestingMilestones.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default Investors;
+export default TestingMilestones;

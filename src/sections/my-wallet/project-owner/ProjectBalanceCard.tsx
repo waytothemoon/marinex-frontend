@@ -48,16 +48,12 @@ const ProjectBalanceCard = (props: BalanceData) => {
         height: '100%'
       }}
     >
-      <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center">
+      <Stack direction="row" mb={2} justifyContent="space-between" alignItems="center">
         <Box color="white">
-          <Typography variant="body2">Total raised</Typography>
-          <Typography variant="h4">$ {total.fundraising}</Typography>
+          <Typography variant="body1">Total raised</Typography>
+          <Typography variant="h2">$ {total.fundraising}</Typography>
         </Box>
-        <Divider orientation="vertical" flexItem />
-        <Box color="white">
-          <Typography variant="body2">Revenue & Rewards Given</Typography>
-          <Typography variant="h4">$ {total.rewards}</Typography>
-        </Box>
+
         <Box>
           <Tooltip title="Refresh">
             {!isLoading ? (
@@ -70,6 +66,15 @@ const ProjectBalanceCard = (props: BalanceData) => {
               </IconButton>
             )}
           </Tooltip>
+        </Box>
+      </Stack>
+
+      <Divider orientation="horizontal" flexItem />
+
+      <Stack direction="row" mt={3} justifyContent="space-between" alignItems="center">
+        <Box color="white">
+          <Typography variant="body1">Revenue & Rewards Given</Typography>
+          <Typography variant="h2">$ {total.rewards}</Typography>
         </Box>
       </Stack>
     </Card>

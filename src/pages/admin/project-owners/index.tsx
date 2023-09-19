@@ -27,7 +27,8 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography
+  Typography,
+  CircularProgress
 } from '@mui/material';
 import { EyeOutlined, InboxOutlined, SearchOutlined } from '@ant-design/icons';
 
@@ -76,26 +77,27 @@ const ProjectOwners = () => {
   const { currentPage, jump } = usePagination(100, 25);
   const [searchDrawer, setSearchDrawer] = useState<boolean>(false);
   const [rows, setRows] = useState<any[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
-    setTotalRows(100);
-    const fetchInvestors = () => {
-      fetch(`/api/user/prowner?page=${currentPage}`)
-        .then(async (res) => {
-          if (res.status === 200) {
-            const { total: totalRows, data: _rows } = await res.json();
-            if (totalRows) {
-              setRows(_rows);
-              setTotalRows(totalRows);
-            }
+    // setTotalRows(100);
+    setLoading(true);
+    fetch(`/api/user/prowner?page=${currentPage}`)
+      .then(async (res) => {
+        if (res.status === 200) {
+          const { total: totalRows, data: _rows } = await res.json();
+          if (totalRows) {
+            setRows(_rows);
+            setTotalRows(totalRows);
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    fetchInvestors();
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }, [currentPage, router]);
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -226,7 +228,12 @@ const ProjectOwners = () => {
               </Table>
             </TableContainer>
             {/* table pagination */}
-            {rows.length === 0 ? (
+            {isLoading && (
+              <Stack alignItems="center">
+                <CircularProgress color="primary" />
+              </Stack>
+            )}
+            {!isLoading && rows.length === 0 ? (
               <Stack alignItems="center">
                 <Stack spacing={1} my={3} style={{ opacity: 0.6 }}>
                   <InboxOutlined color="textSecondary" style={{ fontSize: '300%', color: 'gray', fontWeight: 300 }} />

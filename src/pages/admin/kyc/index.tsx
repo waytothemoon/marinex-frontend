@@ -23,7 +23,8 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography
+  Typography,
+  CircularProgress
 } from '@mui/material';
 import { EyeOutlined, InboxOutlined, SearchOutlined } from '@ant-design/icons';
 
@@ -71,25 +72,26 @@ const KYC = () => {
   const [rows, setRows] = useState<any[]>([]);
   const { currentPage, jump } = usePagination(100, 25);
   const [search, setSearch] = useState<string>();
+  const [isLoading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchKYC = () => {
-      fetch(`/api/kyc/all?page=${currentPage}`)
-        .then(async (res) => {
-          if (res.status === 200) {
-            const { total: totalRows, data: _rows } = await res.json();
-            if (totalRows) {
-              setRows(_rows);
-              setTotalRows(totalRows);
-            }
+    setLoading(true);
+    fetch(`/api/kyc/all?page=${currentPage}`)
+      .then(async (res) => {
+        if (res.status === 200) {
+          const { total: totalRows, data: _rows } = await res.json();
+          if (totalRows) {
+            setRows(_rows);
+            setTotalRows(totalRows);
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    fetchKYC();
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }, [currentPage, router]);
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -193,7 +195,12 @@ const KYC = () => {
           </Table>
         </TableContainer>
         {/* table pagination */}
-        {!rows || rows.length === 0 ? (
+        {isLoading && (
+          <Stack alignItems="center">
+            <CircularProgress color="primary" />
+          </Stack>
+        )}
+        {!isLoading && (!rows || rows.length === 0) ? (
           <Stack alignItems="center">
             <Stack spacing={1} my={3} style={{ opacity: 0.6 }}>
               <InboxOutlined color="textSecondary" style={{ fontSize: '300%', color: 'gray', fontWeight: 300 }} />

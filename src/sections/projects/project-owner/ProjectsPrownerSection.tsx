@@ -30,14 +30,15 @@ import {
   TextField,
   InputAdornment,
   FormHelperText,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from '@mui/material';
 
 // projects
 import usePagination from 'hooks/usePagination';
 
 // assets
-import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
+import { EyeOutlined, InboxOutlined, PlusOutlined, CreditCardOutlined } from '@ant-design/icons';
 
 // types
 import { KeyedObject } from 'types/root';
@@ -229,6 +230,7 @@ const ProjectsPrownerSection = () => {
   const { currentPage, jump } = usePagination(100, 25);
 
   useEffect(() => {
+    setLoading(true);
     fetch('/api/project').then(async (res) => {
       const { total: totalRows, data: _rows } = await res.json();
       if (totalRows) {
@@ -240,7 +242,22 @@ const ProjectsPrownerSection = () => {
   }, []);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
-    setFilterChange(Number(event.target.value));
+    const allowance: string = event.target.value;
+    setFilterChange(Number(allowance));
+    setLoading(true);
+    setTotalRows(0);
+    setRows([]);
+    console.log(allowance);
+    const query = `/api/project${Number(allowance) !== 3 ? `?allowance=${allowance}` : ''}`;
+    console.log(query);
+    fetch(query).then(async (res) => {
+      const { total: totalRows, data: _rows } = await res.json();
+      if (totalRows) {
+        setTotalRows(totalRows);
+        setRows(_rows);
+      }
+      setLoading(false);
+    });
   };
 
   const handleClose = () => {
@@ -260,7 +277,15 @@ const ProjectsPrownerSection = () => {
 
   return (
     <Stack spacing={2}>
-      <Stack direction="row" spacing={2} justifyContent="end">
+      <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center">
+        <NextLink href="/projects/add" passHref legacyBehavior>
+          <Link>
+            <Button variant="contained" startIcon={<PlusOutlined />}>
+              New Project
+            </Button>
+          </Link>
+        </NextLink>
+
         <Select
           style={{ width: 140 }}
           value={filter.toString()}
@@ -273,11 +298,6 @@ const ProjectsPrownerSection = () => {
           <MenuItem value={0}>Pending</MenuItem>
           <MenuItem value={2}>Rejected</MenuItem>
         </Select>
-        <NextLink href="/projects/add" passHref legacyBehavior>
-          <Link>
-            <Button variant="contained">Add New Project</Button>
-          </Link>
-        </NextLink>
       </Stack>
       <TableContainer ref={headRowRef}>
         <Table stickyHeader aria-label="sticky table">
@@ -316,11 +336,13 @@ const ProjectsPrownerSection = () => {
                       )}
                       {column.id === 'action' && (
                         <NextLink href={`/projects/${row._doc ? row._doc._id : row._id}`} passHref legacyBehavior>
-                          <Link>
-                            <IconButton size="medium">
-                              <EyeOutlined />
-                            </IconButton>
-                          </Link>
+                          <Tooltip title={'Detail'}>
+                            <Link>
+                              <IconButton size="medium">
+                                <EyeOutlined />
+                              </IconButton>
+                            </Link>
+                          </Tooltip>
                         </NextLink>
                       )}
                       {column.id === 'withdrawalRequest' && row._doc && (
@@ -345,9 +367,11 @@ const ProjectsPrownerSection = () => {
                       {column.id === 'rewards' && row._doc && (
                         <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" pr={2}>
                           <Typography>$ {row.givenRewards}</Typography>
-                          <Button variant="contained" onClick={() => handleDepositOpen(row)}>
-                            Deposit
-                          </Button>
+                          <Tooltip title="Deposit">
+                            <IconButton onClick={() => handleDepositOpen(row)}>
+                              <CreditCardOutlined />
+                            </IconButton>
+                          </Tooltip>
                           <DepositDialog open={depositDialogOpen} handleClose={handleClose} data={currentRow} />
                         </Stack>
                       )}

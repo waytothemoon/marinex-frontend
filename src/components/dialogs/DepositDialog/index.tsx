@@ -112,7 +112,7 @@ export default function DepositDialog({ open, handleClose: onClose }: DepositDia
   return (
     <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="deposit-dialog-title" title="Deposit">
       <Box sx={{ px: 2, py: 1.5, minWidth: '400px' }}>
-        <Typography variant="h2" my={1}>
+        <Typography variant="h2" my={1} align="center">
           Deposit
         </Typography>
         {step === 0 && (
@@ -160,7 +160,9 @@ export default function DepositDialog({ open, handleClose: onClose }: DepositDia
 
         {step === 1 &&
           (isLoading ? (
-            <CircularProgress color="primary" />
+            <Stack alignItems="center">
+              <CircularProgress color="primary" />
+            </Stack>
           ) : (
             <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'night', labels: 'floating' } }}>
               <CheckoutForm handleClose={handleClose} />

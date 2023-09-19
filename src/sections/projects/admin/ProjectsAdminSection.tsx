@@ -67,6 +67,7 @@ const ProjectsAdminSection = () => {
   const { currentPage, jump } = usePagination(100, 25);
   const [rows, setRows] = useState<any[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     setLoading(true);
     fetch('/api/project')
@@ -122,99 +123,93 @@ const ProjectsAdminSection = () => {
         </Select>
       </Stack>
       <TableContainer ref={headRowRef}>
-        {isLoading && (
-          <Stack alignItems="center" mt={5}>
-            <CircularProgress color="primary" />
-          </Stack>
-        )}
-        {!isLoading && (
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    sx={{
-                      minWidth: ((headRowRef.current?.clientWidth || 1200) * column.minWidth) / 100 - 24,
-                      position: 'sticky !important'
-                    }}
-                    key={column.id}
-                    align={column.align}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows &&
-                rows.map((row: KeyedObject, _index) => (
-                  <TableRow sx={{ py: 3 }} hover role="checkbox" tabIndex={-1} key={`${row.projectName}-${_index}`}>
-                    {columns.map((column) => {
-                      const value = row._doc ? row._doc[column.id] : row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.id === 'id' && currentPage * 25 + _index - 24}
-                          {column.id === 'email' && (
-                            <Link href={`mailto:${row._doc ? row._doc.projectOwner.email : row.projectOwner.email}`}>
-                              {row._doc ? row._doc.projectOwner.email : row.projectOwner.email}
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  sx={{
+                    minWidth: ((headRowRef.current?.clientWidth || 1200) * column.minWidth) / 100 - 24,
+                    position: 'sticky !important'
+                  }}
+                  key={column.id}
+                  align={column.align}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows &&
+              rows.map((row: KeyedObject, _index) => (
+                <TableRow sx={{ py: 3 }} hover role="checkbox" tabIndex={-1} key={`${row.projectName}-${_index}`}>
+                  {columns.map((column) => {
+                    const value = row._doc ? row._doc[column.id] : row[column.id];
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.id === 'id' && currentPage * 25 + _index - 24}
+                        {column.id === 'email' && (
+                          <Link href={`mailto:${row._doc ? row._doc.projectOwner.email : row.projectOwner.email}`}>
+                            {row._doc ? row._doc.projectOwner.email : row.projectOwner.email}
+                          </Link>
+                        )}
+                        {column.id === 'projectOwner' &&
+                          `${row._doc ? row._doc.projectOwner.firstName : row.projectOwner.firstName} ${
+                            row._doc ? row._doc.projectOwner.lastName : row.projectOwner.lastName
+                          }`}
+                        {column.id === 'tokenization' && (
+                          <Typography color={!value ? theme.palette.error.main : theme.palette.success.main}>
+                            {value ? 'Tokenized' : 'Not Tokenized'}
+                          </Typography>
+                        )}
+                        {column.id === 'allowance' && (
+                          <Typography
+                            color={
+                              value === 0 ? theme.palette.warning.main : value == 2 ? theme.palette.error.main : theme.palette.success.main
+                            }
+                          >
+                            {value === 0 ? 'Pending' : value == 2 ? 'Rejected' : 'Approved'}
+                          </Typography>
+                        )}
+                        {column.id === 'action' && (
+                          <NextLink href={`/admin/projects/${row._doc ? row._doc._id : row._id}`} passHref legacyBehavior>
+                            <Link>
+                              <IconButton size="medium">
+                                <EyeOutlined style={{ color: 'white' }} />
+                              </IconButton>
                             </Link>
-                          )}
-                          {column.id === 'projectOwner' &&
-                            `${row._doc ? row._doc.projectOwner.firstName : row.projectOwner.firstName} ${
-                              row._doc ? row._doc.projectOwner.lastName : row.projectOwner.lastName
-                            }`}
-                          {column.id === 'tokenization' && (
-                            <Typography color={!value ? theme.palette.error.main : theme.palette.success.main}>
-                              {value ? 'Tokenized' : 'Not Tokenized'}
-                            </Typography>
-                          )}
-                          {column.id === 'allowance' && (
-                            <Typography
-                              color={
-                                value === 0
-                                  ? theme.palette.warning.main
-                                  : value == 2
-                                  ? theme.palette.error.main
-                                  : theme.palette.success.main
-                              }
-                            >
-                              {value === 0 ? 'Pending' : value == 2 ? 'Rejected' : 'Approved'}
-                            </Typography>
-                          )}
-                          {column.id === 'action' && (
-                            <NextLink href={`/admin/projects/${row._doc ? row._doc._id : row._id}`} passHref legacyBehavior>
-                              <Link>
-                                <IconButton size="medium">
-                                  <EyeOutlined style={{ color: 'white' }} />
-                                </IconButton>
-                              </Link>
-                            </NextLink>
-                          )}
-                          {column.id === 'createdAt' && <Typography>{new Date(value).toLocaleDateString()}</Typography>}
-                          {column.id === 'withdrawalRequest' && row._doc && (
-                            <>
-                              {row.withdrawalRequest === true && <Typography color={theme.palette.error.main}>Failed</Typography>}
-                              {row.withdrawalRequest === false && <Typography color={theme.palette.warning.main}>Pending</Typography>}
-                            </>
-                          )}
-                          {column.id !== 'projectOwner' &&
-                            column.id !== 'email' &&
-                            column.id !== 'allowance' &&
-                            column.id !== 'action' &&
-                            column.id !== 'tokenization' &&
-                            column.id !== 'withdrawalRequest' &&
-                            column.id !== 'createdAt' &&
-                            value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        )}
+                          </NextLink>
+                        )}
+                        {column.id === 'createdAt' && <Typography>{new Date(value).toLocaleDateString()}</Typography>}
+                        {column.id === 'withdrawalRequest' && row._doc && (
+                          <>
+                            {row.withdrawalRequest === true && <Typography color={theme.palette.error.main}>Failed</Typography>}
+                            {row.withdrawalRequest === false && <Typography color={theme.palette.warning.main}>Pending</Typography>}
+                          </>
+                        )}
+                        {column.id !== 'projectOwner' &&
+                          column.id !== 'email' &&
+                          column.id !== 'allowance' &&
+                          column.id !== 'action' &&
+                          column.id !== 'tokenization' &&
+                          column.id !== 'withdrawalRequest' &&
+                          column.id !== 'createdAt' &&
+                          value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
       </TableContainer>
       {/* table pagination */}
+      {isLoading && (
+        <Stack alignItems="center" mt={5}>
+          <CircularProgress color="primary" />
+        </Stack>
+      )}
       {!isLoading && rows && rows.length === 0 ? (
         <Stack alignItems="center">
           <Stack spacing={1} my={3} style={{ opacity: 0.6 }}>

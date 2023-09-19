@@ -38,13 +38,17 @@ const ProjectBalanceCard = (props: BalanceData) => {
     >
       <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center">
         <Box color="white">
-          <Typography variant="body2">Total raised</Typography>
-          <Typography variant="h4">$ {total.fundraising}</Typography>
+          <Typography variant="body1">Total raised</Typography>
+          <Typography variant="h2">$ {total.fundraising}</Typography>
         </Box>
-        <Divider orientation="vertical" flexItem />
+      </Stack>
+
+      <Divider orientation="horizontal" flexItem style={{ height: '10px' }} />
+
+      <Stack direction="row" mt={3} justifyContent="space-between" alignItems="center">
         <Box color="white">
-          <Typography variant="body2">Revenue & Rewards Given</Typography>
-          <Typography variant="h4">$ {total.rewards}</Typography>
+          <Typography variant="body1">Revenue & Rewards Given</Typography>
+          <Typography variant="h2">$ {total.rewards}</Typography>
         </Box>
       </Stack>
     </Card>

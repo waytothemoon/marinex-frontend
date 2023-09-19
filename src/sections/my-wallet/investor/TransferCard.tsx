@@ -27,7 +27,7 @@ const TransferCard = (props: BalanceData) => {
   };
 
   return (
-    <MainCard style={{ backgroundColor: antColors.blue[5], color: 'white', height: '100%' }}>
+    <MainCard style={{ borderRadius: '12px', backgroundColor: antColors.blue[5], color: 'white', height: '100%' }}>
       <Stack spacing={4} justifyContent="end" mt={7}>
         <Stack direction="row" spacing={1}>
           <Button
@@ -35,7 +35,7 @@ const TransferCard = (props: BalanceData) => {
             style={{ backgroundColor: '#ffffff20', height: 'max-content', borderRadius: 16 }}
             onClick={handleCopyClipboard}
           >
-            <Typography mr={1} color="white">
+            <Typography mr={1} color="white" overflow="hidden">
               {props.walletAddress}
             </Typography>
             <CopyOutlined style={{ color: 'white' }} />
