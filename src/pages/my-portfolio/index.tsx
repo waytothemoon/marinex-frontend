@@ -3,7 +3,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import NextLink from 'next/link';
 
 // material-ui
-import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material';
 
 // third-party
 import { useSession } from 'next-auth/react';
@@ -24,20 +24,40 @@ const MyPortfolio = () => {
   // const theme = useTheme();
   const { data: session } = useSession();
   const [total, setTotal] = useState<any>({});
+  const [kycStatus, setKycStatus] = useState<number>(0);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('/api/investment').then(async (res) => {
+    setLoading(true);
+    fetch('/api/kyc/status').then(async (res) => {
       if (res.status === 200) {
-        const { total } = await res.json();
-        console.log(total);
-        setTotal(total);
+        const { status } = await res.json();
+        setKycStatus(status);
+
+        if (status === 2) {
+          fetch('/api/investment').then(async (res) => {
+            if (res.status === 200) {
+              const { total } = await res.json();
+              console.log(total);
+              setTotal(total);
+            }
+            setLoading(false);
+          });
+        } else {
+          setLoading(false);
+        }
       }
     });
   }, []);
 
   return (
     <Page title="My Portfolio">
-      {session && (session.token.kycStatus === undefined || session?.token.kycStatus === 0) && (
+      {isLoading && (
+        <Stack alignItems="center" mt={5}>
+          <CircularProgress color="primary" />
+        </Stack>
+      )}
+      {!isLoading && session && kycStatus === 0 && (
         <Box width="max-content" mx="auto" my={18}>
           <Paper style={{ backgroundColor: 'transparent' }}>
             <Stack mt={6} spacing={1} alignItems="center" pt={6} pb={4} px={8}>
@@ -55,7 +75,7 @@ const MyPortfolio = () => {
           </Paper>
         </Box>
       )}
-      {session && session.token.kycStatus === 1 && (
+      {!isLoading && session && kycStatus === 1 && (
         <Box width="max-content" mx="auto" my={18}>
           <Paper>
             <Stack mt={6} spacing={3} alignItems="center" pt={6} pb={4} px={8}>
@@ -66,7 +86,7 @@ const MyPortfolio = () => {
           </Paper>
         </Box>
       )}
-      {session && session.token.kycStatus === 2 && session.token.role === UserRole.INVESTOR && (
+      {!isLoading && session && kycStatus === 2 && session.token.role === UserRole.INVESTOR && (
         <Grid container spacing={4.5}>
           <Grid item xs={12}>
             <Grid container spacing={2}>
@@ -94,7 +114,7 @@ const MyPortfolio = () => {
           </Grid>
         </Grid>
       )}
-      {session && session.token.kycStatus === 1 && session.token.role === UserRole.PROJECT_OWNER && (
+      {!isLoading && session && kycStatus === 2 && session.token.role === UserRole.PROJECT_OWNER && (
         <Box width="max-content" mx="auto" my={18}>
           <Paper>
             <Stack mt={6} spacing={3} alignItems="center" pt={6} pb={4} px={8}>

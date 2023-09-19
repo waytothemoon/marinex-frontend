@@ -36,7 +36,7 @@ const InvestmentsCard = () => {
             Current Value
           </Typography>
           <Typography variant="h2" fontWeight={700} color="white" mb={1}>
-            $ {currentValue}
+            $ {currentValue.toFixed(2)}
           </Typography>
         </Box>
         <Grid container width="100%">

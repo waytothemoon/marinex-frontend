@@ -63,7 +63,12 @@ export default function ProjectDetail() {
       });
   }, [router]);
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading)
+    return (
+      <Stack alignItems="center">
+        <CircularProgress color="primary" />
+      </Stack>
+    );
 
   return (
     <Box width="100%">
@@ -154,7 +159,7 @@ export default function ProjectDetail() {
             <Typography variant="caption">
               Your balance{' '}
               <Typography variant="h5" component="span">
-                ${balance}
+                ${balance.toFixed(2)}
               </Typography>
             </Typography>
             <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>

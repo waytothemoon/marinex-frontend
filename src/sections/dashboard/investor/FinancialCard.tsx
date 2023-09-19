@@ -52,7 +52,7 @@ const FinancialCard = () => {
           <Box>
             <Typography color="whitesmoke">Total Balance</Typography>
             <Typography variant="h2" fontWeight={700} color="white" mb={3}>
-              $ {balance}
+              $ {balance.toFixed(2)}
             </Typography>
           </Box>
           <Box>

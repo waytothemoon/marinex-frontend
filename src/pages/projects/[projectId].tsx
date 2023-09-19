@@ -1,7 +1,7 @@
 import { ReactElement, SyntheticEvent, useEffect, useState } from 'react';
 
 // material-ui
-import { Box, CircularProgress, Tabs, Tab, Divider } from '@mui/material';
+import { Box, CircularProgress, Tabs, Tab, Divider, Stack } from '@mui/material';
 
 // project import
 import Layout from 'layout';
@@ -82,7 +82,11 @@ const ProjectDetail = () => {
 
   return (
     <Page title="ProjectDetail">
-      {isLoading && <CircularProgress color="primary" />}
+      {isLoading && (
+        <Stack alignItems="center" mt={5}>
+          <CircularProgress color="primary" />
+        </Stack>
+      )}
       {!isLoading && (
         <MainCard
           style={{ maxWidth: session?.token.role === UserRole.PROJECT_OWNER ? 768 : 'auto', marginLeft: 'auto', marginRight: 'auto' }}

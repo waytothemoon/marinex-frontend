@@ -16,7 +16,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  CircularProgress
 } from '@mui/material';
 
 // projects
@@ -53,8 +54,10 @@ export default function ProjectsTable() {
   const [totalRows, setTotalRows] = useState<number>(0);
   const [rows, setRows] = useState<any[]>([]);
   const { currentPage, jump } = usePagination(100, 25);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch('/api/project?allowance=1')
       .then(async (res) => {
         const { total: totalRows, data: _rows } = await res.json();
@@ -63,13 +66,22 @@ export default function ProjectsTable() {
           console.log(_rows);
           setRows(_rows);
         }
+        setIsLoading(false);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+      });
   }, []);
 
   return (
     <Box>
-      {rows.length > 0 && (
+      {isLoading && (
+        <Stack alignItems="center" mt={5}>
+          <CircularProgress color="primary" />
+        </Stack>
+      )}
+      {!isLoading && rows.length > 0 && (
         <TableContainer ref={headRowRef}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -128,7 +140,7 @@ export default function ProjectsTable() {
         </TableContainer>
       )}
       {/* table pagination */}
-      {rows.length === 0 ? (
+      {!isLoading && rows.length === 0 ? (
         <Stack alignItems="center">
           <Stack spacing={1} my={3} style={{ opacity: 0.6 }}>
             <InboxOutlined color="textSecondary" style={{ fontSize: '300%', color: 'gray', fontWeight: 300 }} />

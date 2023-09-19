@@ -32,7 +32,7 @@ const FinancialReportCard = ({ color, title, count }: Props) => (
       <Grid container alignItems="center">
         <Grid item>
           <Typography variant="h3" fontWeight={700} color="white">
-            $ {count}
+            $ {Number(count).toFixed(2)}
           </Typography>
         </Grid>
       </Grid>

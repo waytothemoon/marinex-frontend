@@ -74,12 +74,12 @@ const menuItems: NavItemType[] = [
     roles: [UserRole.PROJECT_OWNER]
   },
   {
-    id: 'testing-milestones',
+    id: 'rewards',
     icon: Reward,
-    search: 'testing-milestones',
-    title: <FormattedMessage id="testing-milestones" />,
+    search: 'rewards',
+    title: <FormattedMessage id="rewards" />,
     type: 'item',
-    url: '/testing-milestones',
+    url: '/rewards',
     roles: [UserRole.INVESTOR]
   },
   {
