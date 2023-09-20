@@ -31,12 +31,9 @@ const ProjectTransactions = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <SearchOutlined />
+                <SearchOutlined style={{ color: '#83F1AA' }} />
               </InputAdornment>
-            ),
-            style: {
-              backgroundColor: 'white'
-            }
+            )
           }}
         />
         <WalletTransactionsHistory />

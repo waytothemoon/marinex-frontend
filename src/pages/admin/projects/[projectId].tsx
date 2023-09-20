@@ -91,8 +91,7 @@ const ProjectDetail = () => {
               {tab == 2 && <Tokenization tokenization={tokenization} />}
             </MainCard>
           </Grid>
-          <Grid item xs={12} md={2} />
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             {tab === 0 && (
               <>
                 <Grid container spacing={3}>

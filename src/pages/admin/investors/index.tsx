@@ -15,7 +15,6 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
-  Switch,
   Table,
   TableBody,
   TableCell,
@@ -24,9 +23,10 @@ import {
   TableRow,
   TextField,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from '@mui/material';
-import { EyeOutlined, InboxOutlined, SearchOutlined } from '@ant-design/icons';
+import { EyeOutlined, InboxOutlined, SearchOutlined, CheckCircleOutlined, StopOutlined } from '@ant-design/icons';
 
 // project import
 import Layout from 'layout';
@@ -35,6 +35,7 @@ import usePagination from 'hooks/usePagination';
 
 // types
 import { KeyedObject } from 'types/root';
+import formatDate from 'utils/formatDate';
 
 // table columns
 interface ColumnProps {
@@ -58,10 +59,10 @@ const columns: ColumnProps[] = [
     label: 'Created at',
     minWidth: 10,
     align: 'center',
-    format: (date) => new Date(date).toDateString()
+    format: (date) => formatDate(date)
   },
   { id: 'status', label: 'Status', minWidth: 9, align: 'center' },
-  { id: 'action', label: 'Action', minWidth: 12, align: 'left' }
+  { id: 'view', label: 'View', minWidth: 12, align: 'left' }
 ];
 
 // ==============================|| INVESTORS ||============================== //
@@ -167,23 +168,25 @@ const Investors = () => {
                         {column.id === 'id' && Number(_index + (currentPage - 1) * 25 + 1)}
                         {column.id === 'email' && <Link href={`mailto:${value}`}>{value}</Link>}
                         {column.id === 'status' && (
-                          <Typography variant="body1" color="blue" textAlign="center">
-                            <Switch checked={value} color="success" />
-                          </Typography>
+                          <Tooltip title={value ? 'Active' : 'Inactive'}>
+                            {value ? <CheckCircleOutlined style={{ color: 'white' }} /> : <StopOutlined style={{ color: 'white' }} />}
+                          </Tooltip>
                         )}
-                        {column.id === 'action' && (
+                        {column.id === 'view' && (
                           <NextLink href={`/admin/investors/${row._id}`} passHref legacyBehavior>
                             <Link>
-                              <IconButton size="medium">
-                                <EyeOutlined style={{ color: 'white' }} />
-                              </IconButton>
+                              <Tooltip title="Detail">
+                                <IconButton size="medium">
+                                  <EyeOutlined style={{ color: 'white' }} />
+                                </IconButton>
+                              </Tooltip>
                             </Link>
                           </NextLink>
                         )}
                         {column.id !== 'id' &&
                           column.id !== 'email' &&
                           column.id !== 'status' &&
-                          column.id !== 'action' &&
+                          column.id !== 'view' &&
                           (column.format ? column.format(value) : value)}
                       </TableCell>
                     );

@@ -10,7 +10,6 @@ import {
   Box,
   ButtonBase,
   capitalize,
-  CardContent,
   ClickAwayListener,
   Grid,
   Paper,
@@ -32,8 +31,6 @@ import { ThemeMode } from 'types/config';
 
 // assets
 import { LogoutOutlined } from '@ant-design/icons';
-
-const roles = ['Admin', 'Project Owner', 'Investor'];
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
@@ -139,17 +136,13 @@ const Profile = () => {
             >
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard elevation={0} border={false} content={false}>
-                  <CardContent sx={{ px: 2.5, pt: 3 }}>
+                  <div style={{ paddingLeft: '20px' }}>
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         {user && (
                           <Stack direction="row" spacing={1.25} alignItems="center">
-                            <Avatar alt={user.name} src={user.avatar} />
                             <Stack>
-                              <Typography variant="h6">{user.name}</Typography>
-                              <Typography variant="body2" color="textSecondary">
-                                {roles[user.role]}
-                              </Typography>
+                              <Typography variant="h6">Sign Out</Typography>
                             </Stack>
                           </Stack>
                         )}
@@ -162,7 +155,7 @@ const Profile = () => {
                         </Tooltip>
                       </Grid>
                     </Grid>
-                  </CardContent>
+                  </div>
                 </MainCard>
               </ClickAwayListener>
             </Paper>

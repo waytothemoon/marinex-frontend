@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 // material-ui
 import {
   Box,
-  Chip,
   IconButton,
   InputAdornment,
   Link,
@@ -24,10 +23,12 @@ import {
   TableRow,
   TextField,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from '@mui/material';
 import { EyeOutlined, InboxOutlined, SearchOutlined } from '@ant-design/icons';
 
+import { HourglassEmpty, HowToReg } from '@mui/icons-material';
 // project import
 import Layout from 'layout';
 import Page from 'components/Page';
@@ -35,6 +36,7 @@ import usePagination from 'hooks/usePagination';
 
 // types
 import { KeyedObject } from 'types/root';
+import formatDate from 'utils/formatDate';
 
 // table columns
 interface ColumnProps {
@@ -47,9 +49,7 @@ interface ColumnProps {
 
 const columns: ColumnProps[] = [
   { id: 'id', label: 'S.No.', minWidth: 5, align: 'left' },
-  { id: 'firstName', label: 'First Name', minWidth: 8, align: 'center' },
-  { id: 'middlename', label: 'Middle Name', minWidth: 8, align: 'center' },
-  { id: 'lastName', label: 'Last Name', minWidth: 8, align: 'center' },
+  { id: 'fullname', label: 'Name', minWidth: 8, align: 'center' },
   { id: 'email', label: 'Email', minWidth: 15, align: 'center' },
   { id: 'phoneNumber', label: 'Phone', minWidth: 13, align: 'center' },
   { id: 'status', label: 'Status', minWidth: 13, align: 'center' },
@@ -58,9 +58,9 @@ const columns: ColumnProps[] = [
     label: 'Created at',
     minWidth: 10,
     align: 'center',
-    format: (date) => new Date(date).toDateString()
+    format: (date) => formatDate(date)
   },
-  { id: 'action', label: 'Action', minWidth: 12, align: 'left' }
+  { id: 'view', label: 'View', minWidth: 12, align: 'left' }
 ];
 
 // ==============================|| INVESTORS ||============================== //
@@ -159,8 +159,7 @@ const KYC = () => {
                   <TableRow sx={{ py: 3 }} hover role="checkbox" tabIndex={-1} key={`investors-table-row-${_index}`}>
                     {columns.map((column) => {
                       let value;
-                      if (column.id === 'firstName') value = row.user.firstName;
-                      if (column.id === 'lastName') value = row.user.lastName;
+                      if (column.id === 'fullname') value = row.user.firstName + ' ' + row.user.lastName;
                       if (column.id === 'email') value = row.user.email;
                       if (column.id === 'phoneNumber') value = row.user.phoneNumber;
                       if (column.id === 'createdAt') value = row.createdAtMs;
@@ -170,21 +169,31 @@ const KYC = () => {
                         <TableCell key={`investors-table-row-${_index}-cell-${column.id}`} align={column.align}>
                           {column.id === 'id' && Number(_index + (currentPage - 1) * 25 + 1)}
                           {column.id === 'email' && <Link href={`mailto:${value}`}>{value}</Link>}
-                          {(column.id === 'status' && value === 'init' && <Chip style={{ width: 90 }} label="Init" color="primary" />) ||
-                            (value === 'pending' && <Chip style={{ width: 90 }} label="Pending" color="info" />)}
-                          {column.id === 'action' && (
+                          {(column.id === 'status' && value === 'init' && (
+                            <Tooltip title="Pending">
+                              <HourglassEmpty />
+                            </Tooltip>
+                          )) ||
+                            (value === 'completed' && (
+                              <Tooltip title="Approved">
+                                <HowToReg />
+                              </Tooltip>
+                            ))}
+                          {column.id === 'view' && (
                             <NextLink href={`/admin/kyc/${row.applicantId}`} passHref legacyBehavior>
                               <Link>
-                                <IconButton size="medium">
-                                  <EyeOutlined style={{ color: 'white' }} />
-                                </IconButton>
+                                <Tooltip title="Detail">
+                                  <IconButton size="medium">
+                                    <EyeOutlined style={{ color: 'white' }} />
+                                  </IconButton>
+                                </Tooltip>
                               </Link>
                             </NextLink>
                           )}
                           {column.id !== 'id' &&
                             column.id !== 'email' &&
                             column.id !== 'status' &&
-                            column.id !== 'action' &&
+                            column.id !== 'view' &&
                             (column.format ? column.format(value) : value)}
                         </TableCell>
                       );

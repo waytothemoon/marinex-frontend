@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 
 // material-ui
-import { Box, Stack, InputLabel, TextField, Grid, Switch } from '@mui/material';
+import { Box, Stack, InputLabel, TextField, Grid } from '@mui/material';
 
 // project import
 import Layout from 'layout';
@@ -33,7 +33,7 @@ const initialValues = {
 
 const InvestorDetail = () => {
   const [investor, setInvestor] = useState<InvestorDetailData>({ ...initialValues });
-  const handleSubmit = (status: boolean) => {};
+  // const handleSubmit = (status: boolean) => {};
   const router = useRouter();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const InvestorDetail = () => {
 
   return (
     <Page title="InvestorDetail">
-      <Box maxWidth={768} mx="auto">
+      <Box maxWidth={768}>
         <MainCard>
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -152,12 +152,12 @@ const InvestorDetail = () => {
                 />
               </Stack>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Stack spacing={0.5}>
                 <InputLabel>Status *</InputLabel>
                 <Switch checked={investor.status} onChange={(ev, checked) => handleSubmit(checked)} color="success" />
               </Stack>
-            </Grid>
+            </Grid> */}
           </Grid>
         </MainCard>
       </Box>

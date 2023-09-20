@@ -73,7 +73,7 @@ const WithdrawalRequestCard = (props: Props) => {
               ]}
             />
           </Box>
-          <Stack direction="row">
+          <Stack direction="row" spacing={2}>
             <Button color="error" fullWidth variant="contained" disabled={!props.requested || isSubmitting} onClick={handleReject}>
               Reject
             </Button>

@@ -8,7 +8,6 @@ import Image from 'next/image';
 import {
   Box,
   Link,
-  Button,
   Pagination,
   Stack,
   Table,
@@ -18,14 +17,15 @@ import {
   TableHead,
   TableRow,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from '@mui/material';
 
 // projects
 import usePagination from 'hooks/usePagination';
 
 // assets
-import { InboxOutlined } from '@ant-design/icons';
+import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
 
 // types
 import { KeyedObject } from 'types/root';
@@ -127,7 +127,9 @@ export default function ProjectsTable() {
                         {column.id === 'action' && (
                           <NextLink href={`/projects/${row._doc._id}`} passHref legacyBehavior>
                             <Link>
-                              <Button variant="contained">Detail</Button>
+                              <Tooltip title="Detail">
+                                <EyeOutlined />
+                              </Tooltip>
                             </Link>
                           </NextLink>
                         )}

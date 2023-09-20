@@ -63,7 +63,7 @@ const Chat = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const matchDownSM = useMediaQuery(theme.breakpoints.down('lg'));
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
-  const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
+  // const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
   const [emailDetails, setEmailDetails] = useState(false);
   const [user, setUser] = useState<UserProfile>({});
   const { data: sessoin } = useSession();
@@ -219,14 +219,14 @@ const Chat = () => {
                   bgcolor: 'dark.main',
                   pt: 2,
                   pl: 2,
-                  borderRadius: sessoin?.token.role !== 2 && !matchDownLG ? '0 16px 16px 0' : '16px 16px',
+                  borderRadius: sessoin?.token.role !== 2 && openChatDrawer ? '0 16px 16px 0' : '16px 16px',
                   transition: theme.transitions.create('width', {
                     easing: theme.transitions.easing.easeOut,
                     duration: theme.transitions.duration.shorter + 200
                   })
                 }}
               >
-                <Grid container spacing={3}>
+                <Grid container spacing={3} borderRadius={3}>
                   <Grid item xs={12} sx={{ bgcolor: theme.palette.background.paper, pr: 2, pb: 2, borderBottom: `1px solid grey` }}>
                     <Grid container justifyContent="space-between">
                       <Grid item>

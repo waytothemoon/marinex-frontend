@@ -33,10 +33,7 @@ const ProjectTransactions = () => {
               <InputAdornment position="end">
                 <SearchOutlined />
               </InputAdornment>
-            ),
-            style: {
-              backgroundColor: 'white'
-            }
+            )
           }}
         />
         <HistoryTable />

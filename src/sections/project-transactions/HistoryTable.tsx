@@ -73,14 +73,7 @@ export default function HistoryTable() {
       <Box>
         <TableContainer ref={headRowRef}>
           <Table stickyHeader aria-label="transaction table">
-            <TableHead
-              sx={{
-                '& th': {
-                  borderTop: `1px solid ${theme.palette.divider}`,
-                  borderBottom: `2px solid ${theme.palette.divider} !important`
-                }
-              }}
-            >
+            <TableHead>
               <TableRow>
                 {columns.map((column) => (
                   <TableCell

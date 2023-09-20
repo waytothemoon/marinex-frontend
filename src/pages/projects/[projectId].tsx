@@ -88,9 +88,7 @@ const ProjectDetail = () => {
         </Stack>
       )}
       {!isLoading && (
-        <MainCard
-          style={{ maxWidth: session?.token.role === UserRole.PROJECT_OWNER ? 768 : 'auto', marginLeft: 'auto', marginRight: 'auto' }}
-        >
+        <MainCard style={{ maxWidth: session?.token.role === UserRole.PROJECT_OWNER ? 768 : 'auto' }}>
           <Box maxWidth={768}>
             {session?.token.role !== UserRole.INVESTOR && (
               <>

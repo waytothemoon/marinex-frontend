@@ -1,5 +1,5 @@
 // material-ui
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 
 // ==============================|| VALIDATION WIZARD - PAYMENT ||============================== //
 
@@ -24,7 +24,7 @@ export default function ShipDetailForm({ shipDetail }: ShipDetailFormProps) {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Stack direction="row" spacing={2} alignItems="center">
             <Box
               width={100}
@@ -38,7 +38,7 @@ export default function ShipDetailForm({ shipDetail }: ShipDetailFormProps) {
             />
             <Typography variant="h4">{shipDetail.projectName}</Typography>
           </Stack>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <Stack direction="row">
             <Typography color="text.secondary" width={200}>

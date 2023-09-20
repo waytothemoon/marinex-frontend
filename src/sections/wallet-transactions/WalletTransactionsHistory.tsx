@@ -17,8 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  useTheme
+  Typography
 } from '@mui/material';
 
 // projects
@@ -56,7 +55,7 @@ const rows: any[] = [];
 
 export default function WalletTransactionsHistory() {
   const headRowRef = useRef<HTMLDivElement>(null);
-  const theme = useTheme();
+  // const theme = useTheme();
   const [totalRows, setTotalRows] = useState<number>(0);
   const { currentPage, jump } = usePagination(100, 25);
 
@@ -69,14 +68,7 @@ export default function WalletTransactionsHistory() {
       <Box>
         <TableContainer ref={headRowRef}>
           <Table stickyHeader aria-label="transaction table">
-            <TableHead
-              sx={{
-                '& th': {
-                  borderTop: `1px solid ${theme.palette.divider}`,
-                  borderBottom: `2px solid ${theme.palette.divider} !important`
-                }
-              }}
-            >
+            <TableHead>
               <TableRow>
                 {columns.map((column) => (
                   <TableCell

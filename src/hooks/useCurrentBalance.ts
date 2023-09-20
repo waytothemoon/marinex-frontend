@@ -8,7 +8,7 @@ import MRN_ABI from './MRN.json';
 import { useCallback, useEffect, useState } from 'react';
 
 const web3 = new Web3('https://eth-goerli.g.alchemy.com/v2/KqDagOiXKFQ8T_QzPNpKBk1Yn-3Zgtgl');
-const musdContract = new web3.eth.Contract(MRN_ABI as any[], '0xA3F4Ee29BDcA287e6DEe9bf0C8F38154f8695B6f');
+const musdContract = new web3.eth.Contract(MRN_ABI as any[], '0xe6b563962Ee0Cc80DEFD618232BE9A5357e9cc7f');
 
 export const useCurrentBalance = () => {
   const { data: session } = useSession();
