@@ -93,7 +93,7 @@ const ChatHistory = ({ data, theme, user }: ChatHistoryProps) => {
                     sx={{
                       display: 'inline-block',
                       float: 'left',
-                      bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.background' : 'grey.0',
+                      bgcolor: theme.palette.mode === ThemeMode.DARK ? 'grey.300' : 'grey.0',
                       boxShadow: 'none'
                     }}
                   >

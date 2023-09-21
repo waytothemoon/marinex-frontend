@@ -1,9 +1,10 @@
 // material-ui
-import { Grid, IconButton, Link, Stack, Typography } from '@mui/material';
+import { Grid, Link, Stack, Typography, useTheme } from '@mui/material';
 
 // assets
 import { EyeOutlined } from '@ant-design/icons';
 import * as antColors from '@ant-design/colors';
+import { ThemeMode } from 'types/config';
 
 type BootstrapFormItemProps = {
   label: string;
@@ -12,7 +13,7 @@ type BootstrapFormItemProps = {
 };
 
 const BootstrapFormItem = ({ label, index, data }: BootstrapFormItemProps) => {
-  const handleReviewClick = () => {};
+  const theme = useTheme();
 
   return (
     <Grid item xs={12} mb={2}>
@@ -20,17 +21,15 @@ const BootstrapFormItem = ({ label, index, data }: BootstrapFormItemProps) => {
         direction="row"
         spacing={1}
         alignItems="center"
-        bgcolor={antColors.grey[6]}
+        bgcolor={theme.palette.mode === ThemeMode.DARK ? antColors.grey[6] : antColors.grey[0]}
         px={2}
         borderRadius={1}
-        py={0.5}
+        py={1.5}
         justifyContent="space-between"
       >
         <Typography>{label}</Typography>
         <Link href={`${process.env.SHIPFINEX_BACKEND_URL}${data[index]}`} target="_blank">
-          <IconButton onClick={handleReviewClick}>
-            <EyeOutlined style={{ color: antColors.blue[4] }} aria-label="Review" title="Review" />
-          </IconButton>
+          <EyeOutlined aria-label="Review" title="Review" />
         </Link>
       </Stack>
     </Grid>

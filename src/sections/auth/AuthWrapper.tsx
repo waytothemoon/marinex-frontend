@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 // material-ui
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, useTheme } from '@mui/material';
 
 // project import
 import AuthCard from './AuthCard';
@@ -13,36 +13,40 @@ interface Props {
 
 // ==============================|| AUTHENTICATION - WRAPPER ||============================== //
 
-const AuthWrapper = ({ children }: Props) => (
-  <Box sx={{ minHeight: '100vh' }}>
-    <Grid
-      container
-      direction="column"
-      justifyContent="flex-end"
-      sx={{
-        minHeight: '100vh',
-        backgroundColor: '#141718'
-      }}
-    >
-      <Grid item xs={12} sx={{ ml: 3, mt: 3 }}>
-        <Logo />
-      </Grid>
-      <Grid item xs={12}>
-        <Grid
-          item
-          xs={12}
-          container
-          justifyContent="center"
-          alignItems="center"
-          sx={{ minHeight: { xs: 'calc(100vh - 210px)', sm: 'calc(100vh - 134px)', md: 'calc(100vh - 60px)' } }}
-        >
-          <Grid item>
-            <AuthCard>{children}</AuthCard>
+const AuthWrapper = ({ children }: Props) => {
+  const theme = useTheme();
+
+  return (
+    <Box sx={{ minHeight: '100vh' }}>
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-end"
+        sx={{
+          minHeight: '100vh',
+          backgroundColor: theme.palette.background.default
+        }}
+      >
+        <Grid item xs={12} sx={{ ml: 3, mt: 3 }}>
+          <Logo />
+        </Grid>
+        <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            container
+            justifyContent="center"
+            alignItems="center"
+            sx={{ minHeight: { xs: 'calc(100vh - 210px)', sm: 'calc(100vh - 134px)', md: 'calc(100vh - 60px)' } }}
+          >
+            <Grid item>
+              <AuthCard>{children}</AuthCard>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
-  </Box>
-);
+    </Box>
+  );
+};
 
 export default AuthWrapper;

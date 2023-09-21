@@ -26,6 +26,8 @@ export default function ThemeCustomization({ children }: ThemeCustomizationProps
 
   const theme: Theme = useMemo<Theme>(() => Palette(mode, presetColor), [mode, presetColor]);
 
+  console.log(theme);
+
   const themeTypography: TypographyVariantsOptions = useMemo<TypographyVariantsOptions>(
     () => Typography(mode, fontFamily, theme),
     // eslint-disable-next-line react-hooks/exhaustive-deps

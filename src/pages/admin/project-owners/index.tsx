@@ -122,7 +122,7 @@ const ProjectOwners = () => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <SearchOutlined style={{ color: '#83F1AA' }} />
+                      <SearchOutlined />
                     </InputAdornment>
                   )
                 }}
@@ -133,7 +133,7 @@ const ProjectOwners = () => {
                 style={{ border: '1px solid #D9D9D9FF', borderRadius: '4px', height: '40px' }}
                 onClick={() => setSearchDrawer(true)}
               >
-                <SearchOutlined style={{ color: '#83F1AA' }} />
+                <SearchOutlined />
               </IconButton>
               <SwipeableDrawer anchor="top" open={searchDrawer} onClose={() => setSearchDrawer(false)} onOpen={() => setSearchDrawer(true)}>
                 <TextField
@@ -143,7 +143,7 @@ const ProjectOwners = () => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <SearchOutlined style={{ color: '#83F1AA' }} />
+                        <SearchOutlined />
                       </InputAdornment>
                     ),
                     style: {
@@ -206,9 +206,7 @@ const ProjectOwners = () => {
                               <NextLink href={`/admin/project-owners/${row._id}`} passHref legacyBehavior>
                                 <Link>
                                   <Tooltip title="Detail">
-                                    <IconButton size="medium">
-                                      <EyeOutlined style={{ color: 'white' }} />
-                                    </IconButton>
+                                    <EyeOutlined />
                                   </Tooltip>
                                 </Link>
                               </NextLink>

@@ -6,6 +6,7 @@ import getColors from 'utils/getColors';
 
 // types
 import { ExtendedStyleProps } from 'types/extended';
+import { ThemeMode } from 'types/config';
 
 // ==============================|| OVERRIDES - TAB ||============================== //
 
@@ -55,7 +56,7 @@ export default function Slider(theme: Theme) {
           }
         },
         rail: {
-          color: theme.palette.secondary.light
+          color: 'grey.200'
         },
         root: {
           '&.Mui-disabled': {
@@ -73,6 +74,9 @@ export default function Slider(theme: Theme) {
         valueLabelOpen: {
           backgroundColor: theme.palette.primary,
           color: theme.palette.grey[0]
+        },
+        valueLabel: {
+          color: theme.palette.mode === ThemeMode.DARK ? 'grey' : 'white'
         }
       }
     }

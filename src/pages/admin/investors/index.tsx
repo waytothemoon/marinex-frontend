@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 // material-ui
 import {
   Box,
-  IconButton,
   InputAdornment,
   Link,
   MenuItem,
@@ -118,7 +117,7 @@ const Investors = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <SearchOutlined style={{ color: '#83F1AA' }} />
+                <SearchOutlined />
               </InputAdornment>
             )
           }}
@@ -176,9 +175,7 @@ const Investors = () => {
                           <NextLink href={`/admin/investors/${row._id}`} passHref legacyBehavior>
                             <Link>
                               <Tooltip title="Detail">
-                                <IconButton size="medium">
-                                  <EyeOutlined style={{ color: 'white' }} />
-                                </IconButton>
+                                <EyeOutlined />
                               </Tooltip>
                             </Link>
                           </NextLink>

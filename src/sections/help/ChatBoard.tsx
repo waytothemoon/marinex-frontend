@@ -232,7 +232,7 @@ const Chat = () => {
                       <Grid item>
                         <Stack direction="row" alignItems="center" spacing={1}>
                           {sessoin?.token.role !== 2 && (
-                            <IconButton onClick={handleDrawerOpen} color="secondary" size="large">
+                            <IconButton onClick={handleDrawerOpen} size="large" sx={{ color: theme.palette.primary.main }}>
                               {openChatDrawer ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
                             </IconButton>
                           )}
@@ -286,7 +286,7 @@ const Chat = () => {
                       />
                       <Stack direction="row" justifyContent="space-between" alignItems="center">
                         <Stack direction="row" sx={{ py: 2, ml: -1 }}></Stack>
-                        <IconButton color="primary" onClick={handleOnSend} size="large" sx={{ mr: 1.5 }}>
+                        <IconButton onClick={handleOnSend} size="large" sx={{ mr: 1.5, color: theme.palette.primary.main }}>
                           <SendOutlined />
                         </IconButton>
                       </Stack>

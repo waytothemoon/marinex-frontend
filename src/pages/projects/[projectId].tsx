@@ -92,23 +92,19 @@ const ProjectDetail = () => {
           <CircularProgress color="primary" />
         </Stack>
       )}
-      {!isLoading && (
+      {!isLoading && session?.token.role !== UserRole.INVESTOR && (
         <MainCard style={{ maxWidth: session?.token.role === UserRole.PROJECT_OWNER ? 768 : 'auto' }}>
           <Box maxWidth={768}>
-            {session?.token.role !== UserRole.INVESTOR && (
-              <>
-                <Tabs value={tab} onChange={handleTabChange} aria-label="project detail tabs">
-                  <Tab label="Ship Detail" value={0} />
-                  <Tab label="Documents" value={1} disabled={JSON.stringify(shipDetail) === JSON.stringify({})} />
-                  <Tab
-                    label="Tokenization"
-                    value={2}
-                    disabled={router.query.projectId === 'add' && JSON.stringify(documents) === JSON.stringify({})}
-                  />
-                </Tabs>
-                <Divider style={{ marginBottom: 24 }} />
-              </>
-            )}
+            <Tabs value={tab} onChange={handleTabChange} aria-label="project detail tabs">
+              <Tab label="Ship Detail" value={0} />
+              <Tab label="Documents" value={1} disabled={JSON.stringify(shipDetail) === JSON.stringify({})} />
+              <Tab
+                label="Tokenization"
+                value={2}
+                disabled={router.query.projectId === 'add' && JSON.stringify(documents) === JSON.stringify({})}
+              />
+            </Tabs>
+            <Divider style={{ marginBottom: 24 }} />
             {session?.token.role === UserRole.PROJECT_OWNER && (
               <>
                 {tab === 0 && <ShipDetailForm handleNext={handleNextOfShipDetail} setShipDetail={setShipDetail} shipDetail={shipDetail} />}

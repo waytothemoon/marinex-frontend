@@ -9,7 +9,7 @@ export default function Tab(theme: Theme) {
       styleOverrides: {
         root: {
           '& svg': {
-            fill: '#83F1AA'
+            fill: theme.palette.primary.main
           }
         }
       }

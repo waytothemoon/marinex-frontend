@@ -1,16 +1,25 @@
 import { EyeOutlined } from '@ant-design/icons';
-import { Box, Button, CircularProgress, Grid, InputAdornment, Slider, Stack, TextField, Typography, Link } from '@mui/material';
-import * as antColors from '@ant-design/colors';
+import { Box, Button, CircularProgress, Grid, InputAdornment, Slider, Stack, TextField, Typography, Link, useTheme } from '@mui/material';
 import { useCurrentBalance } from 'hooks/useCurrentBalance';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 import { enqueueSnackbar } from 'notistack';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { ThemeMode } from 'types/config';
 
 function PropertyBox({ label, value }: { label: string; value: string | number }) {
+  const theme = useTheme();
+
   return (
-    <Stack direction="row" justifyContent="space-between" px={1} py={1} bgcolor={'GrayText'} borderRadius={2}>
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      px={2}
+      py={1.5}
+      bgcolor={theme.palette.mode === ThemeMode.DARK ? 'GrayText' : theme.palette.background.default}
+      borderRadius={2}
+    >
       <Typography color={'text.secondary'}>{label}</Typography>
       <Typography>{value}</Typography>
     </Stack>
@@ -18,11 +27,20 @@ function PropertyBox({ label, value }: { label: string; value: string | number }
 }
 
 function PropertyDocument({ label, value }: { label: string; value: string | number }) {
+  const theme = useTheme();
+
   return (
-    <Stack direction="row" justifyContent="space-between" px={1} py={1} bgcolor={'GrayText'} borderRadius={2}>
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      px={2}
+      py={1.5}
+      bgcolor={theme.palette.mode === ThemeMode.DARK ? 'GrayText' : theme.palette.background.default}
+      borderRadius={2}
+    >
       <Typography color={'text.secondary'}>{label}</Typography>
       <Link href={`${process.env.SHIPFINEX_BACKEND_URL}${value}`} target="_blank">
-        <EyeOutlined style={{ color: antColors.blue[4] }} aria-label="Review" title="Review" />
+        <EyeOutlined style={{ color: theme.palette.primary.main }} aria-label="Review" title="Review" />
       </Link>
     </Stack>
   );
@@ -86,106 +104,104 @@ export default function ProjectDetail() {
 
   return (
     <Box width="100%">
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={8}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={5}>
-              <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
-                <Typography variant="h1">{project.projectName}</Typography>
-                <Image
-                  src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
-                  alt="ship"
-                  width="100"
-                  style={{ width: '100%' }}
-                  height={300}
+      <Grid container spacing={3} justifyContent="stretch">
+        <Grid item xs={12} md={6} lg={4}>
+          <Stack borderRadius={4} border="1px solid #d0d0d0" px={3} py={3} spacing={2}>
+            <Typography variant="h1">{project.projectName}</Typography>
+            <Image
+              src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
+              alt="ship"
+              width="100"
+              style={{ width: '100%' }}
+              height={300}
+            />
+            <Stack>
+              <Typography variant="body2">Fund Raising Status</Typography>
+              <Box mt={4} pl={3}>
+                <Slider
+                  value={others.investments}
+                  valueLabelFormat={(value) => `$ ${value}`}
+                  max={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage}
+                  min={0}
+                  disabled
+                  valueLabelDisplay="on"
+                  marks={[
+                    { value: 0, label: '0' },
+                    {
+                      value: project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0,
+                      label: `$${project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0}`
+                    }
+                  ]}
                 />
-                <Stack>
-                  <Typography variant="body2">Fund Raising Status</Typography>
-                  <Box mt={4} pl={3}>
-                    <Slider
-                      value={others.investments}
-                      valueLabelFormat={(value) => `$ ${value}`}
-                      max={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage}
-                      min={0}
-                      disabled
-                      valueLabelDisplay="on"
-                      marks={[
-                        { value: 0, label: '0' },
-                        {
-                          value: project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0,
-                          label: `$${project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0}`
-                        }
-                      ]}
-                    />
-                  </Box>
-                </Stack>
-                <Stack spacing={1}>
-                  <Typography>Number of Token(s)</Typography>
-                  <Stack direction="row" spacing={2}>
-                    <TextField placeholder="Number of token(s)" value={numberOfTokens} onChange={handleTokensChange} fullWidth />
-                    <TextField
-                      placeholder="USD value"
-                      value={usdValue}
-                      onChange={handleUsdChange}
-                      fullWidth
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">$</InputAdornment>
-                      }}
-                    />
-                  </Stack>
-                </Stack>
-                <Typography variant="caption">
-                  Your balance{' '}
-                  <Typography variant="h5" component="span">
-                    ${balance.toFixed(2)}
+              </Box>
+            </Stack>
+            <Stack spacing={1}>
+              <Typography>Number of Token(s)</Typography>
+              <Stack direction="row" spacing={2}>
+                <TextField placeholder="Number of token(s)" value={numberOfTokens} onChange={handleTokensChange} fullWidth />
+                <TextField
+                  placeholder="USD value"
+                  value={usdValue}
+                  onChange={handleUsdChange}
+                  fullWidth
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>
+                  }}
+                />
+              </Stack>
+            </Stack>
+            <Typography variant="caption">
+              Your balance{' '}
+              <Typography variant="h5" component="span">
+                ${balance.toFixed(2)}
+              </Typography>
+            </Typography>
+            <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
+              Buy now (Minium Investment - {`$${project.tokenization.minimumInvestment}`})
+            </Button>
+          </Stack>
+        </Grid>
+        <Grid item xs={12} md={6} lg={8}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} lg={6}>
+              <Stack borderRadius={4} border="1px solid #d0d0d0" px={2.5} py={3} spacing={2}>
+                <Stack direction="row" justifyContent="space-between" py={1.5}>
+                  <Typography>Token name</Typography>
+                  <Typography fontWeight="bold" fontSize="larger">
+                    {project.tokenization.tokenName}
                   </Typography>
-                </Typography>
-                <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
-                  Buy now (Minium Investment - {`$${project.tokenization.minimumInvestment}`})
-                </Button>
+                </Stack>
+                <PropertyBox label="Token(s)" value={project.tokenization.tonnage * 1000} />
+                <PropertyBox label="Offering size" value={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage} />
+
+                <Stack direction="row" justifyContent="space-between" py={1.5}>
+                  <Typography>Valuation</Typography>
+                  <Typography fontWeight="bold" fontSize="larger">
+                    $ {project.tokenization.assetValue}
+                  </Typography>
+                </Stack>
+                <PropertyBox label="IMO number" value={project.imoNumber} />
+                <PropertyBox label="Vessel type" value={project.vesselType} />
+                <PropertyBox label="Capacity" value={project.tokenization.tonnage} />
+                <PropertyBox label="Owner" value={project.projectOwner.firstName} />
+                <PropertyBox label="Flag" value={project.flag} />
+                <PropertyBox label="Year of built" value={new Date(project.builtYear).getFullYear()} />
               </Stack>
             </Grid>
-            <Grid item xs={12} md={7}>
-              <Stack spacing={2}>
-                <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
-                  <Stack direction="row" justifyContent="space-between" py={1.5}>
-                    <Typography>Token name</Typography>
-                    <Typography fontWeight="bold" fontSize="larger">
-                      {project.tokenization.tokenName}
-                    </Typography>
-                  </Stack>
-                  <PropertyBox label="Token(s)" value={project.tokenization.tonnage * 1000} />
-                  <PropertyBox label="Offering size" value={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage} />
-
-                  <Stack direction="row" justifyContent="space-between" py={1.5}>
-                    <Typography>Valuation</Typography>
-                    <Typography fontWeight="bold" fontSize="larger">
-                      $ {project.tokenization.assetValue}
-                    </Typography>
-                  </Stack>
-                  <PropertyBox label="IMO number" value={project.imoNumber} />
-                  <PropertyBox label="Vessel type" value={project.vesselType} />
-                  <PropertyBox label="Capacity" value={project.tokenization.tonnage} />
-                  <PropertyBox label="Owner" value={project.projectOwner.firstName} />
-                  <PropertyBox label="Flag" value={project.flag} />
-                  <PropertyBox label="Year of built" value={new Date(project.builtYear).getFullYear()} />
+            <Grid item xs={12} lg={6}>
+              <Stack px={2.5} py={3} spacing={2} borderRadius={4} border="1px solid #d0d0d0">
+                <Stack direction="row" justifyContent="space-between" py={1.5}>
+                  <Typography>Documents</Typography>
                 </Stack>
+                <PropertyDocument label="Technical Report" value={project.documents.technicalReport} />
+                <PropertyDocument label="Financial Report" value={project.documents.financialReport} />
+                <PropertyDocument label="Commercial Report" value={project.documents.commercialReport} />
+                <PropertyDocument label="Risk" value={project.documents.risk} />
+                <PropertyDocument label="Community" value={project.documents.community} />
+                <PropertyDocument label="Vessel Certificate" value={project.documents.vesselCertificate} />
               </Stack>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Stack px={2} py={1.5} spacing={2}>
-            <Stack direction="row" justifyContent="space-between" py={1.5}>
-              <Typography>Documents</Typography>
-            </Stack>
-            <PropertyDocument label="Technical Report" value={project.documents.technicalReport} />
-            <PropertyDocument label="Financial Report" value={project.documents.financialReport} />
-            <PropertyDocument label="Commercial Report" value={project.documents.commercialReport} />
-            <PropertyDocument label="Risk" value={project.documents.risk} />
-            <PropertyDocument label="Community" value={project.documents.community} />
-            <PropertyDocument label="Vessel Certificate" value={project.documents.vesselCertificate} />
-          </Stack>
         </Grid>
       </Grid>
     </Box>

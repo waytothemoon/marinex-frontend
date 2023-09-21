@@ -14,7 +14,7 @@ const AuthBackground = () => {
       sx={{
         position: 'absolute',
         filter: 'blur(18px)',
-        backgroundColor: '#141718',
+        backgroundColor: theme.palette.background.default,
         zIndex: -1,
         bottom: 0,
         transform: theme.direction === ThemeDirection.RTL ? 'rotate(180deg)' : 'inherit'

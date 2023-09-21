@@ -31,7 +31,7 @@ const FinancialTransactions = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <SearchOutlined style={{ color: '#83F1AA' }} />
+                <SearchOutlined />
               </InputAdornment>
             )
           }}

@@ -83,13 +83,10 @@ const TestingMilestones = () => {
               <InputAdornment position="end">
                 <SearchOutlined />
               </InputAdornment>
-            ),
-            style: {
-              backgroundColor: 'white'
-            }
+            )
           }}
         />
-        <Box bgcolor="white">
+        <Box>
           <Select
             style={{ minWidth: 180 }}
             value={filter.toString()}

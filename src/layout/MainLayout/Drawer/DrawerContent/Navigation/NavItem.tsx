@@ -100,18 +100,20 @@ const NavItem = ({ item, level }: Props) => {
             mx: '16px',
             borderRadius: '8px',
             '&:hover': {
-              bgcolor: '#4AD0AA40'
+              bgcolor: theme.palette.mode === ThemeMode.DARK ? '#4AD0AA40' : '#2A68DF80'
             },
             '&.Mui-selected': {
               border: '1px solid transparent',
               background:
-                'radial-gradient(117.73% 99.50% at 8.37% 0.00%, rgba(70, 70, 70) 0%, #141718 100%) padding-box, linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.11) 50%, rgba(255, 255, 255, 0.11) 60%, #8470FF80) border-box',
+                theme.palette.mode === ThemeMode.DARK
+                  ? 'radial-gradient(117.73% 99.50% at 8.37% 0.00%, rgba(70, 70, 70) 0%, #141718 100%) padding-box, linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.11) 50%, rgba(255, 255, 255, 0.11) 60%, #8470FF80) border-box'
+                  : '#2A68DF',
               backdropFilter: 'blur(2.5px)',
               color: iconSelectedColor,
 
               '&:hover': {
                 color: iconSelectedColor,
-                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'divider' : 'primary.lighter'
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? '#4AD0AA40' : '#2A68DF80'
               }
             }
           }}

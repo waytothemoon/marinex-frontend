@@ -1,5 +1,6 @@
 // material-ui
 import { Theme } from '@mui/material/styles';
+import { ThemeMode } from 'types/config';
 
 // ==============================|| OVERRIDES - TABLE ROW ||============================== //
 
@@ -16,7 +17,7 @@ export default function TableBody(theme: Theme) {
         root: {
           '& .MuiTableRow-root': {
             '&:nth-of-type(odd)': {
-              backgroundColor: '#FFFFFF20',
+              backgroundColor: theme.palette.mode === ThemeMode.DARK ? '#FFFFFF20' : theme.palette.background.default,
               borderRadius: '16px'
             },
             ...hoverStyle

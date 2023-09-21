@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // material-ui
-import { Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Grid, IconButton, Stack, Typography, useTheme } from '@mui/material';
 
 // project imports
 import ProjectCard from '../ProjectCard';
@@ -18,6 +18,7 @@ const TrendingProjects = () => {
   const [form, setForm] = useState<boolean>(false);
   const [projects, setProjects] = useState<any[]>([]);
   const [projectsCount, setProjectsCount] = useState<number>(0);
+  const theme = useTheme();
 
   useEffect(() => {
     fetch('/api/project?allowance=1')
@@ -41,10 +42,10 @@ const TrendingProjects = () => {
             <Typography variant="h4">Trending projects</Typography>
             <Stack direction="row" alignItems="center" spacing="2">
               <IconButton onClick={() => setForm(false)}>
-                <UnorderedListOutlined style={{ color: form ? '#737677' : '#83F1AA', fontSize: '20px' }} />
+                <UnorderedListOutlined style={{ color: form ? '#737677' : theme.palette.primary.main, fontSize: '20px' }} />
               </IconButton>
               <IconButton onClick={() => setForm(true)}>
-                <AppstoreOutlined style={{ color: !form ? '#737677' : '#83F1AA', fontSize: '20px' }} />
+                <AppstoreOutlined style={{ color: !form ? '#737677' : theme.palette.primary.main, fontSize: '20px' }} />
               </IconButton>
             </Stack>
           </Stack>

@@ -6,18 +6,7 @@ import { signOut } from 'next-auth/react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {
-  Box,
-  ButtonBase,
-  capitalize,
-  ClickAwayListener,
-  Grid,
-  Paper,
-  Popper,
-  Stack,
-  Tooltip,
-  Typography
-} from '@mui/material';
+import { Box, ButtonBase, capitalize, ClickAwayListener, Grid, Paper, Popper, Stack, Tooltip, Typography } from '@mui/material';
 
 // project import
 import Avatar from 'components/@extended/Avatar';
@@ -68,7 +57,9 @@ const Profile = () => {
           p: 0.25,
           border: '1px solid transparent',
           background:
-            'radial-gradient(117.73% 99.50% at 8.37% 0.00%, rgba(70, 70, 70) 0%, #141718 100%) padding-box, linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.11) 50%, rgba(255, 255, 255, 0.11) 60%, #8470FF80) border-box',
+            theme.palette.mode === ThemeMode.DARK
+              ? 'radial-gradient(117.73% 99.50% at 8.37% 0.00%, rgba(70, 70, 70) 0%, #141718 100%) padding-box, linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.11) 50%, rgba(255, 255, 255, 0.11) 60%, #8470FF80) border-box'
+              : '#2A68DF',
           borderRadius: '8px',
           my: 2,
           mx: 2,
@@ -92,10 +83,10 @@ const Profile = () => {
           <Stack direction="row" spacing={1.5} alignItems="center" sx={{ p: 0.25, px: 0.75 }}>
             <Avatar alt={user.name} src={user.avatar} sx={{ width: 30, height: 30 }} />
             <Box>
-              <Typography variant="subtitle1" textAlign="left">
+              <Typography variant="subtitle1" sx={{ color: 'white' }} textAlign="left">
                 {user.name && capitalize(user.name)}
               </Typography>
-              <Typography noWrap maxWidth={140} variant="body2" textAlign="left">
+              <Typography noWrap maxWidth={140} sx={{ color: 'white' }} variant="body2" textAlign="left">
                 {user.email && user.email}
               </Typography>
             </Box>
@@ -128,7 +119,9 @@ const Profile = () => {
                 boxShadow: theme.customShadows.z1,
                 width: 'auto',
                 background:
-                  'radial-gradient(117.73% 99.50% at 8.37% 0.00%, rgba(70, 70, 70) 0%, #141718 100%) padding-box, linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.11) 50%, rgba(255, 255, 255, 0.11) 60%, #8470FF80) border-box',
+                  theme.palette.mode === ThemeMode.DARK
+                    ? 'radial-gradient(117.73% 99.50% at 8.37% 0.00%, rgba(70, 70, 70) 0%, #141718 100%) padding-box, linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.11) 50%, rgba(255, 255, 255, 0.11) 60%, #8470FF80) border-box'
+                    : '#2A68DF',
                 [theme.breakpoints.down('md')]: {
                   maxWidth: 250
                 }
@@ -142,14 +135,16 @@ const Profile = () => {
                         {user && (
                           <Stack direction="row" spacing={1.25} alignItems="center">
                             <Stack>
-                              <Typography variant="h6">Sign Out</Typography>
+                              <Typography variant="h6" sx={{ color: 'white' }}>
+                                Sign Out
+                              </Typography>
                             </Stack>
                           </Stack>
                         )}
                       </Grid>
                       <Grid item>
                         <Tooltip title="Logout">
-                          <IconButton size="large" sx={{ color: 'text.primary' }} onClick={handleLogout}>
+                          <IconButton size="large" sx={{ color: 'white' }} onClick={handleLogout}>
                             <LogoutOutlined />
                           </IconButton>
                         </Tooltip>

@@ -7,7 +7,6 @@ import NextLink from 'next/link';
 import {
   Link,
   MenuItem,
-  IconButton,
   Pagination,
   Select,
   Stack,
@@ -175,9 +174,7 @@ const ProjectsAdminSection = () => {
                         {column.id === 'action' && (
                           <NextLink href={`/admin/projects/${row._doc ? row._doc._id : row._id}`} passHref legacyBehavior>
                             <Link>
-                              <IconButton size="medium">
-                                <EyeOutlined style={{ color: 'white' }} />
-                              </IconButton>
+                              <EyeOutlined />
                             </Link>
                           </NextLink>
                         )}

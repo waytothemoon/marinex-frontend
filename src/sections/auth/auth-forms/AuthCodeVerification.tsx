@@ -13,6 +13,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // types
 import { ThemeMode } from 'types/config';
+import { enqueueSnackbar } from 'notistack';
 
 // ============================|| STATIC - CODE VERIFICATION ||============================ //
 
@@ -26,6 +27,11 @@ const AuthCodeVerification = () => {
   const borderColor = theme.palette.mode === ThemeMode.DARK ? theme.palette.grey[200] : theme.palette.grey[300];
 
   const handleSubmit = (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+    if (!/^[0-9]{6}$/.test(otp || '')) {
+      setError('Invalid OTP code.');
+      return;
+    }
     setSubmitting(true);
     signIn('verifyOtp', {
       redirect: false,
@@ -37,7 +43,16 @@ const AuthCodeVerification = () => {
         setSubmitting(false);
       }
     });
-    ev.preventDefault();
+  };
+
+  const handleResend = () => {
+    fetch('/api/auth/resend').then(async (res) => {
+      if (res.status === 200) {
+        enqueueSnackbar('OTP code has sent successfully.', { variant: 'success', anchorOrigin: { horizontal: 'right', vertical: 'top' } });
+      } else {
+        console.log(await res.json());
+      }
+    });
   };
 
   return (
@@ -82,7 +97,13 @@ const AuthCodeVerification = () => {
           <Stack direction="row" justifyContent="space-between" alignItems="baseline">
             <Typography>
               Did not receive the email? Check your spam, or{' '}
-              <Typography component="span" variant="body1" sx={{ minWidth: 85, textDecoration: 'none', cursor: 'pointer' }} color="primary">
+              <Typography
+                component="span"
+                variant="body1"
+                sx={{ minWidth: 85, textDecoration: 'none', cursor: 'pointer' }}
+                color="primary"
+                onClick={handleResend}
+              >
                 Resend code
               </Typography>
             </Typography>

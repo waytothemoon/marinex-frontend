@@ -19,7 +19,7 @@ import { dispatch } from 'store';
 import { openDrawer } from 'store/reducers/menu';
 
 // types
-import { MenuOrientation } from 'types/config';
+import { MenuOrientation, ThemeMode } from 'types/config';
 import { useRouter } from 'next/router';
 
 // ==============================|| MAIN LAYOUT ||============================== //
@@ -80,11 +80,13 @@ const MainLayout = ({ children }: Props) => {
             mt: !downLG ? 'auto' : '60px',
             display: 'flex',
             flexDirection: 'column',
-            border: '1px solid transparent',
+            border: theme.palette.mode === ThemeMode.DARK ? '1px solid transparent' : '1px solid #e0e0e0',
             borderRadius: '16px',
             backdropFilter: 'blur(2.5px)',
             background:
-              'radial-gradient(117.73% 149.50% at 8.37% 0.00%, rgba(35, 35, 35) 0%, #141718 100%) padding-box, linear-gradient(120deg, #8470FF60, rgb(100, 100, 100) 50%, rgb(100, 100, 100) 60%, rgb(150, 150, 150)) border-box'
+              theme.palette.mode === ThemeMode.DARK
+                ? 'radial-gradient(117.73% 149.50% at 8.37% 0.00%, rgba(35, 35, 35) 0%, #141718 100%) padding-box, linear-gradient(120deg, #8470FF60, rgb(100, 100, 100) 50%, rgb(100, 100, 100) 60%, rgb(150, 150, 150)) border-box'
+                : '#FDFDFF'
           }}
         >
           <Typography variant="h2" mb={4}>

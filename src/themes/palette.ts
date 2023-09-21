@@ -51,12 +51,12 @@ const Palette = (mode: ThemeMode, presetColor: PresetColor) => {
       },
       ...paletteColor,
       primary: {
-        main: '#83F1AA'
+        main: mode === ThemeMode.DARK ? '#83F1AA' : '#2A68DF'
       },
       text: {
-        primary: '#ffffff',
-        secondary: '#ffffff90',
-        disabled: '#ffffff50'
+        primary: mode === ThemeMode.DARK ? '#ffffff' : '#353535',
+        secondary: mode === ThemeMode.DARK ? '#ffffff90' : '#35353590',
+        disabled: mode === ThemeMode.DARK ? '#ffffff50' : '#35353550'
       },
       action: {
         disabled: paletteColor.grey[300]
@@ -66,8 +66,8 @@ const Palette = (mode: ThemeMode, presetColor: PresetColor) => {
       },
       divider: mode === ThemeMode.DARK ? alpha(paletteColor.grey[900]!, 0.05) : paletteColor.grey[200],
       background: {
-        paper: '#141718',
-        default: '#141718'
+        paper: mode === ThemeMode.DARK ? '#141718' : '#ffffff80',
+        default: mode === ThemeMode.DARK ? '#141718' : '#eeeeee'
       }
     }
   });
