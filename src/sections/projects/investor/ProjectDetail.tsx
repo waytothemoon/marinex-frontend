@@ -90,23 +90,59 @@ export default function ProjectDetail() {
         <Grid item xs={12} sm={6} md={8}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={5}>
-              <Image
-                src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
-                alt="ship"
-                width="100"
-                style={{ width: '100%' }}
-                height={300}
-              />
               <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
-                <Stack direction="row" justifyContent="space-between" py={1.5}>
-                  <Typography>Documents</Typography>
+                <Typography variant="h1">{project.projectName}</Typography>
+                <Image
+                  src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
+                  alt="ship"
+                  width="100"
+                  style={{ width: '100%' }}
+                  height={300}
+                />
+                <Stack>
+                  <Typography variant="body2">Fund Raising Status</Typography>
+                  <Box mt={4} pl={3}>
+                    <Slider
+                      value={others.investments}
+                      valueLabelFormat={(value) => `$ ${value}`}
+                      max={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage}
+                      min={0}
+                      disabled
+                      valueLabelDisplay="on"
+                      marks={[
+                        { value: 0, label: '0' },
+                        {
+                          value: project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0,
+                          label: `$${project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0}`
+                        }
+                      ]}
+                    />
+                  </Box>
                 </Stack>
-                <PropertyDocument label="Technical Report" value={project.documents.technicalReport} />
-                <PropertyDocument label="Financial Report" value={project.documents.financialReport} />
-                <PropertyDocument label="Commercial Report" value={project.documents.commercialReport} />
-                <PropertyDocument label="Risk" value={project.documents.risk} />
-                <PropertyDocument label="Community" value={project.documents.community} />
-                <PropertyDocument label="Vessel Certificate" value={project.documents.vesselCertificate} />
+                <Stack spacing={1}>
+                  <Typography>Number of Token(s)</Typography>
+                  <Stack direction="row" spacing={2}>
+                    <TextField placeholder="Number of token(s)" value={numberOfTokens} onChange={handleTokensChange} fullWidth />
+                    <TextField
+                      placeholder="USD value"
+                      value={usdValue}
+                      onChange={handleUsdChange}
+                      fullWidth
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">$</InputAdornment>
+                      }}
+                    />
+                  </Stack>
+                </Stack>
+                <Typography variant="caption">
+                  Your balance{' '}
+                  <Typography variant="h5" component="span">
+                    ${balance.toFixed(2)}
+                  </Typography>
+                </Typography>
+                <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
+                  Buy now (Minium Investment - {`$${project.tokenization.minimumInvestment}`})
+                </Button>
               </Stack>
             </Grid>
             <Grid item xs={12} md={7}>
@@ -120,9 +156,7 @@ export default function ProjectDetail() {
                   </Stack>
                   <PropertyBox label="Token(s)" value={project.tokenization.tonnage * 1000} />
                   <PropertyBox label="Offering size" value={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage} />
-                  <PropertyBox label="Minimum investment" value={`$ ${project.tokenization.minimumInvestment}`} />
-                </Stack>
-                <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
+
                   <Stack direction="row" justifyContent="space-between" py={1.5}>
                     <Typography>Valuation</Typography>
                     <Typography fontWeight="bold" fontSize="larger">
@@ -141,52 +175,16 @@ export default function ProjectDetail() {
           </Grid>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <Stack borderRadius={2} border="1px solid grey" px={2} py={1.5} spacing={2}>
-            <Typography variant="h1">{project.projectName}</Typography>
-            <Stack>
-              <Typography variant="body2">Fund Raising Status</Typography>
-              <Box mt={4} pl={3}>
-                <Slider
-                  value={others.investments}
-                  valueLabelFormat={(value) => `$ ${value}`}
-                  max={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage}
-                  min={0}
-                  disabled
-                  valueLabelDisplay="on"
-                  marks={[
-                    { value: 0, label: '0' },
-                    {
-                      value: project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0,
-                      label: `$${project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage || 0}`
-                    }
-                  ]}
-                />
-              </Box>
+          <Stack px={2} py={1.5} spacing={2}>
+            <Stack direction="row" justifyContent="space-between" py={1.5}>
+              <Typography>Documents</Typography>
             </Stack>
-            <Stack spacing={1}>
-              <Typography>Number of Token(s)</Typography>
-              <Stack direction="row" spacing={2}>
-                <TextField placeholder="Number of token(s)" value={numberOfTokens} onChange={handleTokensChange} fullWidth />
-                <TextField
-                  placeholder="USD value"
-                  value={usdValue}
-                  onChange={handleUsdChange}
-                  fullWidth
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>
-                  }}
-                />
-              </Stack>
-            </Stack>
-            <Typography variant="caption">
-              Your balance{' '}
-              <Typography variant="h5" component="span">
-                ${balance.toFixed(2)}
-              </Typography>
-            </Typography>
-            <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
-              Buy now
-            </Button>
+            <PropertyDocument label="Technical Report" value={project.documents.technicalReport} />
+            <PropertyDocument label="Financial Report" value={project.documents.financialReport} />
+            <PropertyDocument label="Commercial Report" value={project.documents.commercialReport} />
+            <PropertyDocument label="Risk" value={project.documents.risk} />
+            <PropertyDocument label="Community" value={project.documents.community} />
+            <PropertyDocument label="Vessel Certificate" value={project.documents.vesselCertificate} />
           </Stack>
         </Grid>
       </Grid>

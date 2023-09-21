@@ -199,7 +199,7 @@ const ProjectOwners = () => {
                             {column.id === 'email' && <Link href={`mailto:${value}`}>{value}</Link>}
                             {column.id === 'status' && (
                               <Tooltip title={value ? 'Active' : 'Inactive'}>
-                                {value ? <CheckCircleOutlined style={{ color: 'white' }} /> : <StopOutlined style={{ color: 'white' }} />}
+                                {value ? <CheckCircleOutlined style={{ color: 'green' }} /> : <StopOutlined style={{ color: 'red' }} />}
                               </Tooltip>
                             )}
                             {column.id === 'view' && (

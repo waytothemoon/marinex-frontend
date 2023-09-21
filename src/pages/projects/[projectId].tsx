@@ -54,30 +54,35 @@ const ProjectDetail = () => {
   };
 
   useEffect(() => {
-    fetch(`/api/project/${router.query.projectId}`)
-      .then(async (res) => {
-        let data = await res.json();
+    if (router.query.projectId !== 'add') {
+      setLoading(true);
+      fetch(`/api/project/${router.query.projectId}`)
+        .then(async (res) => {
+          let data = await res.json();
 
-        data = data._doc ? data._doc : data;
+          data = data._doc ? data._doc : data;
 
-        setShipDetail({
-          projectImage: data.projectImage,
-          projectName: data.projectName,
-          description: data.description,
-          imoNumber: data.imoNumber,
-          vesselType: data.vesselType,
-          builtYear: new Date(data.builtYear),
-          flag: data.flag,
-          estimatedEarning: data.estimatedEarning,
-          id: data._id
+          setShipDetail({
+            projectImage: data.projectImage,
+            projectName: data.projectName,
+            description: data.description,
+            imoNumber: data.imoNumber,
+            vesselType: data.vesselType,
+            builtYear: new Date(data.builtYear),
+            flag: data.flag,
+            estimatedEarning: data.estimatedEarning,
+            id: data._id
+          });
+          setDocuments(data.documents || {});
+          setTokenization({ ...data.tokenization, tokenized: data.tokenized });
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
         });
-        setDocuments(data.documents || {});
-        setTokenization({ ...data.tokenization, tokenized: data.tokenized });
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+    } else {
+      setLoading(false);
+    }
   }, [router]);
 
   return (
