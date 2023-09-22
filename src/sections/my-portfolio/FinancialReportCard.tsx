@@ -2,7 +2,7 @@
 import { Card, Grid, Stack, Typography } from '@mui/material';
 
 // ==============================|| STATISTICS - ECOMMERCE CARD  ||============================== //
-
+import numberFormat from 'utils/numberFormat';
 interface Props {
   title: string;
   count: string;
@@ -32,7 +32,7 @@ const FinancialReportCard = ({ color, title, count }: Props) => (
       <Grid container alignItems="center">
         <Grid item>
           <Typography variant="h3" fontWeight={700} color="white">
-            $ {Number(count).toFixed(2)}
+            $ {numberFormat(Number(count))}
           </Typography>
         </Grid>
       </Grid>

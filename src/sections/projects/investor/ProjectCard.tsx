@@ -5,20 +5,16 @@ import Image from 'next/image';
 // material-ui
 import { Box, Button, Card, CardContent, Link, Stack, Typography } from '@mui/material';
 
+import numberFormat from 'utils/numberFormat';
+
 // ==============================|| PROJECT CARD ||============================== //
 
 const ProjectCard = ({ project: { _doc: project } }: { project: any }) => {
   return (
     <Card style={{ position: 'relative' }}>
       <CardContent>
-        <Box borderRadius={3} overflow="hidden" height="160px" mb={2}>
-          <Image
-            src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
-            alt="Ship"
-            width={0}
-            height="160"
-            style={{ width: '100%' }}
-          />
+        <Box borderRadius={3} overflow="hidden" height="160px" mb={2} position="relative">
+          <Image src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`} alt="Ship" fill />
         </Box>
         <Typography variant="h4" fontWeight={800} mb={2}>
           {project.projectName}
@@ -27,13 +23,13 @@ const ProjectCard = ({ project: { _doc: project } }: { project: any }) => {
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="body2"># of Tokens</Typography>
             <Typography variant="body2" fontWeight={700}>
-              {project.tokenization.tonnage * 1000}
+              {numberFormat(project.tokenization.tonnage * 1000)}
             </Typography>
           </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="body2">Current value</Typography>
             <Typography variant="body2" fontWeight={700}>
-              $ {project.tokenization.assetValue}
+              $ {numberFormat(project.tokenization.assetValue)}
             </Typography>
           </Stack>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -45,7 +41,7 @@ const ProjectCard = ({ project: { _doc: project } }: { project: any }) => {
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="body2">Min investment</Typography>
             <Typography variant="body2" fontWeight={700}>
-              $ {project.tokenization.minimumInvestment}
+              $ {numberFormat(project.tokenization.minimumInvestment)}
             </Typography>
           </Stack>
         </Stack>

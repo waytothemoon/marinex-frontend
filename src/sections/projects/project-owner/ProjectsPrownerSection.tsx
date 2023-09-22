@@ -43,6 +43,7 @@ import { EyeOutlined, InboxOutlined, PlusOutlined, CreditCardOutlined } from '@a
 import { KeyedObject } from 'types/root';
 import { enqueueSnackbar } from 'notistack';
 import { useCurrentBalance } from 'hooks/useCurrentBalance';
+import numberFormat from 'utils/numberFormat';
 
 // table columns
 interface ColumnProps {
@@ -347,7 +348,7 @@ const ProjectsPrownerSection = () => {
                           <Box>
                             {row.withdrawalRequest === 'undefined' && (
                               <Typography>
-                                $ {Number(row.investments).toFixed(2) || 0} / $ {Number(row.withdrawals).toFixed(2) || 0}
+                                $ {numberFormat(Number(row.investments)) || 0} / $ {numberFormat(Number(row.withdrawals)) || 0}
                               </Typography>
                             )}
                             {row.withdrawalRequest === true && <Typography color={theme.palette.error.main}>Failed</Typography>}
@@ -363,9 +364,9 @@ const ProjectsPrownerSection = () => {
                       )}
                       {column.id === 'rewards' && row._doc && (
                         <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" pr={2}>
-                          <Typography>$ {Number(row.givenRewards).toFixed(2)}</Typography>
+                          <Typography>$ {numberFormat(Number(row.givenRewards))}</Typography>
                           <Tooltip title="Deposit">
-                            <CreditCardOutlined onClick={() => handleDepositOpen(row)} />
+                            <CreditCardOutlined style={{ color: theme.palette.primary.main }} onClick={() => handleDepositOpen(row)} />
                           </Tooltip>
                           <DepositDialog open={depositDialogOpen} handleClose={handleClose} data={currentRow} />
                         </Stack>

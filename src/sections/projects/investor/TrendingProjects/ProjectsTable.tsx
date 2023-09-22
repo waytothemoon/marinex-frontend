@@ -29,6 +29,7 @@ import { EyeOutlined, InboxOutlined } from '@ant-design/icons';
 
 // types
 import { KeyedObject } from 'types/root';
+import numberFormat from 'utils/numberFormat';
 
 // table columns
 interface ColumnProps {
@@ -121,9 +122,9 @@ export default function ProjectsTable() {
                             <Typography>{value}</Typography>
                           </Stack>
                         )}
-                        {column.id === 'numberOfTokens' && `${row._doc.tokenization.tonnage * 1000}`}
-                        {column.id === 'currentValue' && `$ ${row._doc.tokenization.assetValue}`}
-                        {column.id === 'minimumInvestment' && `$ ${row._doc.tokenization.minimumInvestment}`}
+                        {column.id === 'numberOfTokens' && `${numberFormat(row._doc.tokenization.tonnage * 1000)}`}
+                        {column.id === 'currentValue' && `$ ${numberFormat(row._doc.tokenization.assetValue)}`}
+                        {column.id === 'minimumInvestment' && `$ ${numberFormat(row._doc.tokenization.minimumInvestment)}`}
                         {column.id === 'action' && (
                           <NextLink href={`/projects/${row._doc._id}`} passHref legacyBehavior>
                             <Link>

@@ -40,7 +40,6 @@ interface ColumnProps {
 
 const columns: ColumnProps[] = [
   { id: 'itemName', label: 'Item Name', minWidth: 20, align: 'left' },
-  { id: 'mrnOrMAT', label: 'MRN/MATH', minWidth: 15, align: 'center' },
   { id: 'usdAmount', label: 'Amount(USD)', minWidth: 15, align: 'center' },
   { id: 'date', label: 'Date', minWidth: 15, align: 'center' },
   { id: 'action', label: 'Action', minWidth: 20, align: 'center' },
@@ -88,7 +87,6 @@ export default function TransactionHistory() {
                     const value = row[column.id];
                     return (
                       <TableCell key={`investor-wallet-transaction-history-row-${_index}-cell-${column.id}`} align={column.align}>
-                        {column.id === 'mrnOrMAT' && <Typography>{value === true ? 'MRN' : 'MAT'}</Typography>}
                         {column.id === 'scan' && (
                           <NextLink href={value} passHref legacyBehavior>
                             <Link>
@@ -96,7 +94,7 @@ export default function TransactionHistory() {
                             </Link>
                           </NextLink>
                         )}
-                        {column.id !== 'mrnOrMAT' && column.id !== 'scan' && (column.format ? column.format(value) : value)}
+                        {column.id !== 'musdOrMAT' && column.id !== 'scan' && (column.format ? column.format(value) : value)}
                       </TableCell>
                     );
                   })}

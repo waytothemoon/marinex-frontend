@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ThemeMode } from 'types/config';
+import numberFormat from 'utils/numberFormat';
 
 function PropertyBox({ label, value }: { label: string; value: string | number }) {
   const theme = useTheme();
@@ -135,7 +136,7 @@ export default function ProjectDetail() {
               <Box mt={4} pl={3}>
                 <Slider
                   value={others.investments}
-                  valueLabelFormat={(value) => `$ ${value.toFixed(2)}`}
+                  valueLabelFormat={(value) => `$ ${numberFormat(value)}`}
                   max={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage}
                   min={0}
                   disabled
@@ -167,14 +168,22 @@ export default function ProjectDetail() {
                 />
               </Stack>
             </Stack>
-            <Typography variant="caption">
-              Your balance{' '}
-              <Typography variant="h5" component="span">
-                ${balance.toFixed(2)}
-              </Typography>
-            </Typography>
+            <Stack spacing={1}>
+              <Stack direction="row" justifyContent="space-between" maxWidth={240}>
+                <Typography fontSize={16}>Your balance :</Typography>
+                <Typography fontSize={16} fontWeight="bold">
+                  $ {numberFormat(balance)}
+                </Typography>
+              </Stack>
+              <Stack direction="row" justifyContent="space-between" maxWidth={240}>
+                <Typography fontSize={16}>Minium Investment :</Typography>
+                <Typography fontSize={16} fontWeight="bold">
+                  $ {numberFormat(project.tokenization.minimumInvestment)}
+                </Typography>
+              </Stack>
+            </Stack>
             <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
-              Buy now (Minium Investment - {`$${project.tokenization.minimumInvestment}`})
+              Buy now
             </Button>
           </Stack>
         </Grid>
@@ -188,18 +197,21 @@ export default function ProjectDetail() {
                     {project.tokenization.tokenName}
                   </Typography>
                 </Stack>
-                <PropertyBox label="Token(s)" value={project.tokenization.tonnage * 1000} />
-                <PropertyBox label="Offering size" value={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage} />
+                <PropertyBox label="Token(s)" value={numberFormat(project.tokenization.tonnage * 1000)} />
+                <PropertyBox
+                  label="Offering size"
+                  value={numberFormat(project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage)}
+                />
 
                 <Stack direction="row" justifyContent="space-between" py={1.5}>
                   <Typography>Valuation</Typography>
                   <Typography fontWeight="bold" fontSize="larger">
-                    $ {project.tokenization.assetValue}
+                    $ {numberFormat(project.tokenization.assetValue)}
                   </Typography>
                 </Stack>
                 <PropertyBox label="IMO number" value={project.imoNumber} />
                 <PropertyBox label="Vessel type" value={project.vesselType} />
-                <PropertyBox label="Capacity" value={project.tokenization.tonnage} />
+                <PropertyBox label="Capacity" value={numberFormat(project.tokenization.tonnage)} />
                 <PropertyBox label="Owner" value={project.projectOwner.firstName} />
                 <PropertyBox label="Flag" value={project.flag} />
                 <PropertyBox label="Year of built" value={new Date(project.builtYear).getFullYear()} />

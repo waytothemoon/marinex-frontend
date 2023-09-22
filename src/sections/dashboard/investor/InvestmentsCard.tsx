@@ -4,6 +4,7 @@ import { Box, Button, Card, Grid, Link, Stack, Typography } from '@mui/material'
 // next
 import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
+import numberFormat from 'utils/numberFormat';
 
 // ==============================|| INVESTMENTS CARD ||============================== //
 
@@ -36,7 +37,7 @@ const InvestmentsCard = () => {
             Current Value
           </Typography>
           <Typography variant="h2" fontWeight={700} color="white" mb={1}>
-            $ {currentValue.toFixed(2)}
+            $ {numberFormat(currentValue)}
           </Typography>
         </Box>
         <Grid container width="100%">

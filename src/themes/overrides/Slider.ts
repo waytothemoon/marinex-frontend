@@ -51,8 +51,9 @@ export default function Slider(theme: Theme) {
           }
         },
         markLabel: {
+          transform: 'translateY(5px)',
           '&:not(.MuiSlider-markLabelActive)': {
-            transform: 'translateX(-100%)'
+            transform: 'translate(-100%, 5px)'
           }
         },
         rail: {

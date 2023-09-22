@@ -13,7 +13,6 @@ import Layout from 'layout';
 import Page from 'components/Page';
 import FinancialReportCard from 'sections/my-portfolio/FinancialReportCard';
 import MyListings from 'sections/my-portfolio/MyListings';
-import MainCard from 'components/MainCard';
 import Image from 'next/image';
 // types
 import { UserRole } from 'types/auth';
@@ -108,9 +107,9 @@ const MyPortfolio = () => {
               </Grid>
               <Grid item />
             </Grid>
-            <MainCard sx={{ mt: 2 }} content={false}>
+            <Box mt={2}>
               <MyListings />
-            </MainCard>
+            </Box>
           </Grid>
         </Grid>
       )}

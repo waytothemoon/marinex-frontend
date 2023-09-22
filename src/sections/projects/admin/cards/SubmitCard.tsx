@@ -1,25 +1,10 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 
 // next
 import { useSession } from 'next-auth/react';
 
 // material-ui
-import {
-  Button,
-  CardContent,
-  Divider,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemText,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  TextField,
-  Typography,
-  useTheme
-} from '@mui/material';
+import { Button, CardContent, Divider, MenuItem, Select, SelectChangeEvent, Stack, Typography, useTheme } from '@mui/material';
 
 // project imports
 import MainCard from 'components/MainCard';
@@ -40,7 +25,6 @@ type Props = {
 
 const SubmitCard = (props: Props) => {
   const [newStatus, setNewStatus] = useState<number>(props.data.allowance || 0);
-  const [comments, setComments] = useState<string>();
   const { data: session } = useSession();
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
 
@@ -48,10 +32,6 @@ const SubmitCard = (props: Props) => {
 
   const handleStatusChange = (ev: SelectChangeEvent) => {
     setNewStatus(Number(ev.target.value));
-  };
-
-  const handleCommentsChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    setComments(ev.currentTarget.value);
   };
 
   const handleSubmit = () => {
@@ -120,33 +100,6 @@ const SubmitCard = (props: Props) => {
             </Select>
           </Stack>
           <Divider />
-          <Stack spacing={0.5}>
-            <InputLabel>Activity Log</InputLabel>
-            <List
-              sx={{
-                width: '100%',
-                bgcolor: 'background.paper',
-                position: 'relative',
-                overflow: 'auto',
-                minHeight: 100,
-                maxHeight: 200,
-                border: '1px solid #D9D9D9FF',
-                borderRadius: '4px',
-                '& ul': { padding: 0 }
-              }}
-            >
-              {props.logs &&
-                props.logs.map((log, index) => (
-                  <ListItem key={`activity-log-${index}`}>
-                    <Stack direction="row" justifyContent="space-between">
-                      <ListItemText>{log.action}</ListItemText>
-                      <ListItemText>{log.date.toLocaleDateString()}</ListItemText>
-                    </Stack>
-                  </ListItem>
-                ))}
-            </List>
-          </Stack>
-          <TextField value={comments} placeholder="Add Comments" onChange={handleCommentsChange} multiline />
           <Button variant="contained" onClick={handleSubmit} disabled={isSubmitting}>
             Submit
           </Button>

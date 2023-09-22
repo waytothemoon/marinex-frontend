@@ -1,8 +1,9 @@
 // material-ui
 import { Box, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 
-// ==============================|| PREVIEW CARD ||============================== //
+import numberFormat from 'utils/numberFormat';
 
+// ==============================|| PREVIEW CARD ||============================== //
 type Props = {
   projectName?: string;
   projectImage?: string;
@@ -49,7 +50,7 @@ const PreviewCard = (props: Props) => {
               Token price
             </Typography>
             <Typography variant="body2" fontWeight={700}>
-              $ {props.matPrice?.toLocaleString()}
+              $ {numberFormat(props.matPrice ? props.matPrice : 0)}
             </Typography>
           </Stack>
         </Stack>

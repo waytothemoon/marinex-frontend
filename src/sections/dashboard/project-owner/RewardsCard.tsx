@@ -6,6 +6,8 @@ import { Box, Card, Divider, Stack, Typography } from '@mui/material';
 // assets
 import * as antColors from '@ant-design/colors';
 
+import numberFormat from 'utils/numberFormat';
+
 // ==============================|| BALANCE CARD - MY WALLET - INVESTOR ||============================== //
 
 type BalanceData = {
@@ -14,7 +16,7 @@ type BalanceData = {
 };
 
 const ProjectBalanceCard = (props: BalanceData) => {
-  const [total, setTotal] = useState<any>({});
+  const [total, setTotal] = useState<any>({ fundraising: 0, rewards: 0 });
 
   useEffect(() => {
     fetch('/api/investment').then(async (res) => {
@@ -39,7 +41,7 @@ const ProjectBalanceCard = (props: BalanceData) => {
       <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center">
         <Box color="white">
           <Typography variant="body1">Total raised</Typography>
-          <Typography variant="h2">$ {Number(total.fundraising).toFixed(2)}</Typography>
+          <Typography variant="h2">$ {numberFormat(Number(total.fundraising))}</Typography>
         </Box>
       </Stack>
 
@@ -48,7 +50,7 @@ const ProjectBalanceCard = (props: BalanceData) => {
       <Stack direction="row" mt={3} justifyContent="space-between" alignItems="center">
         <Box color="white">
           <Typography variant="body1">Revenue & Rewards Given</Typography>
-          <Typography variant="h2">$ {Number(total.rewards).toFixed(2)}</Typography>
+          <Typography variant="h2">$ {numberFormat(Number(total.rewards))}</Typography>
         </Box>
       </Stack>
     </Card>

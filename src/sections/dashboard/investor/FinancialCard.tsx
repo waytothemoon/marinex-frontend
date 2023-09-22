@@ -9,7 +9,7 @@ import { ArrowDownOutlined, ArrowUpOutlined, SyncOutlined } from '@ant-design/ic
 // project imports
 import DepositDialog from 'components/dialogs/DepositDialog';
 import { useCurrentBalance } from 'hooks/useCurrentBalance';
-
+import numberFormat from 'utils/numberFormat';
 // ==============================|| FINANCIAL CARD ||============================== //
 
 const FinancialCard = () => {
@@ -52,7 +52,7 @@ const FinancialCard = () => {
           <Box>
             <Typography color="whitesmoke">Total Balance</Typography>
             <Typography variant="h2" fontWeight={700} color="white" mb={3}>
-              $ {balance.toFixed(2)}
+              $ {numberFormat(balance)}
             </Typography>
           </Box>
           <Box>

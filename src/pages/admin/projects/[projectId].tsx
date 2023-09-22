@@ -51,6 +51,7 @@ const ProjectDetail = () => {
           description: data.description,
           imoNumber: data.imoNumber,
           offeringSize: (data.tokenization.assetValue * data.tokenization.offeringPercentage) / 100,
+          tokenPrice: data.tokenization.assetValue / data.tokenization.tonnage / 1000,
           openTill: data.openTill,
           vesselType: data.vesselType,
           capacity: data.tokenization.tonnage,
@@ -99,7 +100,7 @@ const ProjectDetail = () => {
                     <PreviewCard
                       projectName={shipDetail.projectName}
                       estimatedEarning={projectDetail.estimatedEarning}
-                      matPrice={1}
+                      matPrice={shipDetail.tokenPrice}
                       valuation={tokenization.assetValue}
                       projectImage={shipDetail.projectImage}
                     />

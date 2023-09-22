@@ -1,8 +1,9 @@
 // material-ui
 import { Grid, Stack, Typography } from '@mui/material';
 
-// ==============================|| VALIDATION WIZARD - PAYMENT ||============================== //
+import numberFormat from 'utils/numberFormat';
 
+// ==============================|| VALIDATION WIZARD - PAYMENT ||============================== //
 export type ShipDetail = {
   projectImage?: string;
   projectName?: string;
@@ -65,17 +66,7 @@ export default function ShipDetailForm({ shipDetail }: ShipDetailFormProps) {
               Offering Size
             </Typography>
             <Typography fontWeight={600} flexGrow={1}>
-              $ {shipDetail.offeringSize}
-            </Typography>
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <Stack direction="row">
-            <Typography color="text.secondary" width={200}>
-              Open Till
-            </Typography>
-            <Typography fontWeight={600} flexGrow={1}>
-              {shipDetail.openTill === undefined ? 'STO Not Yet Launched' : shipDetail.openTill.toLocaleDateString()}
+              $ {numberFormat(Number(shipDetail.offeringSize))}
             </Typography>
           </Stack>
         </Grid>
@@ -95,7 +86,7 @@ export default function ShipDetailForm({ shipDetail }: ShipDetailFormProps) {
               Capacity
             </Typography>
             <Typography fontWeight={600} flexGrow={1}>
-              {shipDetail.capacity} t
+              {numberFormat(Number(shipDetail.capacity))} t
             </Typography>
           </Stack>
         </Grid>

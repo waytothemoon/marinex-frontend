@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Box, Button, Card, CardContent, Slider, Stack, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 
+import numberFormat from 'utils/numberFormat';
+
 // ==============================|| PREVIEW CARD ||============================== //
 
 type Props = {
@@ -62,7 +64,7 @@ const WithdrawalRequestCard = (props: Props) => {
           <Box pt={3} px={1.5}>
             <Slider
               value={props.fundRaising}
-              valueLabelFormat={(value) => `$ ${value}`}
+              valueLabelFormat={(value) => `$ ${numberFormat(value)}`}
               max={props.offering}
               min={0}
               disabled

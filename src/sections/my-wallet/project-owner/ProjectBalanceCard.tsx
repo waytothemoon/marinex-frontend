@@ -7,6 +7,8 @@ import { Box, Card, CircularProgress, Divider, IconButton, Stack, Tooltip, Typog
 import * as antColors from '@ant-design/colors';
 import { SyncOutlined } from '@ant-design/icons';
 
+import numberFormat from 'utils/numberFormat';
+
 // ==============================|| BALANCE CARD - MY WALLET - INVESTOR ||============================== //
 
 type BalanceData = {
@@ -51,7 +53,7 @@ const ProjectBalanceCard = (props: BalanceData) => {
       <Stack direction="row" mb={2} justifyContent="space-between" alignItems="center">
         <Box color="white">
           <Typography variant="body1">Total raised</Typography>
-          <Typography variant="h2">$ {Number(total.fundraising).toFixed(2)}</Typography>
+          <Typography variant="h2">$ {numberFormat(Number(total.fundraising))}</Typography>
         </Box>
 
         <Box>
@@ -74,7 +76,7 @@ const ProjectBalanceCard = (props: BalanceData) => {
       <Stack direction="row" mt={3} justifyContent="space-between" alignItems="center">
         <Box color="white">
           <Typography variant="body1">Revenue & Rewards Given</Typography>
-          <Typography variant="h2">$ {Number(total.rewards).toFixed(2)}</Typography>
+          <Typography variant="h2">$ {numberFormat(Number(total.rewards))}</Typography>
         </Box>
       </Stack>
     </Card>
