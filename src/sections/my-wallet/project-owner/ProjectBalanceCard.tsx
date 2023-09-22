@@ -51,7 +51,7 @@ const ProjectBalanceCard = (props: BalanceData) => {
       <Stack direction="row" mb={2} justifyContent="space-between" alignItems="center">
         <Box color="white">
           <Typography variant="body1">Total raised</Typography>
-          <Typography variant="h2">$ {total.fundraising}</Typography>
+          <Typography variant="h2">$ {Number(total.fundraising).toFixed(2)}</Typography>
         </Box>
 
         <Box>
@@ -74,7 +74,7 @@ const ProjectBalanceCard = (props: BalanceData) => {
       <Stack direction="row" mt={3} justifyContent="space-between" alignItems="center">
         <Box color="white">
           <Typography variant="body1">Revenue & Rewards Given</Typography>
-          <Typography variant="h2">$ {total.rewards}</Typography>
+          <Typography variant="h2">$ {Number(total.rewards).toFixed(2)}</Typography>
         </Box>
       </Stack>
     </Card>

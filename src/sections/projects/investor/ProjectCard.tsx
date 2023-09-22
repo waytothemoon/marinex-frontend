@@ -13,7 +13,7 @@ const ProjectCard = ({ project: { _doc: project } }: { project: any }) => {
       <CardContent>
         <Box borderRadius={3} overflow="hidden" height="160px" mb={2}>
           <Image
-            src="https://images.pexels.com/photos/813011/pexels-photo-813011.jpeg"
+            src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
             alt="Ship"
             width={0}
             height="160"

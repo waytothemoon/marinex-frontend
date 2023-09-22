@@ -7,7 +7,6 @@ import {
   Link,
   Button,
   MenuItem,
-  IconButton,
   Pagination,
   Select,
   Stack,
@@ -338,9 +337,7 @@ const ProjectsPrownerSection = () => {
                         <NextLink href={`/projects/${row._doc ? row._doc._id : row._id}`} passHref legacyBehavior>
                           <Tooltip title={'Detail'}>
                             <Link>
-                              <IconButton size="medium">
-                                <EyeOutlined />
-                              </IconButton>
+                              <EyeOutlined />
                             </Link>
                           </Tooltip>
                         </NextLink>
@@ -350,7 +347,7 @@ const ProjectsPrownerSection = () => {
                           <Box>
                             {row.withdrawalRequest === 'undefined' && (
                               <Typography>
-                                $ {row.investments || 0} / $ {row.withdrawals || 0}
+                                $ {Number(row.investments).toFixed(2) || 0} / $ {Number(row.withdrawals).toFixed(2) || 0}
                               </Typography>
                             )}
                             {row.withdrawalRequest === true && <Typography color={theme.palette.error.main}>Failed</Typography>}
@@ -366,11 +363,9 @@ const ProjectsPrownerSection = () => {
                       )}
                       {column.id === 'rewards' && row._doc && (
                         <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" pr={2}>
-                          <Typography>$ {row.givenRewards}</Typography>
+                          <Typography>$ {Number(row.givenRewards).toFixed(2)}</Typography>
                           <Tooltip title="Deposit">
-                            <IconButton onClick={() => handleDepositOpen(row)}>
-                              <CreditCardOutlined />
-                            </IconButton>
+                            <CreditCardOutlined onClick={() => handleDepositOpen(row)} />
                           </Tooltip>
                           <DepositDialog open={depositDialogOpen} handleClose={handleClose} data={currentRow} />
                         </Stack>

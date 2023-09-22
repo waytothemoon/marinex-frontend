@@ -14,10 +14,10 @@ const DashboardInvestorSection = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Grid container spacing={2} alignItems={'stretch'}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6} xl={4}>
               <FinancialCard />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6} xl={4}>
               <InvestmentsCard />
             </Grid>
             <Grid item xs={12} md={4}></Grid>

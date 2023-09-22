@@ -2,7 +2,6 @@ import { EyeOutlined } from '@ant-design/icons';
 import { Box, Button, CircularProgress, Grid, InputAdornment, Slider, Stack, TextField, Typography, Link, useTheme } from '@mui/material';
 import { useCurrentBalance } from 'hooks/useCurrentBalance';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 import { enqueueSnackbar } from 'notistack';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -49,7 +48,7 @@ function PropertyDocument({ label, value }: { label: string; value: string | num
 export default function ProjectDetail() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [project, setProject] = useState<any>({});
-  const [usdValue, setUsdValue] = useState<number>();
+  const [usdValue, setUsdValue] = useState<number>(0);
   const [numberOfTokens, setNumberOfTokens] = useState<number>();
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const [others, setOthers] = useState<any>({});
@@ -58,15 +57,29 @@ export default function ProjectDetail() {
   const { balance } = useCurrentBalance();
 
   const handleSubmit = () => {
-    setSubmitting(true);
-    fetch(`/api/invest?projectId=${project._id}&amount=${usdValue}`).then((res) => {
-      if (res.status === 200) {
-        enqueueSnackbar(`Successfully invested.`, { variant: 'success', anchorOrigin: { vertical: 'top', horizontal: 'right' } });
+    if (usdValue >= Number(project.tokenization.minimumInvestment)) {
+      if (balance >= usdValue) {
+        setSubmitting(true);
+        fetch(`/api/invest?projectId=${project._id}&amount=${usdValue}`).then((res) => {
+          if (res.status === 200) {
+            enqueueSnackbar(`Successfully invested.`, { variant: 'success', anchorOrigin: { vertical: 'top', horizontal: 'right' } });
+          } else {
+            enqueueSnackbar(`Invest failed.`, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'right' } });
+          }
+          setSubmitting(false);
+        });
       } else {
-        enqueueSnackbar(`Invest failed.`, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'right' } });
+        enqueueSnackbar(`You balance is smaller than invest amount.`, {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' }
+        });
       }
-      setSubmitting(false);
-    });
+    } else {
+      enqueueSnackbar(`Invest amount is smaller than minium.`, {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' }
+      });
+    }
   };
 
   const handleTokensChange = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +89,9 @@ export default function ProjectDetail() {
 
   const handleUsdChange = (ev: ChangeEvent<HTMLInputElement>) => {
     setUsdValue(Number(ev.currentTarget.value));
-    setNumberOfTokens(Number(ev.currentTarget.value) / (project.tokenization.assetValue / project.tokenization.tonnage / 1000));
+    setNumberOfTokens(
+      Number((Number(ev.currentTarget.value) / (project.tokenization.assetValue / project.tokenization.tonnage / 1000)).toFixed(0))
+    );
   };
 
   useEffect(() => {
@@ -88,12 +103,16 @@ export default function ProjectDetail() {
           setOthers(others);
           setProject(data);
           setLoading(false);
+          setUsdValue(Number(data.tokenization.minimumInvestment));
+          setNumberOfTokens(
+            Number(data.tokenization.minimumInvestment / (data.tokenization.assetValue / data.tokenization.tonnage / 1000))
+          );
         }
       })
       .catch((err) => {
         setLoading(false);
       });
-  }, [router]);
+  }, []);
 
   if (isLoading)
     return (
@@ -108,19 +127,15 @@ export default function ProjectDetail() {
         <Grid item xs={12} md={6} lg={4}>
           <Stack borderRadius={4} border="1px solid #d0d0d0" px={3} py={3} spacing={2}>
             <Typography variant="h1">{project.projectName}</Typography>
-            <Image
-              src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`}
-              alt="ship"
-              width="100"
-              style={{ width: '100%' }}
-              height={300}
-            />
+            <Box width="100%">
+              <img src={`${process.env.SHIPFINEX_BACKEND_URL}${project.projectImage}`} alt="ship" style={{ width: '100%' }} />
+            </Box>
             <Stack>
               <Typography variant="body2">Fund Raising Status</Typography>
               <Box mt={4} pl={3}>
                 <Slider
                   value={others.investments}
-                  valueLabelFormat={(value) => `$ ${value}`}
+                  valueLabelFormat={(value) => `$ ${value.toFixed(2)}`}
                   max={project.tokenization.tonnage * 10 * project.tokenization.offeringPercentage}
                   min={0}
                   disabled
@@ -138,8 +153,10 @@ export default function ProjectDetail() {
             <Stack spacing={1}>
               <Typography>Number of Token(s)</Typography>
               <Stack direction="row" spacing={2}>
-                <TextField placeholder="Number of token(s)" value={numberOfTokens} onChange={handleTokensChange} fullWidth />
+                <TextField type="number" placeholder="Number of token(s)" value={numberOfTokens} onChange={handleTokensChange} fullWidth />
                 <TextField
+                  type="number"
+                  inputProps={{ min: project.tokenization.minimumInvestment }}
                   placeholder="USD value"
                   value={usdValue}
                   onChange={handleUsdChange}

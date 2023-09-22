@@ -86,7 +86,24 @@ const ProjectsAdminSection = () => {
   }, []);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
-    setFilterChange(Number(event.target.value));
+    const allowance = Number(event.target.value);
+    setFilterChange(allowance);
+    setLoading(true);
+    const query = `/api/project${Number(allowance) !== 3 ? `?allowance=${allowance}` : ''}`;
+    fetch(query)
+      .then(async (res) => {
+        const { total: totalRows, data: _rows } = await res.json();
+        if (totalRows) {
+          console.log(_rows);
+          setTotalRows(totalRows);
+          setRows(_rows);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -116,8 +133,8 @@ const ProjectsAdminSection = () => {
           inputProps={{ 'aria-label': 'Project Owner Statistics Filter' }}
         >
           <MenuItem value={3}>All</MenuItem>
-          <MenuItem value={0}>Approved</MenuItem>
-          <MenuItem value={1}>Pending</MenuItem>
+          <MenuItem value={1}>Approved</MenuItem>
+          <MenuItem value={0}>Pending</MenuItem>
           <MenuItem value={2}>Rejected</MenuItem>
         </Select>
       </Stack>

@@ -19,7 +19,6 @@ import { enqueueSnackbar } from 'notistack';
 const validationSchema = yup.object({
   tokenName: yup.string().required('Token Name is required'),
   tokenSymbol: yup.string().required('Token Symbol is required'),
-  decimal: yup.number().integer('Invalid decimal value').min(1, 'Invalid Decimal').required('Token Decimal is required'),
   tonnage: yup.number().positive('Invalid tonnage value').required('Tonnage is required'),
   assetValue: yup.number().positive('Invalid asset value').required('Asset Value is required'),
   tokenizingPercentage: yup
@@ -65,7 +64,6 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
       tokenized: tokenization.tokenized,
       tokenName: tokenization.tokenName,
       tokenSymbol: tokenization.tokenSymbol,
-      decimal: tokenization.decimal,
       tonnage: tokenization.tonnage,
       assetValue: tokenization.assetValue,
       tokenizingPercentage: tokenization.tokenizingPercentage || 100,
@@ -81,7 +79,7 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
         tokenized: values.tokenized,
         tokenName: values.tokenName,
         tokenSymbol: values.tokenSymbol,
-        decimal: values.decimal,
+        decimal: 18,
         tonnage: values.tonnage,
         assetValue: values.assetValue,
         tokenizingPercentage: values.tokenizingPercentage,
@@ -157,25 +155,6 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
                 helperText={formik.touched.tokenSymbol && formik.errors.tokenSymbol}
                 fullWidth
                 autoComplete="tokenization token-name"
-                InputProps={{
-                  readOnly: router.query.projectId !== 'add'
-                }}
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Stack spacing={0.5}>
-              <InputLabel>Decimal *</InputLabel>
-              <TextField
-                id="decimal"
-                name="decimal"
-                placeholder="Enter Decimal *"
-                value={formik.values.decimal}
-                onChange={formik.handleChange}
-                error={formik.touched.decimal && Boolean(formik.errors.decimal)}
-                helperText={formik.touched.decimal && formik.errors.decimal}
-                fullWidth
-                autoComplete="tokenization decimal"
                 InputProps={{
                   readOnly: router.query.projectId !== 'add'
                 }}
