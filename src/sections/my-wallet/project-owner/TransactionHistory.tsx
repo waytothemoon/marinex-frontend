@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // next
 import NextLink from 'next/link';
@@ -26,7 +26,8 @@ import {
   TableRow,
   Typography,
   Grid,
-  InputLabel
+  InputLabel,
+  CircularProgress
 } from '@mui/material';
 
 // projects
@@ -38,6 +39,7 @@ import { InboxOutlined } from '@ant-design/icons';
 // types
 import { KeyedObject } from 'types/root';
 import MainCard from 'components/MainCard';
+import formatDate from 'utils/formatDate';
 
 // table columns
 interface ColumnProps {
@@ -51,41 +53,46 @@ interface ColumnProps {
 const columns: ColumnProps[] = [
   { id: 'projectName', label: 'Project Name', minWidth: 20, align: 'left' },
   { id: 'tokenSymbol', label: 'Token Symbol', minWidth: 12, align: 'center' },
-  { id: 'decimal', label: 'Token Decimals', minWidth: 12, align: 'center' },
-  { id: 'tokenPrice', label: 'Token Price', minWidth: 12, align: 'center' },
-  { id: 'tokenBalance', label: 'Token Balance', minWidth: 12, align: 'center' },
+  { id: 'usdAmount', label: 'Amount(USD)', minWidth: 12, align: 'center' },
   { id: 'action', label: 'Action', minWidth: 12, align: 'center' },
-  { id: 'scan', label: 'Scan', minWidth: 20, align: 'center' }
+  { id: 'scan', label: 'Scan', minWidth: 20, align: 'center' },
+  { id: 'createdAt', label: 'Created At', minWidth: 20, align: 'center' },
 ];
 
 // ==============================|| PORTFOLIIO TRANSACTIONS TABLE ||============================== //
 
 export default function TransactionHistory() {
   const headRowRef = useRef<HTMLDivElement>(null);
-  const [totalRows /*, setTotalRows*/] = useState<number>(0);
+  const [totalRows , setTotalRows] = useState<number>(0);
   const [stoOpen, setStoOpen] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<Date>();
   const [startDate, setStartDate] = useState<Date>();
+  const [isLoading, setLoading] = useState<boolean>(true);
   const { currentPage, jump } = usePagination(0, 25);
-  const [rows /*, setRows*/] = useState<any[]>([]);
-  // const router = useRouter();
-  // const { data: session } = useSession();
-
-  // useEffect(() => {
-  //   fetch('/api/project')
-  //     .then(async (res) => {
-  //       const { total: totalRows, data: _rows } = await res.json();
-  //       if (totalRows) {
-  //         setTotalRows(totalRows);
-  //         setRows(_rows);
-  //       }
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, [router, session]);
-
-  const handleStoLaunchClick = (id: string) => {
-    setStoOpen(true);
-  };
+  const [rows, setRows] = useState<any[]>([]);
+  
+  useEffect(() => {
+    // fetch('api/transaction').
+    setLoading(true);
+    fetch(`/api/transaction?page=${currentPage}`)
+      .then(async (res) => {
+        if (res.status === 200) {
+          let result = await res.json();
+          console.log(result);
+          setRows(result.data);
+          setTotalRows(result.total);
+          setLoading(false);
+        } else {
+          setRows([]);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setRows([]);
+        setLoading(false);
+      });
+  }, [currentPage]);
 
   const handleStoClose = () => {
     setStoOpen(false);
@@ -161,7 +168,7 @@ export default function TransactionHistory() {
             <TableBody>
               {rows.map((row: KeyedObject, _index) => (
                 <TableRow sx={{ py: 3 }} hover role="checkbox" tabIndex={-1} key={`project-owner-wallet-transaction-history-row-${_index}`}>
-                  {columns.map((column) => {
+                  {!isLoading && columns.map((column) => {
                     const value = row[column.id];
                     return (
                       <TableCell key={`project-owner-wallet-transaction-history-row-${_index}-cell-${column.id}`} align={column.align}>
@@ -169,30 +176,21 @@ export default function TransactionHistory() {
                           <Typography>
                             {value}{' '}
                             <Typography variant="body2" color="text.secondary" component="span">
-                              {row.tokenization['tokenName']}
+                              {row.projectId ? row.projectId.projectName : "-----"}
                             </Typography>
                           </Typography>
                         )}
-                        {column.id === 'tokenSymbol' && row.tokenization.tokenSymbol}
-                        {column.id === 'decimal' && row.tokenization.decimal}
-                        {column.id === 'tokenPrice' && row.tokenization.assetValue / (row.tokenization.tonnage * 1000)}
-                        {column.id === 'action' &&
-                          (value === false ? (
-                            <Button onClick={() => handleStoLaunchClick(row['id'])}>
-                              <Typography>Launch STO</Typography>
-                            </Button>
-                          ) : (
-                            <Typography color="green" fontWeight={600}>
-                              STO initialized
-                            </Typography>
-                          ))}
+                        {column.id === 'tokenSymbol' && (row.projectId ? row.projectId.tokenSymbol : "----")}
+                        {column.id === 'action' && row.action}
+                        {column.id === 'usdAmount' && row.value}
                         {column.id === 'scan' && (
-                          <NextLink href={value || ''} passHref legacyBehavior>
+                          <NextLink href={`https://goerli.etherscan.io/tx/${row.txHash}`} passHref legacyBehavior>
                             <Link>
                               <Typography color="purple">Polygonscan</Typography>
                             </Link>
                           </NextLink>
                         )}
+                        {column.id === 'createdAt' && formatDate(row.createdAt)}
                       </TableCell>
                     );
                   })}
@@ -202,7 +200,12 @@ export default function TransactionHistory() {
           </Table>
         </TableContainer>
         {/* table pagination */}
-        {rows.length === 0 ? (
+        {isLoading && (
+          <Stack alignItems="center">
+            <CircularProgress />
+          </Stack>
+        )}
+        {!isLoading && rows.length === 0 ? (
           <Stack alignItems="center">
             <Stack spacing={1} my={3} style={{ opacity: 0.6 }}>
               <InboxOutlined color="textSecondary" style={{ fontSize: '300%', color: 'gray', fontWeight: 300 }} />

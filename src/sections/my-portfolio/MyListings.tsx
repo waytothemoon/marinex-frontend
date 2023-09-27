@@ -118,7 +118,7 @@ export default function MyListings() {
                     <TableCell key={`my-listings-${column.id}`} align={column.align}>
                       {column.id === 'tokenPrice' && <Typography color="success">$ {numberFormat(Number(row.price))}</Typography>}
                       {column.id === 'tokenName' && <Typography>{row.project.tokenization.tokenName}</Typography>}
-                      {column.id === 'invested' && <Typography>$ {numberFormat(Number(row.amount))}</Typography>}
+                      {column.id === 'invested' && <Typography>$ {numberFormat(Number(row.amount * Number(row.price)))}</Typography>}
                       {column.id === 'rewards' && (
                         <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
                           <Typography>$ {numberFormat(Number(row.claimedRewards))} / </Typography>

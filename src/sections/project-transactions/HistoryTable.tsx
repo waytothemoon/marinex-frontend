@@ -17,18 +17,22 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useTheme
+  useTheme,
+  IconButton,
+  CircularProgress
 } from '@mui/material';
 
 // projects
 import usePagination from 'hooks/usePagination';
 
+import LinkIcon from '@mui/icons-material/Link';
 // assets
-import { CopyOutlined, InboxOutlined } from '@ant-design/icons';
+import { InboxOutlined } from '@ant-design/icons';
 
 // types
 import { KeyedObject } from 'types/root';
 import MainCard from 'components/MainCard';
+import formatDate from 'utils/formatDate';
 
 // table columns
 interface ColumnProps {
@@ -41,16 +45,12 @@ interface ColumnProps {
 
 const columns: ColumnProps[] = [
   { id: 'projectName', label: 'Project Name', minWidth: 5, align: 'left' },
-  { id: 'initiatorName', label: 'Initiator Name', minWidth: 15, align: 'center' },
-  { id: 'initiatorEmail', label: 'Initiator Email', minWidth: 12.5, align: 'center' },
   { id: 'transactionType', label: 'Transaction Type', minWidth: 15, align: 'center' },
   { id: 'txHash', label: 'txHash', minWidth: 25, align: 'center' },
-  { id: 'projectOwner', label: 'Project Owner', minWidth: 7.5, align: 'center' },
   { id: 'status', label: 'Status', minWidth: 7.5, align: 'center' },
   { id: 'createdAt', label: 'Created At', minWidth: 12.5, align: 'center' }
 ];
 
-const rows: any[] = [];
 
 // ==============================|| PORTFOLIIO TRANSACTIONS TABLE ||============================== //
 
@@ -59,14 +59,31 @@ export default function HistoryTable() {
   const theme = useTheme();
   const [totalRows, setTotalRows] = useState<number>(0);
   const { currentPage, jump } = usePagination(100, 25);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [rows, setRows] = useState<any[]>([]);
 
   useEffect(() => {
-    setTotalRows(100);
-  }, []);
-
-  const handleCopyClick = (value: string) => {
-    navigator.clipboard.writeText(value);
-  };
+    // fetch('api/transaction').
+    setLoading(true);
+    fetch(`/api/transaction?page=${currentPage}&txType=project`)
+      .then(async (res) => {
+        if (res.status === 200) {
+          let result = await res.json();
+          console.log(result);
+          setRows(result.data);
+          setTotalRows(result.total);
+          setLoading(false);
+        } else {
+          setRows([]);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setRows([]);
+        setLoading(false);
+      });
+  }, [currentPage]);
 
   return (
     <MainCard tile="Transaction History">
@@ -99,7 +116,7 @@ export default function HistoryTable() {
                   tabIndex={-1}
                   key={`project-transaction-wallet-transaction-history-row-${_index}`}
                 >
-                  {columns.map((column) => {
+                  {!isLoading && columns.map((column) => {
                     const value = row[column.id];
                     return (
                       <TableCell
@@ -107,22 +124,16 @@ export default function HistoryTable() {
                         align={column.align}
                       >
                         {column.id === 'projectName' && (
-                          <Stack
-                            direction="row"
-                            spacing={0.5}
-                            alignItems="center"
-                            onClick={() => handleCopyClick(value)}
-                            style={{ cursor: 'pointer' }}
-                            title="Copy Project Name"
-                          >
-                            <Typography color={theme.palette.primary.main}>{value}</Typography>
-                            <CopyOutlined />
-                          </Stack>
+                            <Typography color={theme.palette.primary.main}>{row.projectId.projectName}</Typography>
                         )}
                         {column.id === 'txHash' && (
-                          <NextLink href={`https://polygonscan.com/${value}`} passHref legacyBehavior>
-                            <Link>{(value as string).slice(0, 33)} ...</Link>
-                          </NextLink>
+                          <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
+                          <Link target="_blank">
+                            <IconButton>
+                              <LinkIcon style={{ color: theme.palette.primary.main }} />
+                            </IconButton>
+                          </Link>
+                        </NextLink>
                         )}
                         {column.id === 'status' && (
                           <Typography
@@ -133,10 +144,18 @@ export default function HistoryTable() {
                             {value === 0 ? 'Pending' : value === 1 ? 'Failed' : 'Confirmed'}
                           </Typography>
                         )}
-                        {column.id !== 'projectName' &&
-                          column.id !== 'txHash' &&
-                          column.id !== 'status' &&
-                          (column.format ? column.format(value) : value)}
+                        {column.id === 'transactionType' && (
+                          <Typography
+                          >
+                            {row.action}
+                          </Typography>
+                        )}
+                        {column.id === 'createdAt' && (
+                          <Typography
+                          >
+                            {formatDate(row.createdAt)}
+                          </Typography>
+                        )}
                       </TableCell>
                     );
                   })}
@@ -147,8 +166,12 @@ export default function HistoryTable() {
         </TableContainer>
         <Divider />
         {/* table pagination */}
-
-        {rows.length === 0 ? (
+        {isLoading && (
+          <Stack alignItems="center">
+            <CircularProgress />
+          </Stack>
+        )}
+        {!isLoading && rows.length === 0 ? (
           <Stack alignItems="center">
             <Stack spacing={1} my={3} style={{ opacity: 0.6 }}>
               <InboxOutlined color="textSecondary" style={{ fontSize: '300%', color: 'gray', fontWeight: 300 }} />
