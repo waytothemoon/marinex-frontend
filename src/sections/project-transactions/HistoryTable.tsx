@@ -44,13 +44,14 @@ interface ColumnProps {
 }
 
 const columns: ColumnProps[] = [
+  { id: 'id', label: 'T.NO', minWidth: 5, align: 'left' },
   { id: 'projectName', label: 'Project Name', minWidth: 5, align: 'left' },
   { id: 'transactionType', label: 'Transaction Type', minWidth: 15, align: 'center' },
-  { id: 'txHash', label: 'txHash', minWidth: 25, align: 'center' },
+  { id: 'amount', label: 'Amount', minWidth: 15, align: 'center' },
+  { id: 'createdAt', label: 'Date', minWidth: 12.5, align: 'center' },
   { id: 'status', label: 'Status', minWidth: 7.5, align: 'center' },
-  { id: 'createdAt', label: 'Created At', minWidth: 12.5, align: 'center' }
+  { id: 'txHash', label: 'txHash', minWidth: 25, align: 'center' }
 ];
-
 
 // ==============================|| PORTFOLIIO TRANSACTIONS TABLE ||============================== //
 
@@ -116,49 +117,50 @@ export default function HistoryTable() {
                   tabIndex={-1}
                   key={`project-transaction-wallet-transaction-history-row-${_index}`}
                 >
-                  {!isLoading && columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell
-                        key={`project-transaction-wallet-transaction-history-row-${_index}-cell-${column.id}`}
-                        align={column.align}
-                      >
-                        {column.id === 'projectName' && (
+                  {!isLoading &&
+                    columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell
+                          key={`project-transaction-wallet-transaction-history-row-${_index}-cell-${column.id}`}
+                          align={column.align}
+                        >
+                          {column.id === 'id' && <Typography>{(currentPage - 1) * 25 + _index + 1}</Typography>}
+                          {column.id === 'projectName' && (
                             <Typography color={theme.palette.primary.main}>{row.projectId.projectName}</Typography>
-                        )}
-                        {column.id === 'txHash' && (
-                          <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
-                          <Link target="_blank">
-                            <IconButton>
-                              <LinkIcon style={{ color: theme.palette.primary.main }} />
-                            </IconButton>
-                          </Link>
-                        </NextLink>
-                        )}
-                        {column.id === 'status' && (
-                          <Typography
-                            color={
-                              value === 0 ? theme.palette.warning.main : value === 1 ? theme.palette.error.main : theme.palette.success.main
-                            }
-                          >
-                            {value === 0 ? 'Pending' : value === 1 ? 'Failed' : 'Confirmed'}
-                          </Typography>
-                        )}
-                        {column.id === 'transactionType' && (
-                          <Typography
-                          >
-                            {row.action}
-                          </Typography>
-                        )}
-                        {column.id === 'createdAt' && (
-                          <Typography
-                          >
-                            {formatDate(row.createdAt)}
-                          </Typography>
-                        )}
-                      </TableCell>
-                    );
-                  })}
+                          )}
+                          {column.id === 'amount' && (
+                            <Typography color={row.value === 0 ? theme.palette.error.main : theme.palette.primary.main}>
+                              {row.value}
+                            </Typography>
+                          )}
+                          {column.id === 'txHash' && (
+                            <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
+                              <Link target="_blank">
+                                <IconButton>
+                                  <LinkIcon style={{ color: theme.palette.primary.main }} />
+                                </IconButton>
+                              </Link>
+                            </NextLink>
+                          )}
+                          {column.id === 'status' && (
+                            <Typography
+                              color={
+                                value === 0
+                                  ? theme.palette.warning.main
+                                  : value === 1
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {value === 0 ? 'Pending' : value === 1 ? 'Failed' : 'Confirmed'}
+                            </Typography>
+                          )}
+                          {column.id === 'transactionType' && <Typography>{row.action}</Typography>}
+                          {column.id === 'createdAt' && <Typography>{formatDate(row.createdAt)}</Typography>}
+                        </TableCell>
+                      );
+                    })}
                 </TableRow>
               ))}
             </TableBody>

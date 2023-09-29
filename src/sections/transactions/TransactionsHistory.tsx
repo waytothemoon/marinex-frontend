@@ -42,12 +42,13 @@ interface ColumnProps {
 }
 
 const columns: ColumnProps[] = [
-  { id: 'projectName', label: 'Project Name', minWidth: 10, align: 'left' },
+  { id: 'id', label: 'T.NO', minWidth: 10, align: 'left' },
+  { id: 'action', label: 'Action', minWidth: 10, align: 'center' },
   { id: 'tokenName', label: 'Token Name', minWidth: 10, align: 'center' },
   { id: 'usdAmount', label: 'Amount(USD)', minWidth: 10, align: 'center' },
-  { id: 'txHash', label: 'txHash', minWidth: 10, align: 'center' },
+  { id: 'createdAt', label: 'Date', minWidth: 10, align: 'center' },
   { id: 'status', label: 'Status', minWidth: 10, align: 'center' },
-  { id: 'createdAt', label: 'Created At', minWidth: 10, align: 'center' }
+  { id: 'txHash', label: 'txHash', minWidth: 10, align: 'center' }
 ];
 
 // ==============================|| FINANCIAL TRANSACTIONS HISTORY ||============================== //
@@ -61,7 +62,7 @@ export default function TransactionsHistory() {
   const { currentPage, jump } = usePagination(100, 25);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetch(`/api/transaction?page=${currentPage}&txType=${'wallet'}`)
       .then(async (res) => {
         if (res.status === 200) {
@@ -113,74 +114,76 @@ export default function TransactionsHistory() {
                   tabIndex={-1}
                   key={`project-transaction-wallet-transaction-history-row-${_index}`}
                 >
-                  {!isLoading && columns.map((column) => {
-                    let value;
-                    if (column.id === 'projectName') {
-                      if(row['projectId'])
-                        value = row['projectId']['projectName'];
-                      else  value = `---------(${row['action']})`
-                    }
-                    if (column.id === 'tokenName') {
-                      if(row['projectId'])
-                        value = row['projectId']['tokenization']['tokenName'];
-                      else  value = "---------"
-                    }
-                    if (column.id === 'usdAmount') {
-                      value = row['value'];
-                    }
-                    if (column.id === 'date') {
-                      value = formatDate(row['createdAt']);
-                    }
-                    if (column.id === 'action') {
-                      value = row['action'];
-                    }
-                    if (column.id === 'txHash') {
-                      value = row['txHash'];
-                    }
-
-                    if (column.id === 'createdAt') {
-                      value = formatDate(row['createdAt']);
-                    }
-                    if (column.id === 'status') {
-                      value = 2;
-                    }
-                    return (
-                      <TableCell
-                        key={`project-transaction-wallet-transaction-history-row-${_index}-cell-${column.id}`}
-                        align={column.align}
-                      >
-                        {column.id === 'tokenAddress' && (
-                          <NextLink href={value} passHref legacyBehavior>
-                            <Link>
-                              <Button>Polygonscan</Button>
-                            </Link>
-                          </NextLink>
-                        )}
-                        {column.id === 'txHash' && (
-                          <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
-                          <Link target="_blank">
-                            <IconButton>
-                              <LinkIcon style={{ color: theme.palette.primary.main }} />
-                            </IconButton>
-                          </Link>
-                        </NextLink>
-                        )}
-                        {column.id === 'status' && (
-                          <Typography
-                            color={
-                              value === 0 ? theme.palette.warning.main : value === 1 ? theme.palette.error.main : theme.palette.success.main
-                            }
-                          >
-                            {value === 0 ? 'Pending' : value === 1 ? 'Failed' : 'Confirmed'}
-                          </Typography>
-                        )}
-                        {column.id !== 'tokenAddress' &&
-                          column.id !== 'txHash' &&
-                          column.id !== 'status' &&
-                          (column.format ? column.format(value) : value)}
-                      </TableCell>
-                    );
-                  })}
+                  {!isLoading &&
+                    columns.map((column) => {
+                      let value;
+                      if (column.id === 'id') {
+                        value = (currentPage - 1) * 25 + _index + 1;
+                      }
+                      if (column.id === 'action') {
+                        value = row['action'];
+                      }
+                      if (column.id === 'tokenName') {
+                        if (row['projectId']) value = row['projectId']['tokenization']['tokenName'];
+                        else value = 'Not Project Transaction';
+                      }
+                      if (column.id === 'usdAmount') {
+                        value = row['value'];
+                      }
+                      if (column.id === 'date') {
+                        value = formatDate(row['createdAt']);
+                      }
+                      if (column.id === 'action') {
+                        value = row['action'];
+                      }
+                      if (column.id === 'txHash') {
+                        value = row['txHash'];
+                      }
+                      if (column.id === 'createdAt') {
+                        value = formatDate(row['createdAt']);
+                      }
+                      if (column.id === 'status') {
+                        value = 2;
+                      }
+                      return (
+                        <TableCell
+                          key={`project-transaction-wallet-transaction-history-row-${_index}-cell-${column.id}`}
+                          align={column.align}
+                        >
+                          {column.id === 'txHash' && (
+                            <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
+                              <Link target="_blank">
+                                <IconButton>
+                                  <LinkIcon style={{ color: theme.palette.primary.main }} />
+                                </IconButton>
+                              </Link>
+                            </NextLink>
+                          )}
+                          {column.id === 'status' && (
+                            <Typography
+                              color={
+                                value === 0
+                                  ? theme.palette.warning.main
+                                  : value === 1
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {value === 0 ? 'Pending' : value === 1 ? 'Failed' : 'Confirmed'}
+                            </Typography>
+                          )}
+                          {column.id === 'tokenName' && (
+                            <Typography color={value === 'Not Project Transaction' ? 'red' : theme.palette.success.main}>
+                              {value}
+                            </Typography>
+                          )}
+                          {column.id !== 'txHash' &&
+                            column.id !== 'status' &&
+                            column.id !== 'tokenName' &&
+                            (column.format ? column.format(value) : value)}
+                        </TableCell>
+                      );
+                    })}
                 </TableRow>
               ))}
             </TableBody>

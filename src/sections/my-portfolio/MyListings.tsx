@@ -130,7 +130,9 @@ export default function MyListings() {
                           <Link href={`/projects/${row.project._id}`} display="flex" alignItems="center">
                             {/* <Button variant="contained"> */}
                             <Tooltip title="Invest">
-                              <CurrencyExchangeIcon />
+                              <IconButton style={{ color: theme.palette.primary.main }}>
+                                <CurrencyExchangeIcon />
+                              </IconButton>
                             </Tooltip>
                             {/* </Button> */}
                           </Link>

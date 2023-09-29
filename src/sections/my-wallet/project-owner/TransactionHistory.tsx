@@ -27,11 +27,14 @@ import {
   Typography,
   Grid,
   InputLabel,
-  CircularProgress
+  CircularProgress,
+  IconButton,
+  useTheme
 } from '@mui/material';
 
 // projects
 import usePagination from 'hooks/usePagination';
+import LinkIcon from '@mui/icons-material/Link';
 
 // assets
 import { InboxOutlined } from '@ant-design/icons';
@@ -51,26 +54,26 @@ interface ColumnProps {
 }
 
 const columns: ColumnProps[] = [
-  { id: 'projectName', label: 'Project Name', minWidth: 20, align: 'left' },
-  { id: 'tokenSymbol', label: 'Token Symbol', minWidth: 12, align: 'center' },
+  { id: 'id', label: 'T.NO', minWidth: 10, align: 'left' },
   { id: 'usdAmount', label: 'Amount(USD)', minWidth: 12, align: 'center' },
   { id: 'action', label: 'Action', minWidth: 12, align: 'center' },
-  { id: 'scan', label: 'Scan', minWidth: 20, align: 'center' },
-  { id: 'createdAt', label: 'Created At', minWidth: 20, align: 'center' },
+  { id: 'createdAt', label: 'Date', minWidth: 20, align: 'center' },
+  { id: 'scan', label: 'Scan', minWidth: 20, align: 'center' }
 ];
 
 // ==============================|| PORTFOLIIO TRANSACTIONS TABLE ||============================== //
 
 export default function TransactionHistory() {
   const headRowRef = useRef<HTMLDivElement>(null);
-  const [totalRows , setTotalRows] = useState<number>(0);
+  const theme = useTheme();
+  const [totalRows, setTotalRows] = useState<number>(0);
   const [stoOpen, setStoOpen] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<Date>();
   const [startDate, setStartDate] = useState<Date>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const { currentPage, jump } = usePagination(0, 25);
   const [rows, setRows] = useState<any[]>([]);
-  
+
   useEffect(() => {
     // fetch('api/transaction').
     setLoading(true);
@@ -168,32 +171,26 @@ export default function TransactionHistory() {
             <TableBody>
               {rows.map((row: KeyedObject, _index) => (
                 <TableRow sx={{ py: 3 }} hover role="checkbox" tabIndex={-1} key={`project-owner-wallet-transaction-history-row-${_index}`}>
-                  {!isLoading && columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={`project-owner-wallet-transaction-history-row-${_index}-cell-${column.id}`} align={column.align}>
-                        {column.id === 'projectName' && (
-                          <Typography>
-                            {value}{' '}
-                            <Typography variant="body2" color="text.secondary" component="span">
-                              {row.projectId ? row.projectId.projectName : "-----"}
-                            </Typography>
-                          </Typography>
-                        )}
-                        {column.id === 'tokenSymbol' && (row.projectId ? row.projectId.tokenSymbol : "----")}
-                        {column.id === 'action' && row.action}
-                        {column.id === 'usdAmount' && row.value}
-                        {column.id === 'scan' && (
-                          <NextLink href={`https://goerli.etherscan.io/tx/${row.txHash}`} passHref legacyBehavior>
-                            <Link>
-                              <Typography color="purple">Polygonscan</Typography>
-                            </Link>
-                          </NextLink>
-                        )}
-                        {column.id === 'createdAt' && formatDate(row.createdAt)}
-                      </TableCell>
-                    );
-                  })}
+                  {!isLoading &&
+                    columns.map((column) => {
+                      return (
+                        <TableCell key={`project-owner-wallet-transaction-history-row-${_index}-cell-${column.id}`} align={column.align}>
+                          {column.id === 'id' && <Typography>{(currentPage - 1) * 25 + _index + 1}</Typography>}
+                          {column.id === 'action' && row.action}
+                          {column.id === 'usdAmount' && row.value}
+                          {column.id === 'scan' && (
+                            <NextLink href={`https://goerli.etherscan.io/tx/${row.txHash}`} passHref legacyBehavior>
+                              <Link target="_blank">
+                                <IconButton>
+                                  <LinkIcon style={{ color: theme.palette.primary.main }} />
+                                </IconButton>
+                              </Link>
+                            </NextLink>
+                          )}
+                          {column.id === 'createdAt' && formatDate(row.createdAt)}
+                        </TableCell>
+                      );
+                    })}
                 </TableRow>
               ))}
             </TableBody>
