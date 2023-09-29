@@ -4,10 +4,13 @@ import React from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
+import NextImage from 'next/image';
 
 // material-ui
 import {
+  Box,
   Button,
+  Divider,
   FormHelperText,
   Grid,
   Link,
@@ -17,19 +20,24 @@ import {
   Stack,
   Typography,
   Select,
-  MenuItem
+  MenuItem,
+  Theme,
+  useMediaQuery
 } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import ReCAPTCHA from 'react-google-recaptcha-enterprise';
+
 // project import
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+
+const Google = '/assets/images/icons/google.svg';
 
 // ============================|| SIGN UP ||============================ //
 
@@ -38,6 +46,7 @@ const AuthRegister = ({ providers, csrfToken }: any) => {
 
   const router = useRouter();
 
+  const matchDownSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [captchaChecked, toggleCaptchaChecked] = React.useState<boolean>(true);
@@ -347,6 +356,20 @@ const AuthRegister = ({ providers, csrfToken }: any) => {
           </form>
         )}
       </Formik>
+      <Divider sx={{ my: 2 }}>
+        <Typography variant="caption"> Sign up with</Typography>
+      </Divider>
+      <Box sx={{ width: '100%' }}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          fullWidth={!matchDownSM}
+          startIcon={<NextImage src={Google} alt="Twitter" width={16} height={16} />}
+          onClick={() => signIn('google', { callbackUrl: '/verify-otp' })}
+        >
+          {!matchDownSM && 'Google'}
+        </Button>
+      </Box>
     </>
   );
 };

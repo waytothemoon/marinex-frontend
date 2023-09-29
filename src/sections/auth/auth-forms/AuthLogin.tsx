@@ -4,9 +4,24 @@ import React from 'react';
 import NextLink from 'next/link';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import NextImage from 'next/image';
 
 // material-ui
-import { Button, FormHelperText, Grid, Link, InputAdornment, InputLabel, OutlinedInput, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  FormHelperText,
+  Grid,
+  Link,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Stack,
+  Theme,
+  Typography,
+  useMediaQuery
+} from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -20,9 +35,12 @@ import AnimateButton from 'components/@extended/AnimateButton';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
+const Google = '/assets/images/icons/google.svg';
+
 // ============================|| SIGNIN ||============================ //
 
 const AuthLogin = ({ providers, csrfToken }: any) => {
+  const matchDownSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const [capsWarning, setCapsWarning] = React.useState(false);
   const [captchaChecked, toggleCaptchaChecked] = React.useState<boolean>(true);
   const router = useRouter();
@@ -181,6 +199,20 @@ const AuthLogin = ({ providers, csrfToken }: any) => {
           </form>
         )}
       </Formik>
+      <Divider sx={{ my: 2 }}>
+        <Typography variant="caption"> Sign in with</Typography>
+      </Divider>
+      <Box sx={{ width: '100%' }}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          fullWidth={!matchDownSM}
+          startIcon={<NextImage src={Google} alt="Twitter" width={16} height={16} />}
+          onClick={() => signIn('google', { callbackUrl: '/verify-otp' })}
+        >
+          {!matchDownSM && 'Google'}
+        </Button>
+      </Box>
     </>
   );
 };

@@ -6,7 +6,6 @@ import NextLink from 'next/link';
 // material-ui
 import {
   Box,
-  Button,
   Link,
   Pagination,
   Stack,

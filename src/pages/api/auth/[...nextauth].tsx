@@ -1,6 +1,7 @@
 // next
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import { UserRole } from 'types/auth';
 
 // third-party
@@ -9,6 +10,18 @@ import axios from 'utils/axios';
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
+    GoogleProvider({
+      name: 'Google',
+      clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.REACT_APP_GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code'
+        }
+      }
+    }),
     CredentialsProvider({
       id: 'signin',
       name: 'Signin',
@@ -109,6 +122,16 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user, account, trigger, session }) => {
+      if (account?.provider === 'google' && user) {
+        try {
+          await axios.post('/api/v1/user/google/login', {
+            email: token.email,
+            fullName: token.name
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
       if (account?.provider === 'signup' && user) {
         token.id = user.id;
         token.email = user.email;
