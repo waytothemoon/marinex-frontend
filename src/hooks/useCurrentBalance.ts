@@ -16,7 +16,7 @@ export const useCurrentBalance = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const refresh = useCallback(() => {
-    if (session && web3 && musdContract) {
+    if (session && web3 && musdContract && web3.utils.isAddress(session.token.walletAddress)) {
       setLoading(true);
       musdContract.methods
         .balanceOf(session.token.walletAddress)

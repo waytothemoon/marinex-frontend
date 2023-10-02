@@ -1,3 +1,6 @@
+// third-party
+import Web3 from 'web3';
+
 // material-ui
 import { Button, Stack, Theme, Typography, useMediaQuery } from '@mui/material';
 
@@ -23,7 +26,7 @@ const TransferCard = (props: BalanceData) => {
   const matchDownSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   const handleCopyClipboard = () => {
-    navigator.clipboard.writeText(props.walletAddress || 'no wallet');
+    navigator.clipboard.writeText(Web3.utils.isAddress(props.walletAddress || '') ? props.walletAddress || '' : 'no wallet');
   };
 
   return (
@@ -35,10 +38,16 @@ const TransferCard = (props: BalanceData) => {
             style={{ backgroundColor: '#ffffff20', height: 'max-content', borderRadius: 16 }}
             onClick={handleCopyClipboard}
           >
-            <Typography mr={1} color="white" overflow="hidden">
-              {props.walletAddress}
-            </Typography>
-            <CopyOutlined style={{ color: 'white' }} />
+            {Web3.utils.isAddress(props.walletAddress || '') ? (
+              <>
+                <Typography mr={1} color="white" overflow="hidden">
+                  {props.walletAddress}
+                </Typography>
+                <CopyOutlined style={{ color: 'white' }} />
+              </>
+            ) : (
+              <Typography>You don&apos;t have a wallet. You will have your wallet when you make your first deposit.</Typography>
+            )}
           </Button>
         </Stack>
         <Stack direction={matchDownSM ? 'column-reverse' : 'row'} spacing={2} alignItems={matchDownSM ? 'start' : 'center'}>
