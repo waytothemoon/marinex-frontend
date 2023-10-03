@@ -66,7 +66,7 @@ const Palette = (mode: ThemeMode, presetColor: PresetColor) => {
       },
       divider: mode === ThemeMode.DARK ? alpha(paletteColor.grey[900]!, 0.05) : paletteColor.grey[300],
       background: {
-        paper: mode === ThemeMode.DARK ? '#141718' : '#ffffff80',
+        paper: mode === ThemeMode.DARK ? '#141718' : '#ffffff',
         default: mode === ThemeMode.DARK ? '#141718' : '#eeeeee'
       }
     }

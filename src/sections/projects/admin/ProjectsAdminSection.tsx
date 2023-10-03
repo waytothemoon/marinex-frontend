@@ -73,7 +73,6 @@ const ProjectsAdminSection = () => {
       .then(async (res) => {
         const { total: totalRows, data: _rows } = await res.json();
         if (totalRows) {
-          console.log(_rows);
           setTotalRows(totalRows);
           setRows(_rows);
         }
@@ -94,7 +93,6 @@ const ProjectsAdminSection = () => {
       .then(async (res) => {
         const { total: totalRows, data: _rows } = await res.json();
         if (totalRows) {
-          console.log(_rows);
           setTotalRows(totalRows);
           setRows(_rows);
         }

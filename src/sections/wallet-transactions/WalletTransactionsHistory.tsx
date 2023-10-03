@@ -68,7 +68,6 @@ export default function WalletTransactionsHistory() {
       .then(async (res) => {
         if (res.status === 200) {
           let result = await res.json();
-          console.log(result);
           setRows(result.data);
           setTotalRows(result.total);
           setLoading(false);

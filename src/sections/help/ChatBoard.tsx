@@ -68,7 +68,7 @@ const Chat = () => {
   const [user, setUser] = useState<UserProfile>({});
   const { data: sessoin } = useSession();
   const [data, setData] = useState<HistoryProps[]>([]);
-  const [currentChattingEmail, setCurrentChattingEmail] = useState<string>();
+  // const [currentChattingEmail, setCurrentChattingEmail] = useState<string>();
 
   const dataFetchedRef = useRef(false);
 
@@ -169,9 +169,6 @@ const Chat = () => {
         text: data.text,
         time: data.time
       };
-
-      console.log('current email on chat -->', currentChattingEmail);
-      console.log('-->', newMessage.from, user);
       setData((prevState) => [...prevState, newMessage]);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -184,9 +181,7 @@ const Chat = () => {
       dispatch(getUserChats(user.email));
       socket.emit('currentUser', user.email);
     }
-    console.log('current email -->', currentChattingEmail);
-    setCurrentChattingEmail(user.email);
-    console.log('user changed ->>>', user);
+    // setCurrentChattingEmail(user.email);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 

@@ -67,7 +67,6 @@ export default function TransactionHistory() {
       .then(async (res) => {
         if (res.status === 200) {
           let result = await res.json();
-          console.log(result);
           setRows(result.data);
           setTotalRows(result.total);
           setLoading(false);
@@ -110,7 +109,7 @@ export default function TransactionHistory() {
                   <TableRow sx={{ py: 3 }} hover role="checkbox" tabIndex={-1} key={`investor-wallet-transaction-history-row-${_index}`}>
                     {columns.map((column) => {
                       let value;
-                      if(column.id === 'id') {
+                      if (column.id === 'id') {
                         value = Number(_index + (currentPage - 1) * 25 + 1);
                       }
                       if (column.id === 'usdAmount') {

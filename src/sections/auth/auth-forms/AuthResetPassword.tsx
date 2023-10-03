@@ -1,21 +1,10 @@
-import { useEffect, useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent } from 'react';
 
 // next
 import { useRouter } from 'next/router';
 
 // material-ui
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Button, FormHelperText, Grid, InputAdornment, InputLabel, OutlinedInput, Stack, useTheme } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -24,14 +13,11 @@ import { Formik } from 'formik';
 // project import
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
+import { ThemeMode } from 'types/config';
+import axios from 'utils/axios';
 
-import useScriptRef from 'hooks/useScriptRef';
 import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
-
-// types
-import { StringColorProps } from 'types/password';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
@@ -39,10 +25,9 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 // ============================|| STATIC - RESET PASSWORD ||============================ //
 
 const AuthResetPassword = () => {
-  const scriptedRef = useScriptRef();
+  const theme = useTheme();
   const router = useRouter();
 
-  const [level, setLevel] = useState<StringColorProps>();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -51,15 +36,6 @@ const AuthResetPassword = () => {
   const handleMouseDownPassword = (event: SyntheticEvent) => {
     event.preventDefault();
   };
-
-  const changePassword = (value: string) => {
-    const temp = strengthIndicator(value);
-    setLevel(strengthColor(temp));
-  };
-
-  useEffect(() => {
-    changePassword('');
-  }, []);
 
   return (
     <Formik
@@ -77,33 +53,30 @@ const AuthResetPassword = () => {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           // password reset
-          if (scriptedRef.current) {
-            setStatus({ success: true });
-            setSubmitting(false);
+          await axios.post('/api/v1/user/reset-password', { token: router.query.token, password: values.password });
+          setStatus({ success: true });
+          setSubmitting(false);
 
-            dispatch(
-              openSnackbar({
-                open: true,
-                message: 'Successfuly reset password.',
-                variant: 'alert',
-                alert: {
-                  color: 'success'
-                },
-                close: false
-              })
-            );
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Successfuly reset password.',
+              variant: 'alert',
+              alert: {
+                color: 'success'
+              },
+              anchorOrigin: { vertical: 'top', horizontal: 'right' },
+              close: false
+            })
+          );
 
-            setTimeout(() => {
-              router.push('/signin');
-            }, 1500);
-          }
+          setTimeout(() => {
+            router.push('/signin');
+          }, 1500);
         } catch (err: any) {
-          console.error(err);
-          if (scriptedRef.current) {
-            setStatus({ success: false });
-            setErrors({ submit: err.message });
-            setSubmitting(false);
-          }
+          setStatus({ success: false });
+          setErrors({ submit: 'Reset password failed.' });
+          setSubmitting(false);
         }
       }}
     >
@@ -121,10 +94,7 @@ const AuthResetPassword = () => {
                   value={values.password}
                   name="password"
                   onBlur={handleBlur}
-                  onChange={(e) => {
-                    handleChange(e);
-                    changePassword(e.target.value);
-                  }}
+                  onChange={handleChange}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -134,7 +104,11 @@ const AuthResetPassword = () => {
                         edge="end"
                         color="secondary"
                       >
-                        {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                        {showPassword ? (
+                          <EyeOutlined style={{ color: theme.palette.mode === ThemeMode.DARK ? 'white' : 'gray' }} />
+                        ) : (
+                          <EyeInvisibleOutlined style={{ color: theme.palette.mode === ThemeMode.DARK ? 'white' : 'gray' }} />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
@@ -146,18 +120,6 @@ const AuthResetPassword = () => {
                   </FormHelperText>
                 )}
               </Stack>
-              <FormControl fullWidth sx={{ mt: 2 }}>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item>
-                    <Box sx={{ bgcolor: level?.color, width: 85, height: 8, borderRadius: '7px' }} />
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle1" fontSize="0.75rem">
-                      {level?.label}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Stack spacing={1}>

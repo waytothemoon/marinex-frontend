@@ -164,7 +164,7 @@ const KYC = () => {
                       if (column.id === 'phoneNumber') value = row.user.phoneNumber;
                       if (column.id === 'createdAt') value = row.createdAtMs;
                       if (column.id === 'status') value = row.reviewStatus;
-                      console.log(value);
+
                       return (
                         <TableCell key={`investors-table-row-${_index}-cell-${column.id}`} align={column.align}>
                           {column.id === 'id' && Number(_index + (currentPage - 1) * 25 + 1)}

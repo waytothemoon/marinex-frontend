@@ -247,9 +247,9 @@ const ProjectsPrownerSection = () => {
     setLoading(true);
     setTotalRows(0);
     setRows([]);
-    console.log(allowance);
+
     const query = `/api/project${Number(allowance) !== 3 ? `?allowance=${allowance}` : ''}`;
-    console.log(query);
+
     fetch(query).then(async (res) => {
       const { total: totalRows, data: _rows } = await res.json();
       if (totalRows) {

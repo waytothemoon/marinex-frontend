@@ -65,7 +65,6 @@ export default function ProjectsTable() {
         const { total: totalRows, data: _rows } = await res.json();
         if (totalRows) {
           setTotalRows(totalRows);
-          console.log(_rows);
           setRows(_rows);
         }
         setIsLoading(false);

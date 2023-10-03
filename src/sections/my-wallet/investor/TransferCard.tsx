@@ -30,8 +30,17 @@ const TransferCard = (props: BalanceData) => {
   };
 
   return (
-    <MainCard style={{ borderRadius: '12px', backgroundColor: antColors.blue[5], color: 'white', height: '100%' }}>
-      <Stack spacing={4} justifyContent="end" mt={7}>
+    <MainCard
+      style={{
+        borderRadius: '12px',
+        backgroundColor: antColors.blue[5],
+        color: 'white',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'end'
+      }}
+    >
+      <Stack spacing={4}>
         <Stack direction="row" spacing={1}>
           <Button
             variant="contained"
@@ -46,7 +55,9 @@ const TransferCard = (props: BalanceData) => {
                 <CopyOutlined style={{ color: 'white' }} />
               </>
             ) : (
-              <Typography>You don&apos;t have a wallet. You will have your wallet when you make your first deposit.</Typography>
+              <Typography textOverflow="ellipsis">
+                You don&apos;t have a wallet. You will have your wallet when you make your first deposit.
+              </Typography>
             )}
           </Button>
         </Stack>

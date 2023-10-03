@@ -65,7 +65,6 @@ const AddressForm = ({ shippingData, setShippingData, handleNext, setErrorIndex 
           country: yup.string().required('Country is required')
         })}
         onSubmit={(values, { setErrors, setSubmitting }) => {
-          console.log(23);
           setShippingData({
             firstName: values.firstName,
             middlename: values.middlename,

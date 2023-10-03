@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 // next
 import { useSession } from 'next-auth/react';
 
@@ -11,20 +13,30 @@ interface UserProps {
 
 const useUser = () => {
   const { data: session } = useSession();
-  if (session) {
-    const user = session?.token;
+  const [user, setUser] = useState<UserProps>({
+    name: 'Unknown',
+    email: 'Unknown',
+    avatar: '/assets/images/users/avatar-1.png',
+    thumb: '/assets/images/users/avatar-thumb-1.png',
+    role: 2
+  });
 
-    const newUser: UserProps = {
-      name: user.fullName || 'Unknown',
-      email: user.email || 'Unknown',
-      avatar: '/assets/images/users/avatar-1.png',
-      thumb: '/assets/images/users/avatar-thumb-1.png',
-      role: user.role
-    };
+  useEffect(() => {
+    if (session) {
+      const token = session.token;
 
-    return newUser;
-  }
-  return false;
+      const newUser: UserProps = {
+        name: token.fullName || 'Unknown',
+        email: token.email || 'Unknown',
+        avatar: '/assets/images/users/avatar-1.png',
+        thumb: '/assets/images/users/avatar-thumb-1.png',
+        role: Number(token.role)
+      };
+      setUser(newUser);
+    }
+  }, [session]);
+
+  return user;
 };
 
 export default useUser;

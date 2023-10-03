@@ -11,14 +11,13 @@ import { Formik } from 'formik';
 // project import
 import AnimateButton from 'components/@extended/AnimateButton';
 
-import useScriptRef from 'hooks/useScriptRef';
 import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
+import axios from 'utils/axios';
 
 // ============================|| FIREBASE - FORGOT PASSWORD ||============================ //
 
 const AuthForgotPassword = () => {
-  const scriptedRef = useScriptRef();
   const router = useRouter();
 
   return (
@@ -33,8 +32,8 @@ const AuthForgotPassword = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            await axios.get(`/api/v1/user/reset-password?email=${values.email}`);
             setStatus({ success: true });
-            setSubmitting(false);
             dispatch(
               openSnackbar({
                 open: true,
@@ -43,18 +42,17 @@ const AuthForgotPassword = () => {
                 alert: {
                   color: 'success'
                 },
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 close: false
               })
             );
             setTimeout(() => {
-              router.push('/verify-email');
+              router.push('/siginin');
             }, 1500);
           } catch (err: any) {
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
+            setStatus({ success: false });
+            setErrors({ submit: 'Invalid email' });
+            setSubmitting(false);
           }
         }}
       >

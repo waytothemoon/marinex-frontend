@@ -42,7 +42,6 @@ const ProjectOwnerDetail = () => {
       .then(async (res) => {
         if (res.status === 200) {
           const userInfo = await res.json();
-          console.log(userInfo);
           setProjectOwner(userInfo);
         }
         setLoading(false);
@@ -80,7 +79,6 @@ const ProjectOwnerDetail = () => {
                 status: yup.bool().required('Status is required')
               })}
               onSubmit={(values, { setErrors, setSubmitting }) => {
-                console.log(23);
                 setProjectOwner({
                   firstName: values.firstName,
                   middlename: values.middlename,

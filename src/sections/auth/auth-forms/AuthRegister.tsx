@@ -22,7 +22,8 @@ import {
   Select,
   MenuItem,
   Theme,
-  useMediaQuery
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 
 // third party
@@ -36,6 +37,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { ThemeMode } from 'types/config';
 
 const Google = '/assets/images/icons/google.svg';
 
@@ -47,6 +49,7 @@ const AuthRegister = ({ providers, csrfToken }: any) => {
   const router = useRouter();
 
   const matchDownSM = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  const theme = useTheme();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [captchaChecked, toggleCaptchaChecked] = React.useState<boolean>(true);
@@ -257,7 +260,11 @@ const AuthRegister = ({ providers, csrfToken }: any) => {
                           edge="end"
                           color="secondary"
                         >
-                          {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                          {showPassword ? (
+                            <EyeOutlined style={{ color: theme.palette.mode === ThemeMode.DARK ? 'white' : 'gray' }} />
+                          ) : (
+                            <EyeInvisibleOutlined style={{ color: theme.palette.mode === ThemeMode.DARK ? 'white' : 'gray' }} />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -277,7 +284,7 @@ const AuthRegister = ({ providers, csrfToken }: any) => {
                     fullWidth
                     error={Boolean(touched.confirmPassword && errors.confirmPassword)}
                     id="-confirm-password-login"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     value={values.confirmPassword}
                     name="confirmPassword"
                     onBlur={handleBlur}
@@ -291,7 +298,11 @@ const AuthRegister = ({ providers, csrfToken }: any) => {
                           edge="end"
                           color="secondary"
                         >
-                          {showConfirmPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                          {showConfirmPassword ? (
+                            <EyeOutlined style={{ color: theme.palette.mode === ThemeMode.DARK ? 'white' : 'gray' }} />
+                          ) : (
+                            <EyeInvisibleOutlined style={{ color: theme.palette.mode === ThemeMode.DARK ? 'white' : 'gray' }} />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     }

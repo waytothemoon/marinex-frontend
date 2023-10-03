@@ -9,7 +9,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const response = await axios.post(`/api/v1/user/re-send/otp-verification`, { email: session.token.email }).catch((err) => {
       console.log(err);
       if (err) {
-        console.log(err.response.data);
         res.status(err.response.status).json({ error: err });
       }
     });

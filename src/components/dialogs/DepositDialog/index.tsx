@@ -51,8 +51,6 @@ const CheckoutForm = ({ handleClose }: { handleClose: () => void }) => {
       redirect: 'if_required'
     });
 
-    console.log(result);
-
     if (result.error) {
       enqueueSnackbar(`Deposit failed.`, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'right' } });
     } else {

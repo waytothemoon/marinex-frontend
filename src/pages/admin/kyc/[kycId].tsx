@@ -60,8 +60,8 @@ const KYCDetail = () => {
         .then(async (res) => {
           if (res.status === 200) {
             const applicantData = await res.json();
-            console.log(applicantData['applicant']['info']['idDocs'][0]);
-            console.log(applicantData['applicantVeriff']['IDENTITY']['imageReviewResults']);
+            // console.log(applicantData['applicant']['info']['idDocs'][0]);
+            // console.log(applicantData['applicantVeriff']['IDENTITY']['imageReviewResults']);
             const personalInfo: KYCDetailData = Object.assign({}, initialValues);
             const info = Object.assign({}, applicantData['applicant']['info']);
             Object.keys(info).map((key) => {

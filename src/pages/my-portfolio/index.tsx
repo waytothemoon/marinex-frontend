@@ -37,7 +37,6 @@ const MyPortfolio = () => {
           fetch('/api/investment').then(async (res) => {
             if (res.status === 200) {
               const { total } = await res.json();
-              console.log(total);
               setTotal(total);
             }
             setLoading(false);

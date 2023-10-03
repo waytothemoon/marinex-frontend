@@ -160,8 +160,8 @@ export default function DocumentsForm({ documents, setDocuments, handleNext, pro
       formData.append('risk', shipDocuments.risk as any);
       formData.append('community', shipDocuments.community as any);
       formData.append('vesselCertificate', shipDocuments.vesselCertificate as any);
-      console.log(projectId);
       setDocuments(shipDocuments);
+
       axios.defaults.headers.common = { Authorization: `bearer ${session?.token.accessToken as string}` };
       axios
         .post(`/api/v1/project/${projectId}/documents`, formData)

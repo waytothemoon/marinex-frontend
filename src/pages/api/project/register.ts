@@ -8,7 +8,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (session && session.token.accessToken) {
     if (session.token.role === UserRole.PROJECT_OWNER) {
-      console.log(req.body);
       const formData = new FormData();
       formData.append('projectImage', req.body.projectImage);
       formData.append('projectName', req.body.projectName);

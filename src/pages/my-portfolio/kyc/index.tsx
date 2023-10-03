@@ -26,7 +26,6 @@ const KYC = () => {
     fetch('/api/kyc/websdk').then(async (res) => {
       if (res.status === 200) {
         const { token } = await res.json();
-        console.log(token);
         setAccessToken(token);
       }
     });
