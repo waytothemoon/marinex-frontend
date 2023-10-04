@@ -31,6 +31,8 @@ import { InboxOutlined } from '@ant-design/icons';
 import { KeyedObject } from 'types/root';
 import MainCard from 'components/MainCard';
 import formatDate from 'utils/formatDate';
+import toCapitalString from 'utils/capitalString';
+
 // table columns
 interface ColumnProps {
   id: string;
@@ -119,7 +121,7 @@ export default function TransactionsHistory() {
                         value = (currentPage - 1) * 25 + _index + 1;
                       }
                       if (column.id === 'action') {
-                        value = row['action'];
+                        value = toCapitalString(row['action']);
                       }
                       if (column.id === 'tokenName') {
                         if (row['projectId']) value = row['projectId']['tokenization']['tokenName'];
@@ -130,9 +132,6 @@ export default function TransactionsHistory() {
                       }
                       if (column.id === 'date') {
                         value = formatDate(row['createdAt']);
-                      }
-                      if (column.id === 'action') {
-                        value = row['action'];
                       }
                       if (column.id === 'txHash') {
                         value = row['txHash'];

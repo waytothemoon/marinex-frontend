@@ -47,7 +47,7 @@ const AuthForgotPassword = () => {
               })
             );
             setTimeout(() => {
-              router.push('/siginin');
+              router.push('/signin');
             }, 1500);
           } catch (err: any) {
             setStatus({ success: false });

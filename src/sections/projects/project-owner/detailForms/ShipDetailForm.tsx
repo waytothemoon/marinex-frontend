@@ -80,9 +80,10 @@ interface ShipDetailFormProps {
   shipDetail: ShipDetail;
   setShipDetail: (d: ShipDetail) => void;
   handleNext: () => void;
+  projectType: boolean;
 }
 
-export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }: ShipDetailFormProps) {
+export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext, projectType }: ShipDetailFormProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -123,7 +124,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
       formData.append('builtYear', shipDetail.builtYear as any);
       formData.append('flag', String(shipDetail.flag));
       formData.append('estimatedEarning', String(shipDetail.estimatedEarning));
-
+      formData.append('projectType', projectType as any);
       axios.defaults.headers.common = { Authorization: `bearer ${session?.token.accessToken as string}` };
       axios
         .post(`/api/v1/project/register`, formData)
@@ -179,7 +180,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
           <Grid item xs={12}>
             <Stack spacing={0.5}>
               <InputLabel>Project Image *</InputLabel>
-              {router.query.projectId === 'add' && (
+              {(router.query.projectId === 'add-shipping' || router.query.projectId === 'add-ico') && (
                 <Button variant="outlined" component="label" /* disabled={formik.values.projectImage !== undefined} */>
                   <CloudUploadOutlined />
                   <Typography ml={1}>Upload Project Image</Typography>
@@ -248,7 +249,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
                 fullWidth
                 autoComplete="project name"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -268,7 +269,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
                 fullWidth
                 autoComplete="project description"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -287,7 +288,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
                 fullWidth
                 autoComplete="imo number"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -300,7 +301,10 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
                 onChange={(ev) => formik.setFieldValue('vesselType', ev.target.value)}
                 error={formik.touched.vesselType && Boolean(formik.errors.vesselType)}
                 displayEmpty
-                inputProps={{ 'aria-label': 'Ship Detail Vessel Types', readOnly: router.query.projectId !== 'add' }}
+                inputProps={{
+                  'aria-label': 'Ship Detail Vessel Types',
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
+                }}
                 placeholder="Enter Select Vessel"
                 fullWidth
               >
@@ -346,7 +350,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
                 fullWidth
                 autoComplete="project flag"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -365,13 +369,13 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext }
                 fullWidth
                 autoComplete="project estimated-earning"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add',
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico',
                   endAdornment: <InputAdornment position="start">%</InputAdornment>
                 }}
               />
             </Stack>
           </Grid>
-          {router.query.projectId === 'add' && (
+          {(router.query.projectId === 'add-shipping' || router.query.projectId === 'add-ico') && (
             <Grid item xs={12}>
               <Stack direction="row" justifyContent="end">
                 <AnimateButton>

@@ -33,6 +33,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import { KeyedObject } from 'types/root';
 import MainCard from 'components/MainCard';
 import formatDate from 'utils/formatDate';
+import toCapitalString from 'utils/capitalString';
 
 // table columns
 interface ColumnProps {
@@ -124,9 +125,11 @@ export default function WalletTransactionsHistory() {
                           )}
                           {column.id === 'createdAt' && <Typography>{formatDate(value)}</Typography>}
                           {column.id === 'usdAmount' && <Typography>{row.value}</Typography>}
+                          {column.id === 'action' && <Typography>{toCapitalString(row.value)}</Typography>}
                           {column.id !== 'mrnOrMAT' &&
                             column.id !== 'txHash' &&
                             column.id !== 'createdAt' &&
+                            column.id !== 'action' &&
                             (column.format ? column.format(value) : value)}
                         </TableCell>
                       );

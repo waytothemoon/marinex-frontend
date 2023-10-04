@@ -40,6 +40,7 @@ const ProjectDetail = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [projectType, setProjectType] = useState<boolean>(false);
 
   const handleTabChange = (ev: SyntheticEvent, newValue: number) => {
     setTab(newValue);
@@ -54,7 +55,7 @@ const ProjectDetail = () => {
   };
 
   useEffect(() => {
-    if (router.query.projectId !== 'add') {
+    if (router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico') {
       setLoading(true);
       fetch(`/api/project/${router.query.projectId}`)
         .then(async (res) => {
@@ -75,12 +76,15 @@ const ProjectDetail = () => {
           });
           setDocuments(data.documents || {});
           setTokenization({ ...data.tokenization, tokenized: data.tokenized });
+          setProjectType(data.projectType);
           setLoading(false);
         })
         .catch((err) => {
           setLoading(false);
         });
     } else {
+      if (router.query.projectId === 'add-ico') setProjectType(true);
+      else setProjectType(false);
       setLoading(false);
     }
   }, [router]);
@@ -107,16 +111,31 @@ const ProjectDetail = () => {
             <Divider style={{ marginBottom: 24 }} />
             {session?.token.role === UserRole.PROJECT_OWNER && (
               <>
-                {tab === 0 && <ShipDetailForm handleNext={handleNextOfShipDetail} setShipDetail={setShipDetail} shipDetail={shipDetail} />}
+                {tab === 0 && (
+                  <ShipDetailForm
+                    handleNext={handleNextOfShipDetail}
+                    setShipDetail={setShipDetail}
+                    shipDetail={shipDetail}
+                    projectType={projectType}
+                  />
+                )}
                 {tab === 1 && (
                   <DocumentsForm
                     handleNext={handleNextOfDocuments}
                     documents={documents}
+                    projectType={projectType}
                     projectId={shipDetail.id}
                     setDocuments={setDocuments}
                   />
                 )}
-                {tab == 2 && <TokenizationForm tokenization={tokenization} setTokenization={setTokenization} projectId={shipDetail.id} />}
+                {tab == 2 && (
+                  <TokenizationForm
+                    tokenization={tokenization}
+                    projectType={projectType}
+                    setTokenization={setTokenization}
+                    projectId={shipDetail.id}
+                  />
+                )}
               </>
             )}
           </Box>

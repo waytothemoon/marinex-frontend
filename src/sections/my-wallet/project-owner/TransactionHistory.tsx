@@ -43,6 +43,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import { KeyedObject } from 'types/root';
 import MainCard from 'components/MainCard';
 import formatDate from 'utils/formatDate';
+import toCapitalString from 'utils/capitalString';
 
 // table columns
 interface ColumnProps {
@@ -175,7 +176,7 @@ export default function TransactionHistory() {
                       return (
                         <TableCell key={`project-owner-wallet-transaction-history-row-${_index}-cell-${column.id}`} align={column.align}>
                           {column.id === 'id' && <Typography>{(currentPage - 1) * 25 + _index + 1}</Typography>}
-                          {column.id === 'action' && row.action}
+                          {column.id === 'action' && toCapitalString(row.action)}
                           {column.id === 'usdAmount' && row.value}
                           {column.id === 'scan' && (
                             <NextLink href={`https://goerli.etherscan.io/tx/${row.txHash}`} passHref legacyBehavior>

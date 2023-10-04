@@ -278,13 +278,23 @@ const ProjectsPrownerSection = () => {
   return (
     <Stack spacing={2}>
       <Stack direction="row" mb={1} justifyContent="space-between" alignItems="center">
-        <NextLink href="/projects/add" passHref legacyBehavior>
-          <Link>
-            <Button variant="contained" startIcon={<PlusOutlined />}>
-              New Project
-            </Button>
-          </Link>
-        </NextLink>
+        <Stack direction="row" spacing={3}>
+          <NextLink href="/projects/add-shipping" passHref legacyBehavior>
+            <Link>
+              <Button variant="contained" startIcon={<PlusOutlined />}>
+                New Shipping Project
+              </Button>
+            </Link>
+          </NextLink>
+
+          <NextLink href="/projects/add-ico" passHref legacyBehavior>
+            <Link>
+              <Button variant="contained" startIcon={<PlusOutlined />}>
+                New Trading ICO
+              </Button>
+            </Link>
+          </NextLink>
+        </Stack>
 
         <Select
           style={{ width: 140 }}

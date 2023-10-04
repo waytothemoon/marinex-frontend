@@ -29,6 +29,10 @@ const validationSchema = yup.object({
   vesselCertificate: yup.mixed().required('Vessel Certificate is required')
 });
 
+const validationSchema_ico = yup.object({
+  detail: yup.mixed().required('Detail Report is required')
+});
+
 type BootstrapFormItemProps = {
   label: string;
   index: string;
@@ -41,7 +45,7 @@ const BootstrapFormItem = ({ label, index, formik }: BootstrapFormItemProps) => 
     <Grid item xs={12} mb={2}>
       <Stack spacing={0.5}>
         <InputLabel>{label} *</InputLabel>
-        {query.projectId === 'add' && (
+        {(query.projectId === 'add-ico' || query.projectId === 'add-shipping') && (
           <>
             {formik.values[index] === undefined && (
               <Button variant="outlined" component="label">
@@ -86,7 +90,7 @@ const BootstrapFormItem = ({ label, index, formik }: BootstrapFormItemProps) => 
             )}
           </>
         )}
-        {query.projectId !== 'add' && (
+        {query.projectId !== 'add-ico' && query.projectId !== 'add-shipping' && (
           <Stack
             direction="row"
             spacing={2}
@@ -117,6 +121,7 @@ export type Documents = {
   risk?: File;
   community?: File;
   vesselCertificate?: File;
+  detail?: File;
 };
 
 interface DocumentsFormProps {
@@ -124,11 +129,12 @@ interface DocumentsFormProps {
   setDocuments: (d: Documents) => void;
   handleNext: () => void;
   projectId?: string;
+  projectType: boolean;
 }
 
 const acceptFileTypes = 'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*';
 
-export default function DocumentsForm({ documents, setDocuments, handleNext, projectId }: DocumentsFormProps) {
+export default function DocumentsForm({ documents, setDocuments, handleNext, projectId, projectType }: DocumentsFormProps) {
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const router = useRouter();
   const { data: session } = useSession();
@@ -184,17 +190,60 @@ export default function DocumentsForm({ documents, setDocuments, handleNext, pro
     }
   });
 
+  const formik_ico = useFormik({
+    initialValues: {
+      detail: documents.detail
+    },
+    validationSchema: validationSchema_ico,
+    onSubmit: (values) => {
+      setSubmitting(true);
+      const shipDocuments = {
+        detail: values.detail
+      };
+      console.log('submit ico documentation-->');
+      const formData = new FormData();
+      formData.append('detail', shipDocuments.detail as any);
+      setDocuments(shipDocuments);
+
+      axios.defaults.headers.common = { Authorization: `bearer ${session?.token.accessToken as string}` };
+      axios
+        .post(`/api/v1/project/${projectId}/documents-ico`, formData)
+        .then(async (res) => {
+          handleNext();
+          enqueueSnackbar('Documents successfully uploaded.', {
+            variant: 'success',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' }
+          });
+          setSubmitting(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          enqueueSnackbar('Documents uploading failed.', {
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' }
+          });
+          setSubmitting(false);
+        });
+    }
+  });
+
   return (
     <>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={!projectType ? formik.handleSubmit : formik_ico.handleSubmit}>
         <Grid container spacing={2}>
-          <BootstrapFormItem formik={formik} index="technicalReport" label="Technical Report" />
-          <BootstrapFormItem formik={formik} index="financialReport" label="Financial Report" />
-          <BootstrapFormItem formik={formik} index="commercialReport" label="Commercial Report" />
-          <BootstrapFormItem formik={formik} index="risk" label="Risk" />
-          <BootstrapFormItem formik={formik} index="community" label="Community" />
-          <BootstrapFormItem formik={formik} index="vesselCertificate" label="Vessel Certificate" />
-          {router.query.projectId === 'add' && (
+          {!projectType ? (
+            <>
+              <BootstrapFormItem formik={formik} index="technicalReport" label="Technical Report" />
+              <BootstrapFormItem formik={formik} index="financialReport" label="Financial Report" />
+              <BootstrapFormItem formik={formik} index="commercialReport" label="Commercial Report" />
+              <BootstrapFormItem formik={formik} index="risk" label="Risk" />
+              <BootstrapFormItem formik={formik} index="community" label="Community" />
+              <BootstrapFormItem formik={formik} index="vesselCertificate" label="Vessel Certificate" />
+            </>
+          ) : (
+            <BootstrapFormItem formik={formik_ico} index="detail" label="Detail Report" />
+          )}
+          {(router.query.projectId === 'add-ico' || router.query.projectId === 'add-shipping') && (
             <Grid item xs={12}>
               <Stack direction="row" justifyContent="end">
                 <AnimateButton>

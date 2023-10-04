@@ -33,6 +33,7 @@ import MainCard from 'components/MainCard';
 
 import formatDate from 'utils/formatDate';
 
+import toCapitalString from 'utils/capitalString';
 // table columns
 interface ColumnProps {
   id: string;
@@ -119,7 +120,7 @@ export default function TransactionHistory() {
                         value = formatDate(row['createdAt']);
                       }
                       if (column.id === 'action') {
-                        value = row['action'];
+                        value = toCapitalString(row['action']);
                       }
                       if (column.id === 'scan') {
                         value = row['txHash'];

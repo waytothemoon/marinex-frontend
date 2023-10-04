@@ -33,6 +33,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import { KeyedObject } from 'types/root';
 import MainCard from 'components/MainCard';
 import formatDate from 'utils/formatDate';
+import toCapitalString from 'utils/capitalString';
 
 // table columns
 interface ColumnProps {
@@ -155,7 +156,7 @@ export default function HistoryTable() {
                               {value === 0 ? 'Pending' : value === 1 ? 'Failed' : 'Confirmed'}
                             </Typography>
                           )}
-                          {column.id === 'transactionType' && <Typography>{row.action}</Typography>}
+                          {column.id === 'transactionType' && <Typography>{toCapitalString(row.action)}</Typography>}
                           {column.id === 'createdAt' && <Typography>{formatDate(row.createdAt)}</Typography>}
                         </TableCell>
                       );

@@ -11,6 +11,9 @@ import { Button, Grid, InputAdornment, InputLabel, MenuItem, Select, Stack, Text
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import DateRangePicker from 'rsuite/DateRangePicker';
+import 'rsuite/dist/rsuite-no-reset.min.css';
+
 // project imports
 import AnimateButton from 'components/@extended/AnimateButton';
 import axios from 'utils/axios';
@@ -46,18 +49,35 @@ export type Tokenization = {
   tokenizingPercentage?: number;
   offeringPercentage?: number;
   minimumInvestment?: number;
+  fundSTDate?: Date;
+  fundEDDate?: Date;
+  tradingSTDate?: Date;
+  tradingEDDate?: Date;
 };
 
 interface TokenizationFormProps {
   tokenization: Tokenization;
   setTokenization: (d: Tokenization) => void;
   projectId?: string;
+  projectType: boolean;
 }
+type TradingDuration = [Date, Date];
 
-export default function TokenizationForm({ tokenization, setTokenization, projectId }: TokenizationFormProps) {
+const currentDate = new Date();
+
+export default function TokenizationForm({ tokenization, setTokenization, projectId, projectType }: TokenizationFormProps) {
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const router = useRouter();
   const { data: session } = useSession();
+  const [tradingDuration, setTradingDuration] = useState<TradingDuration>([
+    new Date(tokenization.tradingSTDate ? tokenization.tradingSTDate : currentDate),
+    new Date(tokenization.tradingEDDate ? tokenization.tradingEDDate : currentDate)
+  ]);
+
+  const [fundRaisingDuration, setFundRaisingDuration] = useState<TradingDuration>([
+    new Date(tokenization.fundSTDate ? tokenization.fundSTDate : currentDate),
+    new Date(tokenization.fundEDDate ? tokenization.fundEDDate : currentDate)
+  ]);
 
   const formik = useFormik({
     initialValues: {
@@ -87,10 +107,22 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
         minimumInvestment: values.minimumInvestment
       };
 
+      let tokenResult;
+      if (projectType) {
+        tokenResult = {
+          ...tokenInfo,
+          tradingSTDate: tradingDuration[0],
+          tradingEDDate: tradingDuration[1],
+          fundSTDate: fundRaisingDuration[0],
+          fundEDDate: fundRaisingDuration[1]
+        };
+      } else tokenResult = { ...tokenInfo };
+
+      console.log('tokenResult-->', tokenResult);
       axios.defaults.headers.common = { Authorization: `bearer ${session?.token.accessToken as string}` };
 
       axios
-        .post(`/api/v1/project/${projectId}/tokenization`, tokenInfo)
+        .post(`/api/v1/project/${projectId}/tokenization`, tokenResult)
         .then(async (res) => {
           enqueueSnackbar('Tokenized successfully.', {
             variant: 'success',
@@ -137,7 +169,7 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
                 fullWidth
                 autoComplete="tokenization name"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -156,7 +188,7 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
                 fullWidth
                 autoComplete="tokenization token-name"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -175,7 +207,7 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
                 fullWidth
                 autoComplete="tokenization tonnage"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -194,7 +226,7 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
                 fullWidth
                 autoComplete="tokenization asset-value"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add'
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
                 }}
               />
             </Stack>
@@ -233,7 +265,7 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
                 fullWidth
                 autoComplete="tokenization offering"
                 InputProps={{
-                  readOnly: router.query.projectId !== 'add',
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico',
                   endAdornment: <InputAdornment position="start">%</InputAdornment>
                 }}
               />
@@ -288,7 +320,10 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
                 onChange={(ev) => formik.setFieldValue('minimumInvestment', ev.target.value)}
                 error={formik.touched.minimumInvestment && Boolean(formik.errors.minimumInvestment)}
                 displayEmpty
-                inputProps={{ 'aria-label': 'Tokenization Minimum Investment', readOnly: router.query.projectId !== 'add' }}
+                inputProps={{
+                  'aria-label': 'Tokenization Minimum Investment',
+                  readOnly: router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'
+                }}
                 placeholder="Select Minimum Investment"
               >
                 <MenuItem>Select Minimum Investment</MenuItem>
@@ -300,7 +335,40 @@ export default function TokenizationForm({ tokenization, setTokenization, projec
               </Select>
             </Stack>
           </Grid>
-          {router.query.projectId === 'add' && (
+          {projectType && (
+            <>
+              <Grid item xs={12}>
+                <Stack spacing={0.5}>
+                  <InputLabel>Trading Duration *</InputLabel>
+                  <DateRangePicker
+                    id="tradingDuration"
+                    name="tradingDuration"
+                    size="lg"
+                    value={tradingDuration}
+                    readOnly={router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'}
+                    // @ts-ignore
+                    onChange={setTradingDuration}
+                  />
+                </Stack>
+              </Grid>
+              <Grid item xs={12}>
+                <Stack spacing={0.5}>
+                  <InputLabel>Fundraising Duration *</InputLabel>
+                  <DateRangePicker
+                    id="tradingDuration"
+                    name="tradingDuration"
+                    size="lg"
+                    value={fundRaisingDuration}
+                    readOnly={router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'}
+                    // @ts-ignore
+                    onChange={setFundRaisingDuration}
+                  />
+                </Stack>
+              </Grid>
+            </>
+          )}
+
+          {(router.query.projectId === 'add-shipping' || router.query.projectId === 'add-ico') && (
             <Grid item xs={12}>
               <Stack direction="row" justifyContent="end">
                 <AnimateButton>
