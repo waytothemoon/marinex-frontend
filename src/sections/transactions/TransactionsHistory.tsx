@@ -148,7 +148,7 @@ export default function TransactionsHistory() {
                           align={column.align}
                         >
                           {column.id === 'txHash' && (
-                            <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
+                            <NextLink href={`https://mumbai.polygonscan.com/tx/${value}`} passHref legacyBehavior>
                               <Link target="_blank">
                                 <IconButton>
                                   <LinkIcon style={{ color: theme.palette.primary.main }} />

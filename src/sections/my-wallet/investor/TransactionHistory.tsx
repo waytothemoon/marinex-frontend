@@ -128,7 +128,7 @@ export default function TransactionHistory() {
                       return (
                         <TableCell key={`investor-wallet-transaction-history-row-${_index}-cell-${column.id}`} align={column.align}>
                           {column.id === 'scan' && (
-                            <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
+                            <NextLink href={`https://mumbai.polygonscan.com/tx/${value}`} passHref legacyBehavior>
                               <Link target="_blank">
                                 <IconButton>
                                   <LinkIcon style={{ color: theme.palette.primary.main }} />

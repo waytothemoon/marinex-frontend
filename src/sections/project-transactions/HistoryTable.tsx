@@ -72,6 +72,7 @@ export default function HistoryTable() {
         if (res.status === 200) {
           let result = await res.json();
           setRows(result.data);
+          console.log(result.data);
           setTotalRows(result.total);
           setLoading(false);
         } else {
@@ -135,7 +136,7 @@ export default function HistoryTable() {
                             </Typography>
                           )}
                           {column.id === 'txHash' && (
-                            <NextLink href={`https://goerli.etherscan.io/tx/${value}`} passHref legacyBehavior>
+                            <NextLink href={`https://mumbai.polygonscan.com/tx/${value}`} passHref legacyBehavior>
                               <Link target="_blank">
                                 <IconButton>
                                   <LinkIcon style={{ color: theme.palette.primary.main }} />

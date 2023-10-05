@@ -70,6 +70,7 @@ export default function WalletTransactionsHistory() {
         if (res.status === 200) {
           let result = await res.json();
           setRows(result.data);
+          console.log(result.data);
           setTotalRows(result.total);
           setLoading(false);
         } else {
@@ -115,7 +116,7 @@ export default function WalletTransactionsHistory() {
                         <TableCell key={`investor-wallet-transaction-history-row-${_index}-cell-${column.id}`} align={column.align}>
                           {column.id === 'id' && <Typography>{(currentPage - 1) * 25 + _index + 1}</Typography>}
                           {column.id === 'txHash' && (
-                            <NextLink href={`https://goerli.etherscan.io/tx/${row.txHash}`} passHref legacyBehavior>
+                            <NextLink href={`https://mumbai.polygonscan.com/tx/${row.txHash}`} passHref legacyBehavior>
                               <Link target="_blank">
                                 <IconButton>
                                   <LinkIcon style={{ color: theme.palette.primary.main }} />
@@ -125,7 +126,7 @@ export default function WalletTransactionsHistory() {
                           )}
                           {column.id === 'createdAt' && <Typography>{formatDate(value)}</Typography>}
                           {column.id === 'usdAmount' && <Typography>{row.value}</Typography>}
-                          {column.id === 'action' && <Typography>{toCapitalString(row.value)}</Typography>}
+                          {column.id === 'action' && <Typography>{toCapitalString(row.action)}</Typography>}
                           {column.id !== 'mrnOrMAT' &&
                             column.id !== 'txHash' &&
                             column.id !== 'createdAt' &&
