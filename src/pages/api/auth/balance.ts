@@ -8,15 +8,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (session && session.token.accessToken) {
     axios.defaults.headers.common = { Authorization: `bearer ${session.token.accessToken as string}` };
 
-    const response = await axios.get(`/api/v1/user/balance`).catch((err) => {
-      console.log(err);
-      if (err) {
-        res.status(err.response.status).json({ error: err });
-      }
-    });
-    if (response) {
-      res.status(200).json(response.data);
-    }
+    await axios
+      .get(`/api/v1/user/balance`)
+      .then((response) => {
+        res.status(200).json(response.data);
+      })
+      .catch((error) => {
+        res.status(400).json({ error: error });
+      });
   } else {
     res.status(404).send({ error: 'No permission' });
   }

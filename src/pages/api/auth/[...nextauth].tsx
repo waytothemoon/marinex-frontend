@@ -103,6 +103,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               id: '',
               email: credentials?.email,
               accessToken: user.data.token,
+              accessTokenExpires: Date.now() + Number(process.env.REACT_APP_JWT_TIMEOUT!) * 1000,
               fullName: user.data.fullName,
               role:
                 user.data.role === 'investor' ? UserRole.INVESTOR : user.data.role === 'prowner' ? UserRole.PROJECT_OWNER : UserRole.ADMIN,
@@ -124,12 +125,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ],
     callbacks: {
       jwt: async ({ token, user, account, trigger, session }) => {
-        if (req.url?.includes('/api/auth/session') && req.query.walletAddress) {
-          // token.fullName = req.query.fullName;
-          // token.role = Number(req.query.role);
-          // token.kycStatus = req.query.kycStatus;
-          token.walletAddress = req.query.walletAddress;
-          // token.cusId = req.query.cusId;
+        if (trigger === 'update' && session?.walletAddress) {
+          token.walletAddress = session.walletAddress;
         }
         if (account?.provider === 'google' && user) {
           try {
@@ -148,6 +145,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (account?.provider === 'verifyOtp' && user) {
           token.email = user.email;
           token.accessToken = (user as any).accessToken;
+          token.accessTokenExpires = (user as any).accessTokenExpires;
           token.fullName = (user as any).fullName;
           token.role = (user as any).role;
           token.kycStatus = (user as any).kycStatus;
