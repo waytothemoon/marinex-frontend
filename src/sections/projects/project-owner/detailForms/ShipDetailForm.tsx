@@ -25,6 +25,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
+import DateRangePicker from 'rsuite/DateRangePicker';
+import 'rsuite/dist/rsuite-no-reset.min.css';
 // third-party
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -74,7 +76,15 @@ export type ShipDetail = {
   builtYear?: Date;
   flag?: string;
   estimatedEarning?: number;
+  fundSTDate?: Date;
+  fundEDDate?: Date;
+  tradingSTDate?: Date;
+  tradingEDDate?: Date;
 };
+
+type TradingDuration = [Date, Date];
+
+const currentDate = new Date();
 
 interface ShipDetailFormProps {
   shipDetail: ShipDetail;
@@ -89,6 +99,15 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext, 
   const [reviewOpen, setReviewOpen] = useState(false);
   const [reviewImage, setReviewImage] = useState<any>();
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [tradingDuration, setTradingDuration] = useState<TradingDuration>([
+    new Date(shipDetail.tradingSTDate ? shipDetail.tradingSTDate : currentDate),
+    new Date(shipDetail.tradingEDDate ? shipDetail.tradingEDDate : currentDate)
+  ]);
+
+  const [fundRaisingDuration, setFundRaisingDuration] = useState<TradingDuration>([
+    new Date(shipDetail.fundSTDate ? shipDetail.fundSTDate : currentDate),
+    new Date(shipDetail.fundEDDate ? shipDetail.fundEDDate : currentDate)
+  ]);
 
   const formik = useFormik({
     initialValues: {
@@ -125,6 +144,13 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext, 
       formData.append('flag', String(shipDetail.flag));
       formData.append('estimatedEarning', String(shipDetail.estimatedEarning));
       formData.append('projectType', projectType as any);
+      if (projectType) {
+        formData.append('tradingSTDate', tradingDuration[0] as any);
+        formData.append('tradingEDDate', tradingDuration[1] as any);
+        formData.append('fundSTDate', fundRaisingDuration[0] as any);
+        formData.append('fundEDDate', fundRaisingDuration[1] as any);
+      }
+
       axios.defaults.headers.common = { Authorization: `bearer ${session?.token.accessToken as string}` };
       axios
         .post(`/api/v1/project/register`, formData)
@@ -375,6 +401,38 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext, 
               />
             </Stack>
           </Grid>
+          {projectType && (
+            <>
+              <Grid item xs={12}>
+                <Stack spacing={0.5}>
+                  <InputLabel>Fundraising Duration * (UTC-Timezone)</InputLabel>
+                  <DateRangePicker
+                    id="tradingDuration"
+                    name="tradingDuration"
+                    size="lg"
+                    value={fundRaisingDuration}
+                    readOnly={router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'}
+                    // @ts-ignore
+                    onChange={setFundRaisingDuration}
+                  />
+                </Stack>
+              </Grid>
+              <Grid item xs={12}>
+                <Stack spacing={0.5}>
+                  <InputLabel>Trading Duration * (UTC-Timezone)</InputLabel>
+                  <DateRangePicker
+                    id="tradingDuration"
+                    name="tradingDuration"
+                    size="lg"
+                    value={tradingDuration}
+                    readOnly={router.query.projectId !== 'add-shipping' && router.query.projectId !== 'add-ico'}
+                    // @ts-ignore
+                    onChange={setTradingDuration}
+                  />
+                </Stack>
+              </Grid>
+            </>
+          )}
           {(router.query.projectId === 'add-shipping' || router.query.projectId === 'add-ico') && (
             <Grid item xs={12}>
               <Stack direction="row" justifyContent="end">

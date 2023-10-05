@@ -105,7 +105,10 @@ const ProjectDetail = () => {
               <Tab
                 label="Tokenization"
                 value={2}
-                disabled={router.query.projectId === 'add' && JSON.stringify(documents) === JSON.stringify({})}
+                disabled={
+                  (router.query.projectId === 'add-ico' || router.query.projectId === 'add-shipping') &&
+                  JSON.stringify(documents) === JSON.stringify({})
+                }
               />
             </Tabs>
             <Divider style={{ marginBottom: 24 }} />
