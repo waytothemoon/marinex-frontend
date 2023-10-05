@@ -179,7 +179,7 @@ export default function TransactionHistory() {
                           {column.id === 'action' && toCapitalString(row.action)}
                           {column.id === 'usdAmount' && row.value}
                           {column.id === 'scan' && (
-                            <NextLink href={`https://goerli.etherscan.io/tx/${row.txHash}`} passHref legacyBehavior>
+                            <NextLink href={`https://mumbai.polygonscan.com/tx/${row.txHash}`} passHref legacyBehavior>
                               <Link target="_blank">
                                 <IconButton>
                                   <LinkIcon style={{ color: theme.palette.primary.main }} />
