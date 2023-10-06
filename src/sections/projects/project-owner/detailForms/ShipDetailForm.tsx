@@ -25,7 +25,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
-import DateRangePicker from 'rsuite/DateRangePicker';
+import { DateRangePicker } from 'rsuite';
 import 'rsuite/dist/rsuite-no-reset.min.css';
 // third-party
 import { useFormik } from 'formik';
@@ -80,6 +80,7 @@ export type ShipDetail = {
   fundEDDate?: Date;
   tradingSTDate?: Date;
   tradingEDDate?: Date;
+  projectType?: boolean;
 };
 
 type TradingDuration = [Date, Date];
@@ -407,6 +408,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext, 
                 <Stack spacing={0.5}>
                   <InputLabel>Fundraising Duration * (UTC-Timezone)</InputLabel>
                   <DateRangePicker
+                    format="yyyy-MM-dd HH:mm:ss"
                     id="tradingDuration"
                     name="tradingDuration"
                     size="lg"
@@ -421,6 +423,7 @@ export default function ShipDetailForm({ shipDetail, setShipDetail, handleNext, 
                 <Stack spacing={0.5}>
                   <InputLabel>Trading Duration * (UTC-Timezone)</InputLabel>
                   <DateRangePicker
+                    format="yyyy-MM-dd HH:mm:ss"
                     id="tradingDuration"
                     name="tradingDuration"
                     size="lg"

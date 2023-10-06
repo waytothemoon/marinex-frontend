@@ -1,5 +1,19 @@
 import { EyeOutlined } from '@ant-design/icons';
-import { Box, Button, CircularProgress, Grid, InputAdornment, Slider, Stack, TextField, Typography, Link, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  InputAdornment,
+  Slider,
+  Stack,
+  TextField,
+  Typography,
+  Link,
+  useTheme,
+  InputLabel
+} from '@mui/material';
+
 import { useCurrentBalance } from 'hooks/useCurrentBalance';
 import { useRouter } from 'next/router';
 
@@ -7,6 +21,9 @@ import { enqueueSnackbar } from 'notistack';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ThemeMode } from 'types/config';
 import numberFormat from 'utils/numberFormat';
+
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/dist/rsuite-no-reset.min.css';
 
 function PropertyBox({ label, value }: { label: string; value: string | number }) {
   const theme = useTheme();
@@ -103,6 +120,7 @@ export default function ProjectDetail() {
           const { _doc: data, ...others } = await res.json();
           setOthers(others);
           setProject(data);
+          console.log('project--->', data);
           setLoading(false);
           setUsdValue(Number(data.tokenization.minimumInvestment));
           setNumberOfTokens(
@@ -215,6 +233,42 @@ export default function ProjectDetail() {
                 <PropertyBox label="Owner" value={project.projectOwner.firstName} />
                 <PropertyBox label="Flag" value={project.flag} />
                 <PropertyBox label="Year of built" value={new Date(project.builtYear).getFullYear()} />
+                {project.projectType && (
+                  <>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InputLabel>Fundraising Duration * (UTC-Timezone)</InputLabel>
+                        <DateRangePicker
+                          format="yyyy-MM-dd HH:mm:ss"
+                          id="tradingDuration"
+                          name="tradingDuration"
+                          size="lg"
+                          value={[
+                            project.fundSTDate ? new Date(project.fundSTDate) : new Date(),
+                            project.fundEDDate ? new Date(project.fundEDDate) : new Date()
+                          ]}
+                          readOnly
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InputLabel>Trading Duration * (UTC-Timezone)</InputLabel>
+                        <DateRangePicker
+                          format="yyyy-MM-dd HH:mm:ss"
+                          id="tradingDuration"
+                          name="tradingDuration"
+                          size="lg"
+                          value={[
+                            project.tradingSTDate ? new Date(project.tradingSTDate) : new Date(),
+                            project.tradingEDDate ? new Date(project.tradingEDDate) : new Date()
+                          ]}
+                          readOnly
+                        />
+                      </Stack>
+                    </Grid>
+                  </>
+                )}
               </Stack>
             </Grid>
             <Grid item xs={12} lg={6}>
@@ -222,12 +276,21 @@ export default function ProjectDetail() {
                 <Stack direction="row" justifyContent="space-between" py={1.5}>
                   <Typography>Documents</Typography>
                 </Stack>
-                <PropertyDocument label="Technical Report" value={project.documents.technicalReport} />
-                <PropertyDocument label="Financial Report" value={project.documents.financialReport} />
-                <PropertyDocument label="Commercial Report" value={project.documents.commercialReport} />
-                <PropertyDocument label="Risk" value={project.documents.risk} />
-                <PropertyDocument label="Community" value={project.documents.community} />
-                <PropertyDocument label="Vessel Certificate" value={project.documents.vesselCertificate} />
+                {!project.projectType && (
+                  <>
+                    <PropertyDocument label="Technical Report" value={project.documents.technicalReport} />
+                    <PropertyDocument label="Financial Report" value={project.documents.financialReport} />
+                    <PropertyDocument label="Commercial Report" value={project.documents.commercialReport} />
+                    <PropertyDocument label="Risk" value={project.documents.risk} />
+                    <PropertyDocument label="Community" value={project.documents.community} />
+                    <PropertyDocument label="Vessel Certificate" value={project.documents.vesselCertificate} />
+                  </>
+                )}
+                {project.projectType && (
+                  <>
+                    <PropertyDocument label="Detail Report" value={project.documents.detail} />
+                  </>
+                )}
               </Stack>
             </Grid>
           </Grid>

@@ -1,5 +1,8 @@
 // material-ui
-import { Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography, InputLabel } from '@mui/material';
+
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/dist/rsuite-no-reset.min.css';
 
 import numberFormat from 'utils/numberFormat';
 
@@ -15,6 +18,11 @@ export type ShipDetail = {
   capacity?: number;
   builtYear?: string;
   flag?: string;
+  projectType?: boolean;
+  fundSTDate?: Date;
+  fundEDDate?: Date;
+  tradingSTDate?: Date;
+  tradingEDDate?: Date;
 };
 
 interface ShipDetailFormProps {
@@ -110,6 +118,42 @@ export default function ShipDetailForm({ shipDetail }: ShipDetailFormProps) {
             </Typography>
           </Stack>
         </Grid>
+        {shipDetail.projectType && (
+          <>
+            <Grid item xs={12}>
+              <Stack spacing={0.5}>
+                <InputLabel>Fundraising Duration * (UTC-Timezone)</InputLabel>
+                <DateRangePicker
+                  format="yyyy-MM-dd HH:mm:ss"
+                  id="tradingDuration"
+                  name="tradingDuration"
+                  size="lg"
+                  value={[
+                    shipDetail.fundSTDate ? shipDetail.fundSTDate : new Date(),
+                    shipDetail.fundEDDate ? shipDetail.fundEDDate : new Date()
+                  ]}
+                  readOnly
+                />
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={0.5}>
+                <InputLabel>Trading Duration * (UTC-Timezone)</InputLabel>
+                <DateRangePicker
+                  format="yyyy-MM-dd HH:mm:ss"
+                  id="tradingDuration"
+                  name="tradingDuration"
+                  size="lg"
+                  value={[
+                    shipDetail.tradingSTDate ? shipDetail.tradingSTDate : new Date(),
+                    shipDetail.tradingEDDate ? shipDetail.tradingEDDate : new Date()
+                  ]}
+                  readOnly
+                />
+              </Stack>
+            </Grid>
+          </>
+        )}
       </Grid>
     </>
   );

@@ -56,7 +56,12 @@ const ProjectDetail = () => {
           vesselType: data.vesselType,
           capacity: data.tokenization.tonnage,
           builtYear: data.builtYear,
-          flag: data.flag
+          flag: data.flag,
+          projectType: data.projectType,
+          fundSTDate: new Date(data.fundSTDate),
+          fundEDDate: new Date(data.fundEDDate),
+          tradingSTDate: new Date(data.tradingSTDate),
+          tradingEDDate: new Date(data.tradingEDDate)
         });
         setDocuments(data.documents || {});
         setTokenization(data.tokenization);
@@ -88,7 +93,7 @@ const ProjectDetail = () => {
               </Tabs>
               <Divider style={{ marginBottom: 24 }} />
               {tab === 0 && <ShipDetail shipDetail={shipDetail} />}
-              {tab === 1 && <Documents documents={documents} />}
+              {tab === 1 && <Documents documents={documents} projectType={shipDetail.projectType} />}
               {tab == 2 && <Tokenization tokenization={tokenization} />}
             </MainCard>
           </Grid>

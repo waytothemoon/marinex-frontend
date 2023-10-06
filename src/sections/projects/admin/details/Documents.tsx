@@ -49,18 +49,28 @@ export type Documents = {
 
 interface DocumentsFormProps {
   documents: Documents;
+  projectType: boolean;
 }
 
-export default function DocumentsForm({ documents }: DocumentsFormProps) {
+export default function DocumentsForm({ documents, projectType }: DocumentsFormProps) {
   return (
     <>
       <Grid container spacing={1}>
-        <BootstrapFormItem index="technicalReport" label="Technical Reports" data={documents} />
-        <BootstrapFormItem index="financialReport" label="Financial Reports" data={documents} />
-        <BootstrapFormItem index="commercialReport" label="Commercial Reports" data={documents} />
-        <BootstrapFormItem index="risk" label="Risk" data={documents} />
-        <BootstrapFormItem index="community" label="Community" data={documents} />
-        <BootstrapFormItem index="vesselCertificate" label="Vessel Certificates" data={documents} />
+        {!projectType && (
+          <>
+            <BootstrapFormItem index="technicalReport" label="Technical Reports" data={documents} />
+            <BootstrapFormItem index="financialReport" label="Financial Reports" data={documents} />
+            <BootstrapFormItem index="commercialReport" label="Commercial Reports" data={documents} />
+            <BootstrapFormItem index="risk" label="Risk" data={documents} />
+            <BootstrapFormItem index="community" label="Community" data={documents} />
+            <BootstrapFormItem index="vesselCertificate" label="Vessel Certificates" data={documents} />
+          </>
+        )}
+        {projectType && (
+          <>
+            <BootstrapFormItem index="detail" label="Detail Reports" data={documents} />
+          </>
+        )}
       </Grid>
     </>
   );

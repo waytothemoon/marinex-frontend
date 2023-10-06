@@ -16,3 +16,7 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #00239060;
 }
+
+.rs-picker-toggle {
+  --rs-input-bg: transparent;
+}

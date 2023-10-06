@@ -30,6 +30,11 @@ export type ShipDetail = {
   builtYear?: Date;
   flag?: string;
   estimatedEarning?: number;
+  projectType?: boolean;
+  fundSTDate?: Date;
+  fundEDDate?: Date;
+  tradingSTDate?: Date;
+  tradingEDDate?: Date;
 };
 
 const ProjectDetail = () => {
@@ -72,7 +77,12 @@ const ProjectDetail = () => {
             builtYear: new Date(data.builtYear),
             flag: data.flag,
             estimatedEarning: data.estimatedEarning,
-            id: data._id
+            id: data._id,
+            projectType: data.projectType,
+            fundSTDate: new Date(data.fundSTDate),
+            fundEDDate: new Date(data.fundEDDate),
+            tradingSTDate: new Date(data.tradingSTDate),
+            tradingEDDate: new Date(data.tradingEDDate)
           });
           setDocuments(data.documents || {});
           setTokenization({ ...data.tokenization, tokenized: data.tokenized });
