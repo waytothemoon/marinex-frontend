@@ -1,12 +1,5 @@
 // material-ui
-import { Box, Button, Card, CircularProgress, Grid, IconButton, Stack, Tooltip, Typography, Link } from '@mui/material';
-
-// assets
-import { ArrowDownOutlined, ArrowUpOutlined, SyncOutlined } from '@ant-design/icons';
-
-// project imports
-import DepositDialog from 'components/dialogs/DepositDialog';
-import numberFormat from 'utils/numberFormat';
+import { Box, Card, Grid, Stack, Typography, Link } from '@mui/material';
 
 import NextLink from 'next/link';
 
