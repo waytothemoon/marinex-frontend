@@ -54,7 +54,7 @@ const Header = () => {
     sx: {
       borderBottom: `1px solid ${theme.palette.divider}`,
       zIndex: 1200,
-      width: isHorizontal ? '100%' : drawerOpen ? 'calc(100% - 260px)' : { xs: '100%', lg: 'calc(100% - 60px)' }
+      width: isHorizontal ? '100%' : drawerOpen ? 'calc(100% - 320px)' : { xs: '100%', lg: 'calc(100% - 60px)' }
     }
   };
 

@@ -18,7 +18,9 @@ import {
   TableRow,
   Typography,
   CircularProgress,
-  Tooltip
+  Tooltip,
+  Button,
+  PaginationItem
 } from '@mui/material';
 
 // projects
@@ -50,7 +52,20 @@ const columns: ColumnProps[] = [
 ];
 
 // ==============================|| PROJECTS TABLE ||============================== //
-
+function Back() {
+  return (
+    <Button variant="contained" sx={{ height: '32px' }}>
+      Back
+    </Button>
+  );
+}
+function Next() {
+  return (
+    <Button variant="contained" sx={{ height: '32px' }}>
+      Next
+    </Button>
+  );
+}
 export default function ProjectsTable() {
   const headRowRef = useRef<HTMLDivElement>(null);
   const [totalRows, setTotalRows] = useState<number>(0);
@@ -153,7 +168,7 @@ export default function ProjectsTable() {
           </Stack>
         </Stack>
       ) : (
-        <Stack alignItems="end" mt={2}>
+        <Stack alignItems="start" mt={2}>
           <Pagination
             count={Math.ceil(totalRows / 25)}
             page={currentPage}
@@ -161,6 +176,8 @@ export default function ProjectsTable() {
             variant="contained"
             color="primary"
             shape="circular"
+            //@ts-ignore
+            renderItem={(item) => <PaginationItem slots={{ previous: Back, next: Next }} {...item} />}
           />
         </Stack>
       )}

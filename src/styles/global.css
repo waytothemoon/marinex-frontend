@@ -20,3 +20,10 @@
 .rs-picker-toggle {
   --rs-input-bg: transparent;
 }
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter/Inter-Regular.woff2') format('woff2'), url('/assets/fonts/inter/Inter-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -1,5 +1,5 @@
 // material-ui
-import { Box, Button, Card, Grid, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, Link, Stack, Typography, Chip } from '@mui/material';
 
 // next
 import NextLink from 'next/link';
@@ -33,9 +33,13 @@ const InvestmentsCard = () => {
     >
       <Stack justifyContent="space-between" height="100%">
         <Box>
-          <Typography variant="body2" color="whitesmoke">
-            Current Value
-          </Typography>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="body2" color="whitesmoke">
+              Current Value
+            </Typography>
+            <Chip label="+5.64%" sx={{ backgroundColor: '#141718', width: 72, height: 32, borderRadius: 19, color: 'white' }}></Chip>
+          </Stack>
+
           <Typography variant="h2" fontWeight={700} color="white" mb={1}>
             $ {numberFormat(currentValue)}
           </Typography>

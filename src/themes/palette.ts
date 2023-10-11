@@ -43,6 +43,9 @@ const Palette = (mode: ThemeMode, presetColor: PresetColor) => {
   const paletteColor: PaletteThemeProps = ThemeOption(colors, presetColor, mode);
 
   return createTheme({
+    typography: {
+      fontFamily: 'Inter'
+    },
     palette: {
       mode,
       common: {
@@ -51,7 +54,7 @@ const Palette = (mode: ThemeMode, presetColor: PresetColor) => {
       },
       ...paletteColor,
       primary: {
-        main: mode === ThemeMode.DARK ? '#83F1AA' : '#2A68DF'
+        main: '#3B67D7' // mode === ThemeMode.DARK ? '#83F1AA' : '#2A68DF'
       },
       text: {
         primary: mode === ThemeMode.DARK ? '#ffffff' : '#353535',
