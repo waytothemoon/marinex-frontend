@@ -9,12 +9,12 @@ export const linkedInColor = '#0e76a8';
 
 export const APP_DEFAULT_PATH = '/dashboard';
 export const HORIZONTAL_MAX_ITEM = 6;
-export const DRAWER_WIDTH = 260;
+export const DRAWER_WIDTH = 320;
 
 // ==============================|| THEME CONFIG  ||============================== //
 
 const config: DefaultConfigProps = {
-  fontFamily: `'Public Sans', sans-serif`,
+  fontFamily: `'Inter', sans-serif`,
   i18n: 'en',
   menuOrientation: MenuOrientation.VERTICAL,
   miniDrawer: false,

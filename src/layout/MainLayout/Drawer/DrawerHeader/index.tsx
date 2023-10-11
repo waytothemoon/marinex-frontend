@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 
 // project import
 import DrawerHeaderStyled from './DrawerHeaderStyled';
-// import Logo from 'components/logo';
+import Logo from 'components/logo';
 import useConfig from 'hooks/useConfig';
 
 // types
@@ -28,11 +28,16 @@ const DrawerHeader = ({ open }: Props) => {
       open={open}
       sx={{
         minHeight: isHorizontal ? 'unset' : '60px',
-        width: isHorizontal ? { xs: '100%', lg: '424px' } : 'inherit'
+        width: isHorizontal ? { xs: '100%', lg: '424px' } : 'inherit',
+        paddingLeft: 3,
+        justifyContent: 'flex-start',
+        gap: '12px'
       }}
     >
-      {/* <Logo isIcon={!open} sx={{ width: open ? 'auto' : 35, height: 35 }} /> */}
-      <Typography variant="h2">MARINEX</Typography>
+      <Logo isIcon={true} sx={{ width: open ? 'auto' : 40, height: 40 }} />
+      <Typography variant="h2" fontFamily={'Cera Pro'} fontWeight={700} fontSize={24}>
+        MARINEX
+      </Typography>
     </DrawerHeaderStyled>
   );
 };

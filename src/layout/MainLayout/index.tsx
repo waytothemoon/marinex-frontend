@@ -70,7 +70,16 @@ const MainLayout = ({ children }: Props) => {
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header />
       {!isHorizontal ? <Drawer /> : <HorizontalBar />}
-      <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+      <Box
+        component="main"
+        sx={{
+          width: 'calc(100% - 320px)',
+          flexGrow: 1,
+          p: { xs: 2, sm: 3 },
+          pl: { xs: 2, sm: 3, lg: 0 },
+          backgroundColor: theme.palette.background.paper
+        }}
+      >
         <Container
           maxWidth={false}
           sx={{
@@ -80,13 +89,13 @@ const MainLayout = ({ children }: Props) => {
             mt: !downLG ? 'auto' : '60px',
             display: 'flex',
             flexDirection: 'column',
-            border: theme.palette.mode === ThemeMode.DARK ? '1px solid transparent' : '1px solid #e0e0e0',
+            border: '1px solid transparent',
             borderRadius: '16px',
             backdropFilter: 'blur(2.5px)',
             background:
               theme.palette.mode === ThemeMode.DARK
                 ? 'radial-gradient(117.73% 149.50% at 8.37% 0.00%, rgba(35, 35, 35) 0%, #141718 100%) padding-box, linear-gradient(120deg, #8470FF60, rgb(100, 100, 100) 50%, rgb(100, 100, 100) 60%, rgb(150, 150, 150)) border-box'
-                : '#FDFDFF'
+                : 'radial-gradient(117.73% 149.50% at 8.37% 0.00%, #F0F2F7 0%, #F0F2F7 100%) padding-box, linear-gradient(60deg, #FFFFFF, #3B67D780 20%, #FFFFFF 30%, #FFFFFF) border-box'
           }}
         >
           <Typography variant="h2" mb={4}>

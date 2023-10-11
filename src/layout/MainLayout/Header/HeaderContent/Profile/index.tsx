@@ -61,9 +61,10 @@ const Profile = () => {
               ? 'radial-gradient(117.73% 99.50% at 8.37% 0.00%, rgba(70, 70, 70) 0%, #141718 100%) padding-box, linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.11) 50%, rgba(255, 255, 255, 0.11) 60%, #8470FF80) border-box'
               : '#2A68DF',
           borderRadius: '8px',
-          my: 2,
+          mt: 2,
+          mb: 3.2,
           mx: 2,
-          width: '228px',
+          width: '288px',
           px: 1.5,
           py: 2,
           justifyContent: 'start',
@@ -86,7 +87,7 @@ const Profile = () => {
               <Typography variant="subtitle1" sx={{ color: 'white' }} textAlign="left">
                 {user.name && capitalize(user.name)}
               </Typography>
-              <Typography noWrap maxWidth={140} sx={{ color: 'white' }} variant="body2" textAlign="left">
+              <Typography noWrap maxWidth={200} sx={{ color: 'white' }} variant="body2" textAlign="left">
                 {user.email && user.email}
               </Typography>
             </Box>

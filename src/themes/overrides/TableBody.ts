@@ -17,7 +17,7 @@ export default function TableBody(theme: Theme) {
         root: {
           '& .MuiTableRow-root': {
             '&:nth-of-type(odd)': {
-              backgroundColor: theme.palette.mode === ThemeMode.DARK ? '#FFFFFF20' : theme.palette.background.default,
+              backgroundColor: theme.palette.mode === ThemeMode.DARK ? '#333637' : '#FFFFFF',
               borderRadius: '16px'
             },
             ...hoverStyle
