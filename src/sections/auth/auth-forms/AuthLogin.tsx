@@ -206,7 +206,7 @@ const AuthLogin = ({ providers, csrfToken }: any) => {
         <Button
           variant="outlined"
           color="secondary"
-          fullWidth={!matchDownSM}
+          fullWidth
           startIcon={<NextImage src={Google} alt="Twitter" width={16} height={16} />}
           onClick={() => signIn('google', { callbackUrl: '/verify-otp' })}
         >

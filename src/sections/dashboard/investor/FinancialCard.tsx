@@ -10,6 +10,7 @@ import { ArrowDownOutlined, ArrowUpOutlined, SyncOutlined } from '@ant-design/ic
 import DepositDialog from 'components/dialogs/DepositDialog';
 import { useCurrentBalance } from 'hooks/useCurrentBalance';
 import numberFormat from 'utils/numberFormat';
+import Image from 'next/image';
 // ==============================|| FINANCIAL CARD ||============================== //
 
 const FinancialCard = () => {
@@ -70,12 +71,7 @@ const FinancialCard = () => {
           </Box>
         </Stack>
         <Box position="absolute" left="50%" bottom="17px" overflow="hidden" style={{ translate: '-50%' }}>
-          <svg width="301" height="44" viewBox="0 0 301 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M152.805 19C155.596 19 157.958 17.0406 159.093 14.4914C162.613 6.58512 170.204 0 179 0H279C291.15 0 301 9.84973 301 22C301 34.1503 291.15 44 279 44H179C170.787 44 163.626 38.0671 159.846 30.958C158.636 28.6812 156.399 27 153.821 27H147.179C144.601 27 142.364 28.6812 141.154 30.958C137.374 38.0671 130.213 44 122 44H22C9.84973 44 0 34.1503 0 22C0 9.84973 9.84973 0 22 0H122C130.796 0 138.387 6.58512 141.907 14.4914C143.042 17.0406 145.404 19 148.195 19H152.805Z"
-              fill="white"
-            />
-          </svg>
+          <Image src="/assets/images/Union.png" alt="Union" height={44} width={301} />
         </Box>
         <Grid container spacing={2}>
           <Grid item xs={6}>
@@ -127,7 +123,12 @@ const FinancialCard = () => {
                 padding: 3
               }}
             >
-              <Typography fontWeight="bold" style={{ width: 'calc(100% - 40px)' }} pl={3}>
+              <Typography
+                fontWeight="bold"
+                style={{ width: 'calc(100% - 40px)' }}
+                textAlign={{ xl: 'center', lg: 'right', xs: 'center' }}
+                pl={{ xs: 3, md: 0, xl: 2 }}
+              >
                 Withdraw
               </Typography>
               <Box

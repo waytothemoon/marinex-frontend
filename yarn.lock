@@ -1738,6 +1738,11 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.5.1.tgz#0480eeb7221eb9bc398ad7432c9d7e14b1a5a367"
   integrity sha512-cJRQXpObxfNKkFAZbJl2yjWtJCqELQIdShsogr1d2MilP8dKD9TE/nEKHkJgUNHdGKCQaf9HbIynuV2csLGVLg==
 
+"@types/three@0.125.0":
+  version "0.125.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.125.0.tgz#c0f5b40938b6beab35ea0012454bcb31646923d5"
+  integrity sha512-ZgNfl9jg+/ZkCggh57DJo2/HXKbeDMsNFTiRjb/6wVurVN/l7leqe8vB6au55qDwduXWVS0VVd1hkKVjyBml5A==
+
 "@types/unist@^2", "@types/unist@^2.0.0":
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.8.tgz#bb197b9639aa1a04cf464a617fe800cccd92ad5c"
@@ -7379,6 +7384,11 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
+three@0.124.0:
+  version "0.124.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.124.0.tgz#14ab1a26ba6c56e51190e1b55695cd3c1e69ea55"
+  integrity sha512-ROXp1Ly7YyF+jC910DQyAWj++Qlw2lQv0qwYLNQwdDbjk4bsOXAfGO92wYTMPNei1GMJUmCxSxc3MjGBTS09Rg==
+
 throttle-debounce@^2.1.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-2.3.0.tgz#fd31865e66502071e411817e241465b3e9c372e2"
@@ -7785,6 +7795,11 @@ uvu@^0.5.0:
     diff "^5.0.0"
     kleur "^4.0.3"
     sade "^1.7.3"
+
+vanta@0.5.21:
+  version "0.5.21"
+  resolved "https://registry.yarnpkg.com/vanta/-/vanta-0.5.21.tgz#f3548b531ac0a53ea0b161f12c880474f0d92b29"
+  integrity sha512-UYW6rYXVl8klFbQrhmgDMZ7SCys9hKROIuTlq5M+v6j346BPu1wqBwVRQPHiYsuooWkUYY6HSXV/9HrJBSuo6g==
 
 varint@^5.0.0:
   version "5.0.2"
